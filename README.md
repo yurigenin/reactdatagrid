@@ -159,7 +159,7 @@ Even without a license key, all features are unlocked so you can evaluate the **
 
 We're heavily invested into our [documentation](https://reactdatagrid.io/docs) - it ships with full working examples and a live editor. Each prop **`ReactDataGrid`** supports has it's own description and usage example.
 
-Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/docs/filtering), [grouping](https://reactdatagrid.io/docs/grouping) etc.
+Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/docs/filtering), [grouping](https://reactdatagrid.io/docs/grouping-rows) etc.
 
 ## Examples
 
