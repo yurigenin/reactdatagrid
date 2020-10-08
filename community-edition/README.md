@@ -68,7 +68,7 @@ Here's a list of the features that we support in the **Community Edition**:
 - [Keyboard navigation](https://reactdatagrid.io/docs/keyboard-navigation)
 - [Customizing rows, cells and headers](https://reactdatagrid.io/docs/customizing-cells-rows-headers)
 - [Scroll customization](https://reactdatagrid.io/docs/scrolling-and-scroll-customization)
-- [RTL support](https://reactdatagrid.io/docs/rtl)
+- [RTL support](https://reactdatagrid.io/docs/rtl-support)
 - [Beautiful themes](https://reactdatagrid.io/docs/styling-and-theming#themes)
 - [Column reorder](https://reactdatagrid.io/docs/api-reference#props-reorderColumns)
 - [Column resize](https://reactdatagrid.io/docs/api-reference#props-resizable)
