@@ -30,7 +30,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Purpose](#purpose)
 - [Problem](#problem)
 - [Solution](#solution)
@@ -68,7 +67,7 @@ We've poured our soul into **`ReactDataGrid`** and built it from scratch with **
 There are 2 editions of the **`ReactDataGrid`** that we're releasing:
 
 - **Community Edition** - includes the core functionality most people actually use in their products ([MIT License](./community-edition/LICENSE.md));
-- **Enterprise Edition** - includes advanced functionality, especially targeted for enterprise apps ([Commercial License](https://reactdatagrid.io/pricing)).
+- **Enterprise Edition** - includes advanced functionality, especially targeted for enterprise apps ([Commercial License](./enterprise-edition/LICENSE.md)).
 
 Both editions of the **`ReactDataGrid`** are published and available in the public **npm** registry.
 
@@ -115,14 +114,14 @@ Here's a list of the features that we support for each edition:
 - [Keyboard navigation](https://reactdatagrid.io/docs/keyboard-navigation)
 - [Customizing rows, cells and headers](https://reactdatagrid.io/docs/customizing-cells-rows-headers)
 - [Scroll customization](https://reactdatagrid.io/docs/scrolling-and-scroll-customization)
-- [RTL support](https://reactdatagrid.io/docs/rtl)
+- [RTL support](https://reactdatagrid.io/docs/rtl-support)
 - [Beautiful themes](https://reactdatagrid.io/docs/styling-and-theming#themes)
 - [Column reorder](https://reactdatagrid.io/docs/api-reference#props-reorderColumns)
 - [Column resize](https://reactdatagrid.io/docs/api-reference#props-resizable)
 
 ### Enterprise Edition features
 
-- [Live pagination](https://reactdatagrid.io/live-pagination)
+- [Live pagination](https://reactdatagrid.io/docs/live-pagination)
 - [Grouping](https://reactdatagrid.io/docs/grouping-rows)
 - [Locked columns - start and end](https://reactdatagrid.io/docs/locked-columns)
 - [Row details](https://reactdatagrid.io/docs/row-details)
@@ -159,7 +158,7 @@ Even without a license key, all features are unlocked so you can evaluate the **
 
 We're heavily invested into our [documentation](https://reactdatagrid.io/docs) - it ships with full working examples and a live editor. Each prop **`ReactDataGrid`** supports has it's own description and usage example.
 
-Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/filtering), [grouping](https://reactdatagrid.io/docs/grouping) etc.
+Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/docs/filtering), [grouping](https://reactdatagrid.io/docs/grouping-rows) etc.
 
 ## Examples
 

@@ -93,7 +93,7 @@ Even without a license key, all features are unlocked so you can evaluate **`Rea
 
 We're heavily invested into our [documentation](https://reactdatagrid.io/docs) - it ships with full working examples and a live editor. Each prop **`ReactDataGrid`** supports has it's own description and usage example.
 
-Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [locked columns](https://reactdatagrid.io/docs/locked-columns), [grouping](https://reactdatagrid.io/docs/grouping), [pivoting](https://reactdatagrid.io/docs/pivotgrid) etc.
+Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [locked columns](https://reactdatagrid.io/docs/locked-columns), [grouping](https://reactdatagrid.io/docs/grouping-rows), [pivoting](https://reactdatagrid.io/docs/pivotgrid) etc.
 
 ## Examples
 

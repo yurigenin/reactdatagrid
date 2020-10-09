@@ -68,7 +68,7 @@ Here's a list of the features that we support in the **Community Edition**:
 - [Keyboard navigation](https://reactdatagrid.io/docs/keyboard-navigation)
 - [Customizing rows, cells and headers](https://reactdatagrid.io/docs/customizing-cells-rows-headers)
 - [Scroll customization](https://reactdatagrid.io/docs/scrolling-and-scroll-customization)
-- [RTL support](https://reactdatagrid.io/docs/rtl)
+- [RTL support](https://reactdatagrid.io/docs/rtl-support)
 - [Beautiful themes](https://reactdatagrid.io/docs/styling-and-theming#themes)
 - [Column reorder](https://reactdatagrid.io/docs/api-reference#props-reorderColumns)
 - [Column resize](https://reactdatagrid.io/docs/api-reference#props-resizable)
@@ -79,7 +79,7 @@ Besides the above, there's a lot more backed into the **Enterprise Edition**, so
 
 We're heavily invested into our [documentation](https://reactdatagrid.io/docs) - it ships with full working examples and a live editor. Each prop **`ReactDataGrid`** supports has it's own description and usage example.
 
-Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/filtering), [pagination](https://reactdatagrid.io/docs/pagination) etc.
+Additionally, each feature is clearly presented and has a dedicated page that explains the feature and shows examples of real-life usage. See for example [sorting](https://reactdatagrid.io/docs/sorting), [filtering](https://reactdatagrid.io/docs/filtering), [pagination](https://reactdatagrid.io/docs/pagination) etc.
 
 ## Examples
 
