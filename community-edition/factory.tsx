@@ -68,6 +68,7 @@ import ActiveRowIndicator from './ActiveRowIndicator';
 import { communityFeatureWarn } from './warn';
 import { TypeBuildColumnsProps } from './types/TypeDataGridProps';
 import { TypeColumns } from './types/TypeColumn';
+import InovuaDataGridLayout from './Layout';
 
 let GRID_ID = 0;
 export type Props = {
@@ -223,12 +224,16 @@ const GridFactory = (
         }
       }
     }, [computedFocused]);
-    const bodyRef = useRef(null);
+    const bodyRef = useRef<InovuaDataGridLayout>(null);
     const domRef = useRef<HTMLDivElement>(null);
     const portalRef = useRef<HTMLDivElement>(null);
 
     const getDOMNode = (): HTMLDivElement | null => {
       return domRef.current;
+    };
+
+    const getBodyDOMNode = (): HTMLDivElement | null => {
+      return bodyRef?.current?.getDOMNode();
     };
 
     const getVirtualList = () =>
@@ -1179,7 +1184,7 @@ const GridFactory = (
     computedProps.getScrollingElement = getScrollingElement;
 
     const onGridScrollIntoView = event => {
-      const gridNode = getDOMNode()!;
+      const gridNode = getBodyDOMNode()!;
 
       const eventTarget = event.target;
       if (event.target != gridNode) {
@@ -1241,11 +1246,11 @@ const GridFactory = (
         }
       }
 
-      const domNode = getDOMNode();
-      setupPassiveScrollListener(domNode!);
+      const bodyNode = getBodyDOMNode();
+      setupPassiveScrollListener(bodyNode!);
 
       return () => {
-        removePassiveScrollListener(domNode!);
+        removePassiveScrollListener(bodyNode!);
         if (props.onWillUnmount) {
           props.onWillUnmount(computedPropsRef);
         }
@@ -1387,6 +1392,7 @@ const GridFactory = (
     computedProps.edition = edition;
 
     // globalThis.computedProps = computedProps;
+    // globalThis.bodyRef = bodyRef;
 
     return (
       <div

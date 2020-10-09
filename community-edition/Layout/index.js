@@ -52,6 +52,9 @@ class InovuaDataGridLayout extends Component {
         this.getScrollTop = () => {
             return this.columnLayout ? this.columnLayout.scrollTop || 0 : 0;
         };
+        this.ref = domNode => {
+            this.domNode = domNode;
+        };
         this.refColumnLayout = layout => {
             this.columnLayout = layout;
         };
@@ -59,11 +62,14 @@ class InovuaDataGridLayout extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return shouldComponentUpdate(this, nextProps, nextState);
     }
+    getDOMNode() {
+        return this.domNode;
+    }
     render() {
         const Footer = this.props.Footer;
         return (React.createElement(Consumer, null, computedProps => {
             const ColumnLayoutCmp = computedProps.ColumnLayout || ColumnLayout; // can be injected from enterprise edition
-            return (React.createElement("div", { className: 'InovuaReactDataGrid__body' },
+            return (React.createElement("div", { className: 'InovuaReactDataGrid__body', ref: this.ref },
                 React.createElement(FakeFlex, { flexIndex: 0, useNativeFlex: computedProps.useNativeFlex },
                     React.createElement(ColumnLayoutCmp, { key: "collayout", ref: this.refColumnLayout, rtl: computedProps.rtl, coverHandleRef: computedProps.coverHandleRef }),
                     this.renderPaginationToolbar(computedProps),

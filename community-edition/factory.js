@@ -147,6 +147,9 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         const getDOMNode = () => {
             return domRef.current;
         };
+        const getBodyDOMNode = () => {
+            return bodyRef?.current?.getDOMNode();
+        };
         const getVirtualList = () => bodyRef.current != null ? bodyRef.current.getVirtualList() : null;
         const getColumnLayout = () => bodyRef.current != null ? bodyRef.current.columnLayout : null;
         const [computedLoading, doSetLoading] = useProperty(props, 'loading');
@@ -755,7 +758,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         };
         computedProps.getScrollingElement = getScrollingElement;
         const onGridScrollIntoView = event => {
-            const gridNode = getDOMNode();
+            const gridNode = getBodyDOMNode();
             const eventTarget = event.target;
             if (event.target != gridNode) {
                 return;
@@ -806,10 +809,10 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
                     setScrollLeft(initialScrollLeft);
                 }
             }
-            const domNode = getDOMNode();
-            setupPassiveScrollListener(domNode);
+            const bodyNode = getBodyDOMNode();
+            setupPassiveScrollListener(bodyNode);
             return () => {
-                removePassiveScrollListener(domNode);
+                removePassiveScrollListener(bodyNode);
                 if (props.onWillUnmount) {
                     props.onWillUnmount(computedPropsRef);
                 }
@@ -894,6 +897,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         });
         computedProps.edition = edition;
         // globalThis.computedProps = computedProps;
+        // globalThis.bodyRef = bodyRef;
         return (React.createElement("div", { style: props.style, className: className, onKeyDown: onKeyDown, onFocus: onFocus, onBlur: props.onBlur, ref: domRef },
             React.createElement(Provider, { value: computedProps },
                 pluginsMap['row-index-column'].renderRowResizeIndicator(computedProps, computedPropsRef),

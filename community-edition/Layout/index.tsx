@@ -28,6 +28,10 @@ class InovuaDataGridLayout extends Component<LayoutProps> {
   constructor(props) {
     super(props);
 
+    this.ref = domNode => {
+      this.domNode = domNode;
+    };
+
     this.refColumnLayout = layout => {
       this.columnLayout = layout;
     };
@@ -37,6 +41,10 @@ class InovuaDataGridLayout extends Component<LayoutProps> {
     return shouldComponentUpdate(this, nextProps, nextState);
   }
 
+  getDOMNode() {
+    return this.domNode;
+  }
+
   render() {
     const Footer = this.props.Footer;
     return (
@@ -44,7 +52,7 @@ class InovuaDataGridLayout extends Component<LayoutProps> {
         {computedProps => {
           const ColumnLayoutCmp = computedProps.ColumnLayout || ColumnLayout; // can be injected from enterprise edition
           return (
-            <div className={'InovuaReactDataGrid__body'}>
+            <div className={'InovuaReactDataGrid__body'} ref={this.ref}>
               <FakeFlex
                 flexIndex={0}
                 useNativeFlex={computedProps.useNativeFlex}
