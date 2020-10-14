@@ -106,10 +106,12 @@ class GenericFilter extends React.Component {
     if (filterValue) {
       const settingsIconClassName =
         'InovuaReactDataGrid__column-header__filter-settings-icon';
+
       const settingsIcon =
         props.filterEditorProps && props.filterEditorProps.renderSettings ? (
           props.filterEditorProps.renderSettings({
-            className: settingsIcon,
+            className: settingsIconClassName,
+            filterValue,
           })
         ) : (
           <svg
