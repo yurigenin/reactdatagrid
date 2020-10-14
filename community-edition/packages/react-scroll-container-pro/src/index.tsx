@@ -6,7 +6,6 @@
  */
 import React, { Component, createElement, HTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 
 import debounce from '../../../packages/debounce';
 import autoBind from '../../../packages/react-class/autoBind';
