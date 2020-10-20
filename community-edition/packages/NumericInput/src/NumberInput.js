@@ -6,7 +6,6 @@
  */
 
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import autoBind from '../../../packages/react-class/autoBind';
 import hasTouch from '../../../packages/hasTouch';
@@ -1013,7 +1012,7 @@ class InovuaNumericInput extends Component {
   }
 
   getInput() {
-    return findDOMNode(this.refs.field);
+    return this.input;
   }
 
   getNumericValue() {

@@ -6,7 +6,6 @@
  */
 
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cleanProps from '../../../../common/cleanProps';
 /**
@@ -62,7 +61,7 @@ class FakeVirtualList extends Component {
   }
 
   getRootNode() {
-    return findDOMNode(this.targetNode);
+    return this.targetNode;
   }
 
   getScrollerNode() {

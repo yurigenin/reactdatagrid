@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 
 import isMobile from '../../../common/isMobile';
 
@@ -91,15 +90,15 @@ class InovuaArrowScroller extends Component {
     this.updateScrollInfo = this.updateScrollInfo.bind(this);
     this.rafUpdateScrollInfo = this.rafUpdateScrollInfo.bind(this);
     this.onContainerScroll = this.onContainerScroll.bind(this);
-    this.setStripRef = ref => {
-      this.strip = findDOMNode(ref);
-    };
+
+    this.strip = createRef();
+
     this.refScrollContainer = scrollContainer => {
       this.scrollerTarget = scrollContainer;
     };
 
     this.setRootRef = ref => {
-      this.root = findDOMNode(ref);
+      this.root = ref;
       if (!this.props.nativeScroll) {
         this.scrollerTarget = this.root;
       }
@@ -122,7 +121,7 @@ class InovuaArrowScroller extends Component {
       this.inertialManager = new InertialManager({
         arrowSelector: `.${this.props.rootClassName}__arrow`,
         node: this.root,
-        viewNode: this.strip,
+        viewNode: this.strip.current,
         setScrollPosition: () => raf(() => this.setScrollPosition()),
         enableMouseDrag: false,
       });
@@ -203,7 +202,7 @@ class InovuaArrowScroller extends Component {
         wrap={false}
         {...props.childProps}
         className={innerWrapperClassName}
-        ref={this.setStripRef}
+        ref={this.strip}
         children={children}
         style={nativeScroll ? null : moveStyle}
       />
@@ -461,12 +460,12 @@ class InovuaArrowScroller extends Component {
    * @return {Number}
    */
   getCurrentListSize() {
-    if (!this.strip) {
+    if (!this.strip.current) {
       return null;
     }
 
     return (this.currentListSize =
-      this.currentListSize || this.strip[this.getOffsetSizeName()]);
+      this.currentListSize || this.strip.current[this.getOffsetSizeName()]);
   }
 
   // events
@@ -695,7 +694,7 @@ class InovuaArrowScroller extends Component {
   }
 
   onScrollContainerDidMount = (scrollContainer, domNode, notifyResizer) => {
-    this._unobserve = observe(findDOMNode(scrollContainer), () => {
+    this._unobserve = observe(domNode, () => {
       // fixes https://inovua.freshdesk.com/a/tickets/238
       if (notifyResizer && notifyResizer.checkResize) {
         notifyResizer.checkResize();
@@ -730,7 +729,7 @@ InovuaArrowScroller.defaultProps = {
   rtl: false,
   useTransformOnScroll: false,
   onHasScrollChange: emptyFn,
-  theme: 'default',
+  theme: 'default-light',
 };
 
 InovuaArrowScroller.propTypes = {

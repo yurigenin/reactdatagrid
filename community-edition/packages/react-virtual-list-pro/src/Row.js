@@ -6,7 +6,6 @@
  */
 import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import shouldComponentUpdate from '../../../packages/shouldComponentUpdate';
 import sealedObjectFactory from './sealedObjectFactory';
 const sharedRowProps = sealedObjectFactory({
@@ -81,7 +80,7 @@ export default class InovuaVirtualListRow extends React.Component {
         if (!this.row) {
             return null;
         }
-        this.node = this.row.domRef ? this.row.domRef.current : findDOMNode(this);
+        this.node = this.row.domRef ? this.row.domRef.current : this.row;
         return this.node;
     }
     fetchNode() {

@@ -13,7 +13,13 @@ import DateFilter from '../../../enterprise-edition/DateFilter';
 import NumberFilter from '../../../enterprise-edition/NumberFilter';
 import SelectFilter from '../../../enterprise-edition/SelectFilter';
 
+import DateEditor from '../../../community-edition/DateEditor';
+
 import CheckBox from '../../../community-edition/packages/CheckBox';
+import Calendar, {
+  TransitionView,
+} from '../../../community-edition/packages/Calendar';
+import '../../../community-edition/packages/Calendar/style/index.scss';
 import Button from '../../../community-edition/packages/Button';
 import ComboBox from '../../../community-edition/packages/ComboBox';
 
@@ -262,6 +268,7 @@ const columns = [
     defaultWidth: 200,
     renderGroupTitle: renderDateTime,
     filterEditor: DateFilter,
+    editor: DateEditor,
     filterEditorProps: {
       dateFormat: 'MM-DD-YYYY',
       cancelButton: false,
@@ -348,7 +355,7 @@ const App = () => {
     };
   };
 
-  console.log('initialData', initialData);
+  const groups = [{ name: 'personalInfo', header: 'Personal info' }];
 
   return (
     <div style={{ padding: 20 }}>
@@ -362,6 +369,9 @@ const App = () => {
           onChange={(value: string) => setTheme(value)}
         />
         {WHITESPACE}
+        <TransitionView>
+          <Calendar theme="default-dark" />
+        </TransitionView>
         <CheckBox
           theme={`default-dark`}
           checked={rtl}
@@ -394,12 +404,16 @@ const App = () => {
         dataSource={rowReorder ? initialData : dataSource}
         columns={columns}
         pagination
+        // livePagination
+        rowIndexColumn
         multiSelect
         rtl={rtl}
         onRowReorder={rowReorder}
         checkboxColumn
         defaultFilterValue={defaultFilterValue}
         defaultGroupBy={[]}
+        editable={true}
+        groups={groups}
       />
     </div>
   );

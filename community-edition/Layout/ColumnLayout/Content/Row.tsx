@@ -5,21 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {
-  Component,
-  CSSProperties,
-  SyntheticEvent,
-  MutableRefObject,
-} from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { createRef, CSSProperties, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
 
 import autoBind from '../../../packages/react-class/autoBind';
 import cleanProps from '../../../packages/react-clean-props';
 import shallowequal, { equalReturnKey } from '../../../packages/shallowequal';
 
-import join from '../../../packages/join';
 import diff from '../../../packages/shallow-changes';
+import join from '../../../packages/join';
 import clamp from '../../../utils/clamp';
 
 import Cell from '../Cell';
@@ -173,7 +167,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       this.cells.push(c);
     };
 
-    this.domRef = React.createRef();
+    this.domRef = createRef();
 
     this.cells = [];
     autoBind(this);
@@ -304,7 +298,7 @@ export default class DataGridRow extends React.Component<RowProps> {
 
   setScrolling(scrolling: boolean | 'vertical' | 'horizontal') {
     const node: HTMLDivElement | null = (this.getDOMNode() ||
-      findDOMNode(this)) as HTMLDivElement | null;
+      this.domRef.current) as HTMLDivElement | null;
 
     let scrollingDirection = this.scrollingDirection;
     if (scrolling !== false) {

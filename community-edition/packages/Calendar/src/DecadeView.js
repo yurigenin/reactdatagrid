@@ -5,9 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import Component from '../../react-class';
 import moment from 'moment';
 import { Flex, Item } from '../../Flex';
@@ -341,6 +340,8 @@ export default class DecadeView extends Component {
   constructor(props) {
     super(props);
 
+    this.decadeViewRef = createRef();
+
     this.state = getInitialState(props);
   }
 
@@ -432,6 +433,7 @@ export default class DecadeView extends Component {
     return (
       <Flex
         inline
+        ref={this.decadeViewRef}
         column={column}
         alignItems={align}
         tabIndex={0}
@@ -595,8 +597,12 @@ export default class DecadeView extends Component {
     return onChange.call(this, { dateMoment, timestamp }, event);
   }
 
+  getDOMNode() {
+    return this.decadeViewRef.current;
+  }
+
   focus() {
-    findDOMNode(this).focus();
+    this.decadeViewRef.current.focus();
   }
 }
 

@@ -7,7 +7,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import moment from 'moment';
 import Component from '../../../react-class';
 import { Flex } from '../../../Flex';
@@ -774,7 +773,7 @@ export default class DateInput extends Component {
   }
 
   getInput() {
-    return findDOMNode(this.field);
+    return this.field;
   }
 
   isFocused() {
@@ -1050,7 +1049,7 @@ export default class DateInput extends Component {
   }
 
   focusField() {
-    const input = findDOMNode(this.field);
+    const input = this.field;
 
     if (input) {
       input.focus();
@@ -1078,7 +1077,7 @@ DateInput.defaultProps = {
   updateOnDateClick: true,
   collapseOnDateClick: true,
 
-  theme: 'default',
+  theme: 'default-light',
 
   footer: true,
   okButton: false,

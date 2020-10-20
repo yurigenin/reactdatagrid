@@ -4,8 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import autoBind from '../../../packages/react-class/autoBind';
 import cleanProps from '../../../packages/react-clean-props';
@@ -74,7 +73,7 @@ export default class DataGridRow extends React.Component {
             }
             this.cells.push(c);
         };
-        this.domRef = React.createRef();
+        this.domRef = createRef();
         this.cells = [];
         autoBind(this);
     }
@@ -237,7 +236,7 @@ export default class DataGridRow extends React.Component {
     }
     setScrolling(scrolling) {
         const node = (this.getDOMNode() ||
-            findDOMNode(this));
+            this.domRef.current);
         let scrollingDirection = this.scrollingDirection;
         if (scrolling !== false) {
             scrollingDirection = scrolling;

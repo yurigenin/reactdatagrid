@@ -6,7 +6,6 @@
  */
 
 import React, { Component, cloneElement } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import cleanProps from '../../../common/cleanProps';
 import { NotifyResize } from '../../NotifyResize';
@@ -1367,7 +1366,7 @@ class InovuaComboBox extends Component {
       this.isFocused() &&
       event &&
       event.relatedTarget &&
-      containsNode(findDOMNode(this), event.relatedTarget)
+      containsNode(this.comboNode, event.relatedTarget)
     ) {
       global.requestAnimationFrame(() => {
         this.focus();
@@ -1823,7 +1822,7 @@ class InovuaComboBox extends Component {
       ? this.toolsNode.getBoundingClientRect()
       : { width: 0, height: 0 }
   ) {
-    const node = findDOMNode(this);
+    const node = this.comboNode;
     const computedStyle = global.getComputedStyle(node);
 
     const width =
@@ -2119,7 +2118,7 @@ InovuaComboBox.defaultProps = {
   toggleExpandOnClick: true,
   wrapMultiple: true,
 
-  theme: 'default',
+  theme: 'default-light',
 
   // navigation
   enableNavigation: true,

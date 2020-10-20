@@ -4,9 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import Region from '../../packages/region';
 import ResizeOverlay from './ResizeOverlay';
 import setupColumnResize from './setupColumnResize';
@@ -21,6 +20,10 @@ export default class InovuaDataGridColumnLayout extends React.Component {
     constructor(props) {
         super(props);
         this.scrollTop = 0;
+        this.headerLayout = null;
+        this.getDOMNode = () => {
+            return this.columnLayoutRef.current;
+        };
         this.getContentRows = () => {
             return this.content.getRows();
         };
@@ -178,7 +181,7 @@ export default class InovuaDataGridColumnLayout extends React.Component {
                 return index;
             }, -1);
             const index = visibleIndex;
-            const headerRegion = Region.from(findDOMNode(this.getHeaderLayout()));
+            const headerRegion = Region.from(this.getHeaderLayout().headerDomNode.current);
             const constrainTo = Region.from(headerRegion.get());
             // allow resizing the width to the right without limiting to the grid viewport
             constrainTo.set({
@@ -286,7 +289,8 @@ export default class InovuaDataGridColumnLayout extends React.Component {
             }, event);
         };
         this.onResizeDragInit = (computedProps, { offset, constrained }) => {
-            const offsetTop = findDOMNode(this.getHeaderLayout().getHeader()).offsetTop;
+            const offsetTop = this.getHeaderLayout().getHeader().domRef.current
+                .offsetTop;
             this.props.coverHandleRef.current.setActive(true);
             this.resizeOverlay
                 .setOffset(offset)
@@ -325,6 +329,7 @@ export default class InovuaDataGridColumnLayout extends React.Component {
         this.refHeaderLayout = layout => {
             this.headerLayout = layout;
         };
+        this.columnLayoutRef = createRef();
         this.refContent = c => {
             this.content = c;
         };
@@ -338,11 +343,11 @@ export default class InovuaDataGridColumnLayout extends React.Component {
             let flexIndex = 1;
             let { useNativeFlex } = computedProps;
             this.lastComputedProps = computedProps;
-            return (React.createElement("div", { className: className, style: {
+            return (React.createElement("div", { ref: this.columnLayoutRef, className: className, style: {
                     ...height100,
                     ...this.props.style,
                 } },
-                React.createElement(FakeFlex, { useNativeFlex: useNativeFlex, flexIndex: flexIndex },
+                React.createElement(FakeFlex, { useNativeFlex: useNativeFlex, flexIndex: flexIndex, getNode: this.getDOMNode },
                     this.renderHeaderLayout(computedProps),
                     this.renderContent(computedProps)),
                 this.renderReorderRowProxy(computedProps),

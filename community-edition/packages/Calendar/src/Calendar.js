@@ -31,6 +31,10 @@ export default class Calendar extends Component {
     this.state = { timeFocused: false };
   }
 
+  getDOMNode() {
+    return this.view ? this.view.getDOMNode() : null;
+  }
+
   prepareDate(props) {
     return toMoment(props.date, props);
   }
@@ -271,7 +275,7 @@ export default class Calendar extends Component {
 Calendar.defaultProps = {
   rootClassName: 'inovua-react-toolkit-calendar__calendar',
   dateFormat: 'YYYY-MM-DD',
-  theme: 'default',
+  theme: 'default-light',
   isDatePicker: true,
   triggerChangeOnTimeChange: true,
   enableMonthDecadeViewAnimation: true,

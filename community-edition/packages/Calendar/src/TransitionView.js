@@ -7,7 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
+
 import Component from '../../react-class';
 import { Flex } from '../../Flex';
 
@@ -611,7 +611,7 @@ export default class TransitionView extends Component {
       () => {
         setTimeout(() => {
           // in order to allow this.view.p to update
-          if (!findDOMNode(this.view)) {
+          if (!this.getViewDOMNode()) {
             return;
           }
 
@@ -627,8 +627,12 @@ export default class TransitionView extends Component {
     );
   }
 
+  getViewDOMNode() {
+    return this.view.getDOMNode ? this.view.getDOMNode() : null;
+  }
+
   addTransitionEnd() {
-    const dom = findDOMNode(this.view);
+    const dom = this.getViewDOMNode();
 
     if (dom) {
       dom.addEventListener(getTransitionEnd(), this.onTransitionEnd, false);
@@ -636,7 +640,7 @@ export default class TransitionView extends Component {
   }
 
   removeTransitionEnd(dom) {
-    dom = dom || findDOMNode(this.view);
+    dom = dom || this.getViewDOMNode();
 
     if (dom) {
       dom.removeEventListener(getTransitionEnd(), this.onTransitionEnd);
@@ -718,6 +722,6 @@ TransitionView.defaultProps = {
   constrainActiveInView: false,
   focusOnTransitionEnd: false,
   navigation: true,
-  theme: 'default',
+  theme: 'default-light',
   isDatePicker: true,
 };
