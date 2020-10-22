@@ -44,7 +44,7 @@
     "release": "npm run release:patch",
     "//**** ": "****//",
     "release:patch": "npm run build && release patch && npm run registry-publish",
-    "release:patch:nobuild": "release patch && npm run registry-publish",
+    "release:patch:nobuild": "release patch --debug && npm run registry-publish",
     "release:patch:canary:nobuild": "release patch pre canary && npm run registry-publish:canary",
     "//****  ": "****//",
     "release:minor": "npm run build && release minor && npm run registry-publish",
