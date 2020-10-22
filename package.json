@@ -54,7 +54,7 @@
     "minor:canary": "npm version preminor --preid=canary && npm run registry-publish:canary",
     "patch:canary": "npm version prepatch --preid=canary && npm run registry-publish:canary",
     "nobump:canary": "npm version prerelease --preid=canary && npm run registry-publish:canary",
-    "patch": "npm version patch && npm run registry-publish",
+    "patch": "npm version patch",
     "//****   BETA": "****//",
     "minor:beta": "npm version preminor --preid=beta && npm run registry-publish:beta",
     "patch:beta": "npm version prepatch --preid=beta && npm run registry-publish:beta",
