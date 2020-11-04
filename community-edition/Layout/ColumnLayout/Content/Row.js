@@ -479,7 +479,11 @@ export default class DataGridRow extends React.Component {
         }
     }
     setCellIndex(cell, index, cellProps) {
-        cellProps = cellProps || this.getPropsForCells().slice(index, index + 1)[0];
+        cellProps =
+            cellProps ||
+                (this.props.computedHasColSpan
+                    ? this.getPropsForCells().slice(index, index + 1)[0]
+                    : this.getPropsForCells(index, index)[0]);
         cell.setStateProps(cellProps);
     }
     getCellIndex(cell) {
@@ -556,7 +560,7 @@ export default class DataGridRow extends React.Component {
     getCurrentGaps() { }
     setColumnRenderStartIndex(columnRenderStartIndex) {
         if (this.columnRenderStartIndex === columnRenderStartIndex) {
-            return;
+            // return;
         }
         this.columnRenderStartIndex = columnRenderStartIndex;
         if (this.getVirtualizeColumns() === false) {
@@ -564,16 +568,17 @@ export default class DataGridRow extends React.Component {
         }
         let newCellProps;
         let renderRange;
-        // if (this.props.computedHasColSpan) {
-        newCellProps = this.getPropsForCells();
-        renderRange = this.getColumnRenderRange(newCellProps);
-        // } else {
-        //   renderRange = this.getColumnRenderRange();
-        //   newCellProps = this.getPropsForCells(
-        //     renderRange?.start,
-        //     renderRange?.end
-        //   );
-        // }
+        let cellPropsAt;
+        if (this.props.computedHasColSpan) {
+            newCellProps = this.getPropsForCells();
+            renderRange = this.getColumnRenderRange(newCellProps);
+            cellPropsAt = (index) => newCellProps[index];
+        }
+        else {
+            renderRange = this.getColumnRenderRange();
+            newCellProps = this.getPropsForCells(renderRange?.start, (renderRange?.end || 0) + 1);
+            cellPropsAt = (index) => newCellProps.filter(cellProps => cellProps.computedVisibleIndex === index)[0];
+        }
         if (!renderRange) {
             return;
         }
@@ -617,7 +622,7 @@ export default class DataGridRow extends React.Component {
         calls.forEach(call => {
             const cell = call[0];
             const newIndex = call[1];
-            this.setCellIndex(cell, newIndex, newCellProps[newIndex]);
+            this.setCellIndex(cell, newIndex, cellPropsAt(newIndex));
         });
     }
     getPropsForCells(startIndex, endIndex) {
@@ -1013,6 +1018,7 @@ export default class DataGridRow extends React.Component {
         }
         this.hasBorderTop = hasBorderTop;
         this.hasBorderBottom = hasBorderBottom;
+        console.log(cellPropsArray.length);
         return cellPropsArray;
     }
     onCellStopEdit(value, cellProps) {

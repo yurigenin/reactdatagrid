@@ -728,7 +728,11 @@ export default class DataGridRow extends React.Component<RowProps> {
   }
 
   setCellIndex(cell: InovuaDataGridCell, index: number, cellProps?: CellProps) {
-    cellProps = cellProps || this.getPropsForCells().slice(index, index + 1)[0];
+    cellProps =
+      cellProps ||
+      (this.props.computedHasColSpan
+        ? this.getPropsForCells().slice(index, index + 1)[0]
+        : this.getPropsForCells(index, index)[0]);
     cell.setStateProps(cellProps);
   }
 
@@ -834,7 +838,7 @@ export default class DataGridRow extends React.Component<RowProps> {
 
   setColumnRenderStartIndex(columnRenderStartIndex: number) {
     if (this.columnRenderStartIndex === columnRenderStartIndex) {
-      return;
+      // return;
     }
     this.columnRenderStartIndex = columnRenderStartIndex;
 
@@ -848,16 +852,25 @@ export default class DataGridRow extends React.Component<RowProps> {
       end: number;
     } | null;
 
-    // if (this.props.computedHasColSpan) {
-    newCellProps = this.getPropsForCells();
-    renderRange = this.getColumnRenderRange(newCellProps);
-    // } else {
-    //   renderRange = this.getColumnRenderRange();
-    //   newCellProps = this.getPropsForCells(
-    //     renderRange?.start,
-    //     renderRange?.end
-    //   );
-    // }
+    let cellPropsAt: (index: number) => CellProps;
+
+    if (this.props.computedHasColSpan) {
+      newCellProps = this.getPropsForCells();
+      renderRange = this.getColumnRenderRange(newCellProps);
+
+      cellPropsAt = (index: number) => newCellProps[index];
+    } else {
+      renderRange = this.getColumnRenderRange();
+      newCellProps = this.getPropsForCells(
+        renderRange?.start,
+        (renderRange?.end || 0) + 1
+      );
+
+      cellPropsAt = (index: number) =>
+        newCellProps.filter(
+          cellProps => cellProps.computedVisibleIndex === index
+        )[0];
+    }
 
     if (!renderRange) {
       return;
@@ -874,7 +887,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       return acc;
     }, {} as { [key: number]: boolean });
 
-    const tempCellMap = {};
+    const tempCellMap: Record<number, boolean> = {};
 
     const { groupColumn } = this.props;
 
@@ -920,7 +933,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       const cell = call[0];
       const newIndex = call[1];
 
-      this.setCellIndex(cell, newIndex, newCellProps[newIndex]);
+      this.setCellIndex(cell, newIndex, cellPropsAt(newIndex));
     });
   }
 
@@ -1492,6 +1505,7 @@ export default class DataGridRow extends React.Component<RowProps> {
     this.hasBorderTop = hasBorderTop;
     this.hasBorderBottom = hasBorderBottom;
 
+    console.log(cellPropsArray.length);
     return cellPropsArray;
   }
 
