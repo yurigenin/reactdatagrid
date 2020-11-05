@@ -560,7 +560,7 @@ export default class DataGridRow extends React.Component {
     getCurrentGaps() { }
     setColumnRenderStartIndex(columnRenderStartIndex) {
         if (this.columnRenderStartIndex === columnRenderStartIndex) {
-            // return;
+            return;
         }
         this.columnRenderStartIndex = columnRenderStartIndex;
         if (this.getVirtualizeColumns() === false) {
@@ -1018,7 +1018,6 @@ export default class DataGridRow extends React.Component {
         }
         this.hasBorderTop = hasBorderTop;
         this.hasBorderBottom = hasBorderBottom;
-        console.log(cellPropsArray.length);
         return cellPropsArray;
     }
     onCellStopEdit(value, cellProps) {
