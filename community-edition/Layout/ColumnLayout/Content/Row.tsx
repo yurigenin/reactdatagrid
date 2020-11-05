@@ -838,7 +838,7 @@ export default class DataGridRow extends React.Component<RowProps> {
 
   setColumnRenderStartIndex(columnRenderStartIndex: number) {
     if (this.columnRenderStartIndex === columnRenderStartIndex) {
-      // return;
+      return;
     }
     this.columnRenderStartIndex = columnRenderStartIndex;
 
@@ -1505,7 +1505,6 @@ export default class DataGridRow extends React.Component<RowProps> {
     this.hasBorderTop = hasBorderTop;
     this.hasBorderBottom = hasBorderBottom;
 
-    console.log(cellPropsArray.length);
     return cellPropsArray;
   }
 
