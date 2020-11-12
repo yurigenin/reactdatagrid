@@ -25,21 +25,25 @@ const useLoadDataEffect = ({ getDataSource, }, fn, { reloadDeps, noReloadDeps })
     const noReloadDepsDifferent = !noReloadRef.current || diff(noReloadRef.current, noReloadDeps);
     const depsDifferent = reloadDepsDifferent || noReloadDepsDifferent;
     const shouldReload = reloadDepsDifferent;
+    let shouldReloadRef = useRef(false);
     let computedDeps = depsDifferent ? [{}] : prevComputedDepsRef.current;
     let resolveRef = useRef(null);
     let promiseRef = useRef(resolved);
     if (depsDifferent) {
+        shouldReloadRef.current = shouldReload;
         promiseRef.current = new Promise(resolve => {
             resolveRef.current = resolve;
         });
     }
     useLayoutEffect(() => {
-        const dataSource = getDataSource({ shouldReload });
-        fn(dataSource, { shouldReload }).then(() => {
+        const reload = shouldReloadRef.current;
+        const dataSource = getDataSource({ shouldReload: reload });
+        fn(dataSource, { shouldReload: reload }).then(() => {
             if (resolveRef.current) {
                 resolveRef.current();
             }
         });
+        shouldReloadRef.current = shouldReload;
     }, computedDeps);
     reloadRef.current = reloadDeps;
     noReloadRef.current = noReloadDeps;
