@@ -78,6 +78,9 @@ class App extends React.Component {
         idProperty="id"
         style={gridStyle}
         theme="default-light"
+        handle={x => {
+          global.x = x;
+        }}
         columns={this.state.columns}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         dataSource={this.state.dataSource}

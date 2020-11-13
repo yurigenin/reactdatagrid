@@ -88,6 +88,7 @@ const renderHeader = (props, domProps, cellInstance, state = EMPTY_OBJECT) => {
             resizeHandle = (React.createElement(ColumnResizer, { key: "columnResizer", className: resizerClassName, onMouseDown: props.onResizeMouseDown, onTouchStart: props.onResizeTouchStart, style: {
                     width: props.columnResizeHandleWidth,
                     [props.rtl ? 'left' : 'right']: right,
+                    zIndex: depth * 10000 + (100 - props.computedVisibleIndex || 0),
                 }, resizeHandleStyle: resizeHandleStyle, resizeHandleClassName: "InovuaReactDataGrid__column-resize-handle" }));
         }
         else {

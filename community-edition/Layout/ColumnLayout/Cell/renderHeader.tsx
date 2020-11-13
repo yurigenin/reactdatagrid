@@ -149,6 +149,7 @@ const renderHeader = (
           style={{
             width: props.columnResizeHandleWidth,
             [props.rtl ? 'left' : 'right']: right,
+            zIndex: depth * 10000 + (100 - props.computedVisibleIndex || 0),
           }}
           resizeHandleStyle={resizeHandleStyle}
           resizeHandleClassName="InovuaReactDataGrid__column-resize-handle"
