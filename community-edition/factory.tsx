@@ -855,20 +855,26 @@ const GridFactory = (
           callback = () => {};
         }
 
-        let columnOffset =
-          direction === 'left' || !direction
+        const getColumnOffset = () => {
+          return direction === 'left' || !direction
             ? col.computedOffset
             : col.computedOffset + col.computedWidth;
+        };
 
-        const leftDiff =
-          columnOffset -
+        const getLeftDiff = () =>
+          getColumnOffset() -
           scrollLeft -
           (computedProps.totalLockedStartWidth || 0);
-        const rightDiff =
+
+        const getRightDiff = () =>
           scrollLeft +
           scrollWidth -
-          columnOffset -
+          getColumnOffset() -
           (computedProps.totalLockedEndWidth || 0);
+
+        let leftDiff = getLeftDiff();
+
+        let rightDiff = getRightDiff();
 
         const toLeft = leftDiff < 0;
         const toRight = rightDiff < 0;
@@ -880,6 +886,9 @@ const GridFactory = (
             // determine direction based on the row position in the current view
             direction = leftDiff < 0 ? 'left' : 'right';
             force = true;
+
+            leftDiff = getLeftDiff();
+            rightDiff = getRightDiff();
           }
         }
 
