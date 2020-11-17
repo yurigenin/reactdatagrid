@@ -583,9 +583,23 @@ const GridFactory = (
       return -1;
     };
     const getItemAt = (index: number) => {
-      return computedPropsRef.current
-        ? computedPropsRef.current.data[index]
-        : undefined;
+      if (!computedPropsRef.current) {
+        return undefined;
+      }
+      let item = computedPropsRef.current.data[index];
+
+      const itemId = getItemId(item);
+
+      if (item && computedPropsRef.current.computedDataSourceCache) {
+        const cachedItem =
+          computedPropsRef.current.computedDataSourceCache[itemId];
+
+        if (cachedItem) {
+          item = { ...item, ...cachedItem };
+        }
+      }
+
+      return item;
     };
     const getItemIdAt = (index: number) => {
       return getItemId(getItemAt(index));
