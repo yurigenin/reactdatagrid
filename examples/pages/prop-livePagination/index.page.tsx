@@ -53,6 +53,9 @@ const App = () => {
         style={gridStyle}
         defaultLimit={15}
         columns={columns}
+        handle={x => {
+          (global as any).x = x;
+        }}
         livePagination
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         defaultFilterValue={defaultFilterValue}

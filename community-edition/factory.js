@@ -366,9 +366,13 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
             if (!computedPropsRef.current) {
                 return undefined;
             }
-            let item = computedPropsRef.current.data[index];
-            const itemId = getItemId(item);
-            if (item && computedPropsRef.current.computedDataSourceCache) {
+            return getItemWithCache(computedPropsRef.current.data[index]);
+        };
+        const getItemWithCache = (item) => {
+            if (item &&
+                computedPropsRef.current &&
+                computedPropsRef.current.computedDataSourceCache) {
+                const itemId = getItemId(item);
                 const cachedItem = computedPropsRef.current.computedDataSourceCache[itemId];
                 if (cachedItem) {
                     item = { ...item, ...cachedItem };
