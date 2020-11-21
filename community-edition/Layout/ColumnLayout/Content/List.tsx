@@ -310,6 +310,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
         minRowWidth={minRowWidth}
         naturalRowHeight={naturalRowHeight}
         renderScroller={this.renderScroller}
+        renderScrollerSpacer={this.renderScrollerSpacer}
         renderSizer={this.renderSizer}
         renderView={this.renderView}
         useTransformRowPosition={this.props.useTransformRowPosition}
@@ -412,6 +413,13 @@ export default class InovuaDataGridList extends Component<ListProps> {
     return (
       <div key="grid-sizer" data-name="sizer" {...props} style={sizerStyle} />
     );
+  };
+
+  renderScrollerSpacer = spacerProps => {
+    if (!this.props.totalFlexColumnCount) {
+      // if there are no flex cols, do this
+      spacerProps.style.width = this.props.minRowWidth || 0;
+    }
   };
 
   renderScroller = scrollerProps => {
@@ -770,6 +778,7 @@ const propTypes = Object.assign({}, virtualListPropTypes, {
   onColumnRenderStartIndexChange: PropTypes.func,
   rowHeight: PropTypes.number,
   renderScroller: PropTypes.func,
+  renderScrollerSpacer: PropTypes.func,
   renderActiveRowIndicator: PropTypes.func,
   showWarnings: PropTypes.bool,
   to: PropTypes.number,

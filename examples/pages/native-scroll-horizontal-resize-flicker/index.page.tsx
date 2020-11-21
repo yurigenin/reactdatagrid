@@ -25,7 +25,7 @@ const defaultColumns = [
   {
     name: 'country',
     header: 'Country',
-    defaultFlex: 1,
+    defaultWidth: 100,
   },
   { name: 'age', header: 'Age', defaultWidth: 120 },
 ];

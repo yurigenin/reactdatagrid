@@ -331,9 +331,11 @@ export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMax
         maxWidths,
         minWidths,
     });
+    let totalFlexColumnCount = 0;
     visibleColumns.forEach((col, index) => {
         if (col.computedFlex != null) {
             col.computedWidth = flexWidths[index] || 0;
+            totalFlexColumnCount++;
             minColumnsSize += col.minWidth || 0;
         }
         else {
@@ -409,6 +411,7 @@ export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMax
     return {
         pivotColumnSummaryReducers,
         minColumnsSize,
+        totalFlexColumnCount,
         groupColumnSummaryReducers: Object.keys(groupColumnSummaryReducers).length
             ? groupColumnSummaryReducers
             : undefined,

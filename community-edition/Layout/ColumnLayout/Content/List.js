@@ -189,6 +189,12 @@ export default class InovuaDataGridList extends Component {
             }
             return (React.createElement("div", Object.assign({ key: "grid-sizer", "data-name": "sizer" }, props, { style: sizerStyle })));
         };
+        this.renderScrollerSpacer = spacerProps => {
+            if (!this.props.totalFlexColumnCount) {
+                // if there are no flex cols, do this
+                spacerProps.style.width = this.props.minRowWidth || 0;
+            }
+        };
         this.renderScroller = scrollerProps => {
             const { data, loading, virtualized, maxVisibleRows, nativeScroll, availableWidth, minRowWidth, } = this.props;
             const { length } = data;
@@ -456,7 +462,7 @@ export default class InovuaDataGridList extends Component {
             this.__minRowWidth = minRowWidth;
             this.__data = thisProps.data;
         }
-        return (React.createElement(VirtualList, Object.assign({ rowHeight: null, style: thisProps.style, theme: this.props.theme, checkResizeDelay: thisProps.checkResizeDelay, rowContain: thisProps.rowContain, contain: thisProps.contain, rtl: thisProps.rtl, stickyOffset: thisProps.rtlOffset, stickyRows: thisProps.computedStickyRows, enableRowSpan: thisProps.computedEnableRowspan, recycleCoveredRows: false, className: "InovuaReactDataGrid__virtual-list", renderRowContainer: this.renderRowContainer }, maybeProps, { overscrollBehavior: "auto", rowHeightManager: thisProps.rowHeightManager, before: thisProps.before, after: thisProps.after, showEmptyRows: thisProps.computedShowEmptyRows, scrollProps: scrollProps, emptyScrollOffset: this.getEmptyScrollOffset(), nativeScroll: thisProps.nativeScroll, onResize: this.onResize, virtualized: thisProps.virtualized, minRowWidth: minRowWidth, naturalRowHeight: naturalRowHeight, renderScroller: this.renderScroller, renderSizer: this.renderSizer, renderView: this.renderView, useTransformRowPosition: this.props.useTransformRowPosition, useTransformPosition: this.props.useTransformPosition, shouldComponentUpdate: shouldUpdate, ref: this.refVirtualList, count: thisProps.data.length || 0, pureRows: pureRows, renderRow: renderRow, onContainerScrollHorizontal: this.onScrollHorizontal, onContainerScroll: this.onContainerScroll, onScrollbarsChange: this.onScrollbarsChange, onContainerScrollVertical: this.props.onContainerScrollVertical, onScrollStop: this.onScrollStop, shouldFocusNextRow: this.shouldFocusNextRow })));
+        return (React.createElement(VirtualList, Object.assign({ rowHeight: null, style: thisProps.style, theme: this.props.theme, checkResizeDelay: thisProps.checkResizeDelay, rowContain: thisProps.rowContain, contain: thisProps.contain, rtl: thisProps.rtl, stickyOffset: thisProps.rtlOffset, stickyRows: thisProps.computedStickyRows, enableRowSpan: thisProps.computedEnableRowspan, recycleCoveredRows: false, className: "InovuaReactDataGrid__virtual-list", renderRowContainer: this.renderRowContainer }, maybeProps, { overscrollBehavior: "auto", rowHeightManager: thisProps.rowHeightManager, before: thisProps.before, after: thisProps.after, showEmptyRows: thisProps.computedShowEmptyRows, scrollProps: scrollProps, emptyScrollOffset: this.getEmptyScrollOffset(), nativeScroll: thisProps.nativeScroll, onResize: this.onResize, virtualized: thisProps.virtualized, minRowWidth: minRowWidth, naturalRowHeight: naturalRowHeight, renderScroller: this.renderScroller, renderScrollerSpacer: this.renderScrollerSpacer, renderSizer: this.renderSizer, renderView: this.renderView, useTransformRowPosition: this.props.useTransformRowPosition, useTransformPosition: this.props.useTransformPosition, shouldComponentUpdate: shouldUpdate, ref: this.refVirtualList, count: thisProps.data.length || 0, pureRows: pureRows, renderRow: renderRow, onContainerScrollHorizontal: this.onScrollHorizontal, onContainerScroll: this.onContainerScroll, onScrollbarsChange: this.onScrollbarsChange, onContainerScrollVertical: this.props.onContainerScrollVertical, onScrollStop: this.onScrollStop, shouldFocusNextRow: this.shouldFocusNextRow })));
     }
     shouldFocusNextRow({ index, nextIndex, dir }) {
         const shouldFocus = !this.isLazyEditing();
@@ -510,6 +516,7 @@ const propTypes = Object.assign({}, virtualListPropTypes, {
     onColumnRenderStartIndexChange: PropTypes.func,
     rowHeight: PropTypes.number,
     renderScroller: PropTypes.func,
+    renderScrollerSpacer: PropTypes.func,
     renderActiveRowIndicator: PropTypes.func,
     showWarnings: PropTypes.bool,
     to: PropTypes.number,

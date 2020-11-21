@@ -203,6 +203,7 @@ export default (
     computedEnableRowspan,
     totalComputedWidth,
     totalLockedStartWidth,
+    totalFlexColumnCount,
     totalLockedEndWidth,
     totalUnlockedWidth,
     minColumnsSize,
@@ -523,6 +524,7 @@ export default (
     setColumnVisible,
 
     computedPivot: props.pivot,
+    totalFlexColumnCount,
 
     showColumnMenuTool: props.pivot ? false : props.showColumnMenuTool,
     columnsMap,

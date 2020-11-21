@@ -71,6 +71,9 @@ export default class InovuaVirtualList extends Component {
         };
         this.renderScrollerSpacerOnNaturalRowHeight = (spacerProps) => {
             spacerProps.style.height = this.getScrollHeight();
+            if (this.props.renderScrollerSpacer) {
+                this.props.renderScrollerSpacer(spacerProps);
+            }
         };
         this.renderView = (props) => {
             let offset = this.getEmptyScrollOffset() || 0;
@@ -1026,7 +1029,7 @@ export default class InovuaVirtualList extends Component {
         const Factory = this.props.nativeScroll
             ? NativeScrollContainer
             : VirtualScrollContainer;
-        let renderScrollerSpacer;
+        let renderScrollerSpacer = this.props.renderScrollerSpacer;
         if (naturalRowHeight) {
             renderScrollerSpacer = this.renderScrollerSpacerOnNaturalRowHeight;
         }
@@ -1381,6 +1384,7 @@ const propTypes = {
     showWarnings: PropTypes.bool,
     renderView: PropTypes.func,
     renderScroller: PropTypes.func,
+    renderScrollerSpacer: PropTypes.func,
     shouldComponentUpdate: PropTypes.func,
     shouldPreventDefaultTabKeyOnRow: PropTypes.func,
     theme: PropTypes.string,

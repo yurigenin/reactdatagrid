@@ -521,9 +521,12 @@ export default ({
     minWidths,
   });
 
+  let totalFlexColumnCount = 0;
+
   visibleColumns.forEach((col, index) => {
     if (col.computedFlex != null) {
       col.computedWidth = flexWidths[index] || 0;
+      totalFlexColumnCount++;
       minColumnsSize += col.minWidth || 0;
     } else {
       minColumnsSize += col.computedWidth || 0;
@@ -617,6 +620,7 @@ export default ({
   return {
     pivotColumnSummaryReducers,
     minColumnsSize,
+    totalFlexColumnCount,
 
     groupColumnSummaryReducers: Object.keys(groupColumnSummaryReducers).length
       ? groupColumnSummaryReducers
