@@ -173,8 +173,8 @@ const computeData = (
           remoteFilter,
           columnsMap,
         });
-        dataCountAfterFilter = config.data.length;
       }
+      dataCountAfterFilter = config.data.length;
       return config;
     },
 
