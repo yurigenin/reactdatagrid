@@ -149,6 +149,7 @@ type TypeGridPublicAPI = any;
 
 type TypeDataGridPropsNoI18n = {
   filterable?: boolean;
+  disableGroupByToolbar?: boolean;
   onReady?: (
     computedPropsRef: MutableRefObject<TypeComputedProps | null>
   ) => void;

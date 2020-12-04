@@ -20,9 +20,10 @@ export default ({
   headerGroupPlaceholderText,
   renderSortTool,
   renderGroupItem,
+  disableGroupByToolbar,
   rtl,
 }) => {
-  if (!groupBy) {
+  if (!groupBy || disableGroupByToolbar) {
     return null;
   }
   return (

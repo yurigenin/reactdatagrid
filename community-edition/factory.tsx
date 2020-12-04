@@ -1575,6 +1575,8 @@ const GridFactory = (
     checkResizeDelay: 0,
     multiRowExpand: true,
     useNativeFlex: false,
+
+    disableGroupByToolbar: false,
     updateMenuPositionOnScroll: true,
     useRowHeightForLockedRows: true,
     nodesProperty: 'nodes',
