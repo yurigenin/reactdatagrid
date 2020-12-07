@@ -1203,6 +1203,9 @@ export default class InovuaDataGridCell extends React.Component {
     if (props.onCellTouchStart) {
       props.onCellTouchStart(event, props);
     }
+    if (props.onDragRowMouseDown && props.id === REORDER_COLUMN_ID) {
+      props.onDragRowMouseDown(event, props.rowIndex, this.domRef);
+    }
     // event.preventDefault() // DO NOT prevent default,
     // since this makes keyboard navigation unusable because
     // the grid does not get focus any more

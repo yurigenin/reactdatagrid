@@ -48,7 +48,8 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             return dragRow;
         };
         this.onDragRowMouseDownHandle = (ev, index, cellNode) => {
-            if (ev.isDefaultPrevented()) {
+            if ((ev.isDefaultPrevented && ev.isDefaultPrevented()) ||
+                ev.defaultPrevented) {
                 return;
             }
             const props = this.lastComputedProps;
@@ -59,7 +60,9 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
                     return;
                 }
             }
-            if (ev.nativeEvent.which === 3 /* right click */ ||
+            if ((ev.nativeEvent
+                ? ev.nativeEvent.which === 3
+                : ev.which === 3) /* right click */ ||
                 ev.metaKey ||
                 ev.ctrlKey) {
                 return;

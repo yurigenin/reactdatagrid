@@ -7,9 +7,7 @@
 
 import React from 'react';
 
-import { DataGridFactory } from '../../../examples/DataGrid';
-import '../../../community-edition/style/base.scss';
-import '../../../community-edition/style/theme/default-light/index.scss';
+import DataGrid, { TypeFooterRow } from '@inovua/reactdatagrid-enterprise';
 
 type Filters = {
   name: string;
@@ -27,10 +25,6 @@ type State = {
   pivot?: any[];
   groupBy?: any[];
 };
-
-const DataGrid = DataGridFactory({
-  plugins: [],
-});
 
 const gridStyle = {
   position: 'absolute',
@@ -294,19 +288,15 @@ class App extends React.Component<{}, State> {
             }}
           >
             <DataGrid
-              key={`${this.state.rowHeight}-${this.state.defaultColumnWidth}`}
               idProperty="id"
               theme="default-light"
               rowIndexColumn
-              checkboxColumn
+              licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
               onRowReorder
-              showZebraRows={false}
               style={gridStyle}
               columns={this.state.columns}
               dataSource={this.state.dataSource}
-              isRowReorderValid={this.isRowReorderValidHandle}
               rowHeight={this.state.rowHeight}
-              renderRowReorderProxy={this.renderRowProxyHandle}
             />
           </div>
         </div>
