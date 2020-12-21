@@ -9,6 +9,8 @@ import React, { RefObject } from 'react';
 import PropTypes from 'prop-types';
 
 import cleanProps from '../../../../packages/react-clean-props';
+import Region from '../../../../packages/region';
+import selectParent from '../../../../common/selectParent';
 import uglified from '../../../../packages/uglified';
 
 import Cell from '../../Cell';
@@ -402,11 +404,33 @@ export default class InovuaDataGridHeader extends React.Component {
         data={null}
         style={style}
         ref={this.domRef}
+        onFocus={this.onFocus}
       >
         {children}
       </div>
     );
   }
+
+  onFocus = event => {
+    const body = selectParent('.InovuaReactDataGrid__body', event.target);
+    if (!body) {
+      return;
+    }
+    const OFFSET = 15;
+    const headerRegion = Region.from(body);
+    const targetRegion = Region.from(event.target);
+
+    const scrollLeft = this.scrollLeft || this.props.scrollLeft || 0;
+
+    if (!headerRegion.containsRegion(targetRegion)) {
+      if (targetRegion.left < headerRegion.left) {
+        const diff = headerRegion.left - targetRegion.left;
+
+        const newScrollLeft = scrollLeft - (diff + OFFSET);
+        this.props.setScrollLeft(newScrollLeft);
+      }
+    }
+  };
 
   getPropsForCells = (startIndex, endIndex = startIndex + 1) => {
     const props = this.props;
@@ -1145,4 +1169,5 @@ InovuaDataGridHeader.propTypes = {
   renderLockedStartCells: PropTypes.func,
   renderInPortal: PropTypes.any,
   onFilterValueChange: PropTypes.func,
+  setScrollLeft: PropTypes.func,
 };

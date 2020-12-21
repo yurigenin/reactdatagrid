@@ -7,6 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cleanProps from '../../../../packages/react-clean-props';
+import Region from '../../../../packages/region';
+import selectParent from '../../../../common/selectParent';
 import uglified from '../../../../packages/uglified';
 import Cell from '../../Cell';
 import HeaderGroup from './HeaderGroup';
@@ -247,6 +249,23 @@ export default class InovuaDataGridHeader extends React.Component {
                 this.props.updateLockedWrapperPositions.call(this, this.props, scrollLeft, {
                     isHeader: true,
                 });
+            }
+        };
+        this.onFocus = event => {
+            const body = selectParent('.InovuaReactDataGrid__body', event.target);
+            if (!body) {
+                return;
+            }
+            const OFFSET = 15;
+            const headerRegion = Region.from(body);
+            const targetRegion = Region.from(event.target);
+            const scrollLeft = this.scrollLeft || this.props.scrollLeft || 0;
+            if (!headerRegion.containsRegion(targetRegion)) {
+                if (targetRegion.left < headerRegion.left) {
+                    const diff = headerRegion.left - targetRegion.left;
+                    const newScrollLeft = scrollLeft - (diff + OFFSET);
+                    this.props.setScrollLeft(newScrollLeft);
+                }
             }
         };
         this.getPropsForCells = (startIndex, endIndex = startIndex + 1) => {
@@ -702,7 +721,7 @@ export default class InovuaDataGridHeader extends React.Component {
         const style = this.prepareStyle(props);
         const children = this.renderColumns(columns);
         const cleanedProps = cleanProps(props, InovuaDataGridHeader.propTypes);
-        return (React.createElement("div", Object.assign({}, cleanedProps, { className: className, data: null, style: style, ref: this.domRef }), children));
+        return (React.createElement("div", Object.assign({}, cleanedProps, { className: className, data: null, style: style, ref: this.domRef, onFocus: this.onFocus }), children));
     }
 }
 InovuaDataGridHeader.defaultProps = {
@@ -782,4 +801,5 @@ InovuaDataGridHeader.propTypes = {
     renderLockedStartCells: PropTypes.func,
     renderInPortal: PropTypes.any,
     onFilterValueChange: PropTypes.func,
+    setScrollLeft: PropTypes.func,
 };

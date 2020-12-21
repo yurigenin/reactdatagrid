@@ -80,6 +80,7 @@ export default class HeaderWrapper extends React.Component {
         ) : null}
         <Header
           {...headerProps}
+          setScrollLeft={props.setScrollLeft}
           getScrollLeftMax={props.getScrollLeftMax}
           availableWidth={props.availableWidth}
           lockedRows={props.lockedRows}
@@ -171,6 +172,7 @@ HeaderWrapper.propTypes = {
   isMultiSort: PropTypes.bool,
   refHeader: PropTypes.func.isRequired,
   selectAll: PropTypes.func,
+  setScrollLeft: PropTypes.func,
   sortable: PropTypes.bool,
   virtualizeColumns: PropTypes.bool,
   updateLockedWrapperPositions: PropTypes.func,

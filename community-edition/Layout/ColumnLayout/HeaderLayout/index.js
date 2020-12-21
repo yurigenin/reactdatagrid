@@ -460,6 +460,7 @@ export default class InovuaDataGridHeaderLayout extends Component {
         ref={this.headerWrapper}
         refHeader={this.refHeader}
         scrollLeft={scrollLeft}
+        setScrollLeft={this.setScrollLeft}
       />
     );
   }
