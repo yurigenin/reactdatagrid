@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "paths": {
       "@inovua/reactdatagrid-community/*": ["../community-edition/*"],
-      "@inovua/reactdatagrid-enterprise/*": ["../enterprise-edition/*"]
+      "@inovua/reactdatagrid-enterprise/*": ["../enterprise-edition/*"],
+      "react/*": ["../node_modules/react/*"],
+      
     }
   },
   "exclude": ["node_modules"],
