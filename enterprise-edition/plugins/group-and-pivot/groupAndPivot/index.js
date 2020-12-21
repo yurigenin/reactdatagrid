@@ -144,7 +144,7 @@ export const flatten = (bucket, { pivot, groupSummaryReducer, groupColumnSummary
         }
     }
     else {
-        const groupItem = bucket.key ? createGroupItem(bucket.key, bucket) : null;
+        const groupItem = bucket.key != null ? createGroupItem(bucket.key, bucket) : null;
         data = groupItem ? [groupItem] : [];
         indexesInGroups = groupItem ? [-1] : [];
         groupCounts = groupItem ? [-1] : [];

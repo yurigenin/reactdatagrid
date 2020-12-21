@@ -293,7 +293,8 @@ export const flatten = (
       }
     }
   } else {
-    const groupItem = bucket.key ? createGroupItem(bucket.key, bucket) : null;
+    const groupItem =
+      bucket.key != null ? createGroupItem(bucket.key, bucket) : null;
 
     data = groupItem ? [groupItem] : [];
     indexesInGroups = groupItem ? [-1] : [];
