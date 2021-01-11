@@ -160,6 +160,8 @@ type TypeDataGridPropsNoI18n = {
   } | null;
   renderInPortal?: (el: ReactNode) => ReactPortal;
   editStartEvent: string;
+  onSkipChange: (skip: number) => void;
+  onLimitChange: (limit: number) => void;
   clearNodeCacheOnDataSourceChange: boolean;
   clearDataSourceCacheOnChange: boolean;
   allowGroupSplitOnReorder: boolean;
