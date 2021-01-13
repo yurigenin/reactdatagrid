@@ -3,10 +3,10 @@ import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 import SelectFilter from '@inovua/reactdatagrid-community/SelectFilter';
 
 import filterTypes from '@inovua/reactdatagrid-community/filterTypes';
-
+import { TypeColumn } from '@inovua/reactdatagrid-community/types';
 // filterTypes.select.emptyValue = undefined;
 
-const columns = [
+const columns: TypeColumn[] = [
   { name: 'country', defaultFlex: 1, header: 'Country' },
   { name: 'firstName', defaultFlex: 1, header: 'First Name' },
   { name: 'age', type: 'number', defaultFlex: 1, header: 'Age' },
@@ -43,7 +43,7 @@ const defaultFilterValue = [
     operator: 'eq',
     type: 'select',
     value: null,
-    emptyValue: null,
+    emptyValue: undefined,
   },
 ];
 
