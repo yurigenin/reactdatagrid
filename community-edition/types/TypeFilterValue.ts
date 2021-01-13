@@ -20,9 +20,17 @@ export default TypeFilterValue;
 
 export type TypeFilterOperator = {
   name: string;
-  fn: (
-    { value, filterValue, data }: { value: any; filterValue: any; data: any }
-  ) => boolean;
+  fn: ({
+    value,
+    filterValue,
+    data,
+    emptyValue,
+  }: {
+    value: any;
+    filterValue: any;
+    data: any;
+    emptyValue: any;
+  }) => boolean;
   filterOnEmptyValue?: boolean;
   valueOnOperatorSelect?: any;
   disableFilterEditor?: boolean;

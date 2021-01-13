@@ -41,6 +41,7 @@ export default (
     const filterParam = {};
 
     for (let i = 0, len = filterValueArray.length; i < len; i++) {
+      const fv = filterValueArray[i];
       const {
         name,
         getFilterValue,
@@ -49,7 +50,7 @@ export default (
         operator,
         active,
         fn,
-      } = filterValueArray[i];
+      } = fv;
       if (active === false) {
         continue;
       }
@@ -57,7 +58,9 @@ export default (
       if (!filterTypes[type]) {
         continue;
       }
-      filterParam.emptyValue = filterTypes[type].emptyValue;
+      filterParam.emptyValue = fv.hasOwnProperty('emptyValue')
+        ? fv.emptyValue
+        : filterTypes[type].emptyValue;
       filterParam.filterValue = filterValue;
       if (columnsMap) {
         filterParam.column = columnsMap[name];
