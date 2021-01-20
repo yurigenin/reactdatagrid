@@ -1002,7 +1002,7 @@ export default class InovuaVirtualList extends Component {
         return shouldComponentUpdate(this, nextProps, nextState);
     }
     renderStickyRowsContainer() {
-        return this.props.stickyRows ? (React.createElement(StickyRowsContainer, { rtl: this.props.rtl, stickyOffset: this.props.stickyOffset, handle: this.refStickyContainer, rowHeightManager: this.props.rowHeightManager })) : null;
+        return this.props.stickyRows ? (React.createElement(StickyRowsContainer, { rtl: this.props.rtl, key: "stickyrowscontainer", stickyOffset: this.props.stickyOffset, handle: this.refStickyContainer, rowHeightManager: this.props.rowHeightManager })) : null;
     }
     render() {
         const { props } = this;

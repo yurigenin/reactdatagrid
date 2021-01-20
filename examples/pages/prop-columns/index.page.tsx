@@ -70,6 +70,7 @@ class App extends React.Component {
         defaultActiveIndex={3}
         columns={this.state.columns}
         groupColumn
+        rtl
         stickyGroupRows
         dataSource={this.state.dataSource}
       />
