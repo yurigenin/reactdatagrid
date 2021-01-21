@@ -69,6 +69,7 @@ class App extends React.Component {
         defaultGroupBy={defaultGroupBy}
         defaultActiveIndex={3}
         columns={this.state.columns}
+        licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         groupColumn
         stickyGroupRows
         dataSource={this.state.dataSource}
