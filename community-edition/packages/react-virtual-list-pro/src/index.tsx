@@ -362,6 +362,7 @@ export default class InovuaVirtualList extends Component<TypeProps> {
     return this.props.stickyRows ? (
       <StickyRowsContainer
         rtl={this.props.rtl}
+        key="stickyrowscontainer"
         stickyOffset={this.props.stickyOffset}
         handle={this.refStickyContainer}
         rowHeightManager={this.props.rowHeightManager}
