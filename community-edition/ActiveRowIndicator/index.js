@@ -75,7 +75,7 @@ const ActiveRowIndicator = (props) => {
             : data && data.__summary
                 ? rowProps.summaryProps.depth
                 : depth || 0;
-    const scrollbarOffset = RTL_OFFSET;
+    const scrollbarOffset = props.rtl ? RTL_OFFSET : 0;
     const left = (groupNestingSize || 0) * groupDepth;
     const style = {
         [rtl ? 'right' : 'left']: left - scrollbarOffset,
