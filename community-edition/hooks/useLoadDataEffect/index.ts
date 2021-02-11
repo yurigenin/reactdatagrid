@@ -5,8 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useLayoutEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import { TypeDataSource } from '../../types';
+
+type DataPromiseResult = { data: any[]; count: number };
+type DataPromise = Promise<DataPromiseResult>;
 
 const diff = (a1: any[], a2: any[]): boolean => {
   if (a1.length != a2.length) {
@@ -38,8 +41,13 @@ const useLoadDataEffect = (
     dataSource: TypeDataSource,
     {
       shouldReload,
+      intercept,
     }: {
       shouldReload: boolean;
+      intercept: (
+        promise: DataPromise,
+        dataToLoad: TypeDataSource
+      ) => DataPromise;
     }
   ) => Promise<any>,
   { reloadDeps, noReloadDeps }: { reloadDeps: any[]; noReloadDeps: any[] }
@@ -73,11 +81,43 @@ const useLoadDataEffect = (
     });
   }
 
+  let pendingRef = useRef(new Set<DataPromise>());
+
+  const intercept = useCallback(
+    (promise: DataPromise, dataSource: TypeDataSource) => {
+      const isRemote =
+        typeof dataSource === 'function' || (dataSource as any)?.then;
+
+      if (!isRemote) {
+        return promise;
+      }
+
+      // clear the set in order to cancel any in-progress promises
+      pendingRef.current.clear();
+      pendingRef.current.add(promise);
+
+      return promise.then(r => {
+        if (pendingRef.current.has(promise)) {
+          // no new request came in since this promise originated
+          // so we can clear the pending set and return the result
+          pendingRef.current.delete(promise);
+          return r;
+        }
+
+        return Promise.reject({
+          message: `This request is discarded as it was still pending when a new request came in.`,
+          result: r,
+        });
+      });
+    },
+    []
+  );
+
   useLayoutEffect(() => {
     const reload = shouldReloadRef.current;
     const dataSource = getDataSource({ shouldReload: reload });
 
-    fn(dataSource, { shouldReload: reload }).then(() => {
+    fn(dataSource, { shouldReload: reload, intercept }).then(() => {
       if (resolveRef.current) {
         resolveRef.current();
       }
