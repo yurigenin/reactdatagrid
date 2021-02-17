@@ -66,7 +66,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <form
+        onSubmit={() => {
+          console.log('submit');
+        }}
+      >
         <DateInput
           dateFormat="YYYY-MM-DD"
           value={this.state.v}
@@ -87,7 +91,7 @@ class App extends React.Component {
           columns={this.state.columns}
           dataSource={dataSource}
         />
-      </div>
+      </form>
     );
   }
 }
