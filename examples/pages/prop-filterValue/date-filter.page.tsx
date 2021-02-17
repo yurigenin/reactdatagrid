@@ -53,8 +53,8 @@ class App extends React.Component {
         { name: 'firstName', header: 'First', minWidth: 400, defaultFlex: 2 },
         {
           name: 'createdOn',
-          defaultFlex: 3,
-          minWidth: 400,
+
+          defaultWidth: 100,
           dateFormat: 'MM/DD/YYYY',
           render: ({ value, cellProps: { dateFormat } }) =>
             moment(value).format(dateFormat),
