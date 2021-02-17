@@ -154,7 +154,7 @@ type TypeDataGridPropsNoI18n = {
     rowIndex: number;
     rowSelected: boolean;
     active: boolean;
-  }) => React.ReactNode;
+  }) => React.ReactNode | undefined;
   filterable?: boolean;
   disableGroupByToolbar?: boolean;
   onReady?: (
