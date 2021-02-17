@@ -71,7 +71,7 @@ export default class InovuaDataGridCell extends React.Component {
         if (props.headerCell) {
             this.state.left = 0;
         }
-        this.isCanceled = false;
+        this.isCancelled = false;
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.updateProps(nextProps);
@@ -635,7 +635,7 @@ export default class InovuaDataGridCell extends React.Component {
         }
     }
     cancelEdit() {
-        this.isCanceled = true;
+        this.isCancelled = true;
         this.stopEdit();
         const props = this.getProps();
         if (this.props.onEditCancel) {
@@ -652,10 +652,10 @@ export default class InovuaDataGridCell extends React.Component {
             return;
         }
         this.lastEditCompleteTimestamp = now;
-        if (!this.isCanceled) {
+        if (!this.isCancelled) {
             this.completeEdit();
         }
-        this.isCanceled = false;
+        this.isCancelled = false;
     }
     completeEdit(completeValue = this.getEditCompleteValue()) {
         const props = this.getProps();

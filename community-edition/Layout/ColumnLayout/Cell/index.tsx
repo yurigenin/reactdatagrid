@@ -75,6 +75,7 @@ const wrapInContent = (value: Renderable) => (
 
 export default class InovuaDataGridCell extends React.Component {
   domRef: React.RefObject<unknown>;
+  isCancelled: boolean;
   constructor(props) {
     super(props);
 
@@ -87,7 +88,7 @@ export default class InovuaDataGridCell extends React.Component {
       this.state.left = 0;
     }
 
-    this.isCanceled = false;
+    this.isCancelled = false;
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -948,7 +949,7 @@ export default class InovuaDataGridCell extends React.Component {
   }
 
   cancelEdit() {
-    this.isCanceled = true;
+    this.isCancelled = true;
     this.stopEdit();
     const props = this.getProps();
 
@@ -972,11 +973,11 @@ export default class InovuaDataGridCell extends React.Component {
 
     this.lastEditCompleteTimestamp = now;
 
-    if (!this.isCanceled) {
+    if (!this.isCancelled) {
       this.completeEdit();
     }
 
-    this.isCanceled = false;
+    this.isCancelled = false;
   }
 
   completeEdit(completeValue = this.getEditCompleteValue()) {

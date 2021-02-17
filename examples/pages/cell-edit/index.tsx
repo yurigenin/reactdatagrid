@@ -29,7 +29,6 @@ const App = () => {
 
   const onEditComplete = useCallback(
     ({ value, columnId, rowIndex }) => {
-      console.log('complete');
       const data = [...dataSource];
       data[rowIndex][columnId] = value;
 
