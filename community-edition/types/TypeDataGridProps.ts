@@ -148,6 +148,7 @@ export type EnumRowDetailsWidth =
 type TypeGridPublicAPI = any;
 
 type TypeDataGridPropsNoI18n = {
+  renderRow?: (...args: any[]) => any;
   filterable?: boolean;
   disableGroupByToolbar?: boolean;
   onReady?: (
