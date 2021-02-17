@@ -148,7 +148,13 @@ export type EnumRowDetailsWidth =
 type TypeGridPublicAPI = any;
 
 type TypeDataGridPropsNoI18n = {
-  renderRow?: (...args: any[]) => any;
+  renderRow?: (rowProps: {
+    id?: string | number;
+    data?: any;
+    rowIndex: number;
+    rowSelected: boolean;
+    active: boolean;
+  }) => React.ReactNode;
   filterable?: boolean;
   disableGroupByToolbar?: boolean;
   onReady?: (
