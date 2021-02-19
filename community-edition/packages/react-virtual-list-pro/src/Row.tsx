@@ -324,6 +324,9 @@ export default class InovuaVirtualListRow extends React.Component<
 
   setRowOffset(index = this.index) {
     const { rowHeightManager, useTransformPosition } = this.props;
+    if (!this.node) {
+      return;
+    }
     if (rowHeightManager) {
       const rowOffset = rowHeightManager.getRowOffset(index);
       this.offset = rowOffset;
