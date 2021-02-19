@@ -422,6 +422,7 @@ class InovuaNumericInput extends Component {
     return (
       <button
         key="clearButton"
+        type="button"
         onClick={this.handleClearButtonClick}
         onMouseDown={preventDefault}
         className={clearButtonClassName}

@@ -148,6 +148,13 @@ export type EnumRowDetailsWidth =
 type TypeGridPublicAPI = any;
 
 type TypeDataGridPropsNoI18n = {
+  renderRow?: (rowProps: {
+    id?: string | number;
+    data?: any;
+    rowIndex: number;
+    rowSelected: boolean;
+    active: boolean;
+  }) => React.ReactNode | undefined;
   filterable?: boolean;
   disableGroupByToolbar?: boolean;
   onReady?: (
@@ -160,8 +167,8 @@ type TypeDataGridPropsNoI18n = {
   } | null;
   renderInPortal?: (el: ReactNode) => ReactPortal;
   editStartEvent: string;
-  onSkipChange: (skip: number) => void;
-  onLimitChange: (limit: number) => void;
+  onSkipChange?: (skip: number) => void;
+  onLimitChange?: (limit: number) => void;
   clearNodeCacheOnDataSourceChange: boolean;
   clearDataSourceCacheOnChange: boolean;
   allowGroupSplitOnReorder: boolean;

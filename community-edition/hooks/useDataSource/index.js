@@ -51,15 +51,16 @@ const isRemotePagination = (props) => {
     }
     return !!livePagination;
 };
-const loadDataSource = (dataSource, { skip, limit, sortInfo, filterValue, groupBy, }) => {
+const loadDataSource = (dataSource, { skip, limit, currentData, sortInfo, filterValue, groupBy, }) => {
     if (typeof dataSource === 'function') {
         dataSource = loadDataSource(dataSource({
             skip,
             limit,
             sortInfo,
+            currentData,
             filterValue,
             groupBy,
-        }), { skip, limit, sortInfo, groupBy, filterValue });
+        }), { skip, limit, sortInfo, groupBy, filterValue, currentData });
     }
     if (dataSource instanceof Promise) {
         return dataSource.then((result) => {
@@ -359,7 +360,7 @@ export default (props, computedProps, computedPropsRef) => {
                 ? computedProps.dataSource
                 : computedProps.originalData;
         },
-    }, (dataToLoad, { shouldReload }) => {
+    }, (dataToLoad, { shouldReload, intercept }) => {
         const { computedSortInfo, computedRemoteData, computedFilterValue, computedGroupBy, originalData: prevOriginalData, skipLoadOnMount, wasMountedRef, initialState, } = computedPropsRef.current;
         if (!prevOriginalData.length && computedRemoteData) {
             // initial loading
@@ -397,13 +398,14 @@ export default (props, computedProps, computedPropsRef) => {
             // prevent reload data now - let the cmp rerender and changing skip will trigger reload
             return Promise.resolve(true);
         }
-        return loadDataSource(dataToLoad, {
+        return intercept(loadDataSource(dataToLoad, {
             sortInfo: computedSortInfo,
+            currentData: computedPropsRef.current.data,
             skip: computedSkip,
             limit: computedLimit,
             filterValue: computedFilterValue,
             groupBy: computedGroupBy,
-        }).then(({ data: originalData, count }) => {
+        }), dataToLoad).then(({ data: originalData, count }) => {
             if (initialCount) {
                 count = initialCount;
             }
@@ -488,6 +490,9 @@ export default (props, computedProps, computedPropsRef) => {
                     setCount(count);
                 }
             });
+        }, _err => {
+            // pending promise discarded
+            // newer requests came in before this finished, so ignoring the promise
         });
     }, {
         reloadDeps: [

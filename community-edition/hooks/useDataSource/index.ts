@@ -124,12 +124,14 @@ const loadDataSource = (
   {
     skip,
     limit,
+    currentData,
     sortInfo,
     filterValue,
     groupBy,
   }: {
     skip?: number;
     limit?: number;
+    currentData: any[];
     filterValue?: TypeFilterValue;
     sortInfo: TypeSortInfo;
     groupBy?: TypeGroupBy;
@@ -141,10 +143,11 @@ const loadDataSource = (
         skip,
         limit,
         sortInfo,
+        currentData,
         filterValue,
         groupBy,
       }),
-      { skip, limit, sortInfo, groupBy, filterValue }
+      { skip, limit, sortInfo, groupBy, filterValue, currentData }
     );
   }
 
@@ -749,7 +752,7 @@ export default (
           : computedProps.originalData;
       },
     },
-    (dataToLoad, { shouldReload }) => {
+    (dataToLoad, { shouldReload, intercept }) => {
       const {
         computedSortInfo,
         computedRemoteData,
@@ -814,13 +817,17 @@ export default (
         // prevent reload data now - let the cmp rerender and changing skip will trigger reload
         return Promise.resolve(true);
       }
-      return loadDataSource(dataToLoad, {
-        sortInfo: computedSortInfo,
-        skip: computedSkip,
-        limit: computedLimit,
-        filterValue: computedFilterValue,
-        groupBy: computedGroupBy,
-      }).then(
+      return intercept(
+        loadDataSource(dataToLoad, {
+          sortInfo: computedSortInfo,
+          currentData: computedPropsRef.current.data,
+          skip: computedSkip,
+          limit: computedLimit,
+          filterValue: computedFilterValue,
+          groupBy: computedGroupBy,
+        }),
+        dataToLoad
+      ).then(
         ({ data: originalData, count }: { data: any[]; count: number }) => {
           if (initialCount) {
             count = initialCount;
@@ -936,6 +943,10 @@ export default (
               setCount(count);
             }
           });
+        },
+        _err => {
+          // pending promise discarded
+          // newer requests came in before this finished, so ignoring the promise
         }
       );
     },

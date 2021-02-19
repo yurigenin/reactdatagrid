@@ -113,14 +113,14 @@ export const selectTypes = {
         },
         {
             name: 'eq',
-            fn: ({ value, filterValue, data, }) => {
-                return filterValue != null ? filterValue === value : true;
+            fn: ({ value, filterValue, data, emptyValue, }) => {
+                return filterValue !== emptyValue ? filterValue === value : true;
             },
         },
         {
             name: 'neq',
-            fn: ({ value, filterValue, data, }) => {
-                return filterValue != null ? filterValue !== value : true;
+            fn: ({ value, filterValue, emptyValue, data, }) => {
+                return filterValue !== emptyValue ? filterValue !== value : true;
             },
         },
     ],

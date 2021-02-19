@@ -15,31 +15,11 @@ import join from './packages/join';
 import renderEmptyContent from './renderEmptyContent';
 
 const stop = e => {
+  if (e.cancelable === false) {
+    return;
+  }
   e.preventDefault();
 };
-
-const SCROLLER = (
-  <div
-    style={{
-      width: '200%',
-      height: '200%',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      overflow: 'auto',
-    }}
-  >
-    <div
-      style={{
-        width: '200%',
-        minHeight: '20000vh',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-      }}
-    />
-  </div>
-);
 
 const DEFAULT_CLASSNAME = 'InovuaReactDataGrid__load-mask';
 

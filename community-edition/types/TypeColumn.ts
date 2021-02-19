@@ -7,7 +7,7 @@
 
 import { TypeSortInfo } from './TypeSortInfo';
 import { TypeLockedRow, TypeComputedProps, TypeFooterRow } from '.';
-import { ReactNode } from 'react';
+import { FC, Component, ReactNode } from 'react';
 
 export type TypeSummaryReducer = {
   initialValue: any;
@@ -63,6 +63,8 @@ export interface IColumn {
   readonly autoLock?: boolean;
   readonly filterType?: string;
   readonly filterName?: string;
+  readonly filterEditor?: typeof Component | FC;
+  readonly filterEditorProps?: any;
   readonly groupBy?: boolean;
   readonly groupByName?: string;
   readonly sort?: (...args: any[]) => any;
