@@ -71,6 +71,7 @@ export default class InovuaDataGridCell extends React.Component {
         if (props.headerCell) {
             this.state.left = 0;
         }
+        this.isCancelled = false;
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.updateProps(nextProps);
@@ -101,8 +102,20 @@ export default class InovuaDataGridCell extends React.Component {
         if (this.props.onMount) {
             this.props.onMount(this.props, this);
         }
+        if (this.props.naturalRowHeight) {
+            // this.cleanupResizeObserver = setupResizeObserver(this.node, size => {
+            //   this.props.onResize?.({
+            //     cell: this,
+            //     props: this.getProps(),
+            //     size,
+            //   });
+            // });
+        }
     }
     componentWillUnmount() {
+        if (this.cleanupResizeObserver) {
+            this.cleanupResizeObserver();
+        }
         if (this.props.onUnmount) {
             this.props.onUnmount(this.props, this);
         }
@@ -165,24 +178,32 @@ export default class InovuaDataGridCell extends React.Component {
             if (rowHeight && !naturalRowHeight) {
                 style.height = rowHeight;
             }
-            if (initialRowHeight) {
-                style.height = initialRowHeight;
+            if (naturalRowHeight) {
+                style.minHeight = minRowHeight;
             }
-            if (rowHeight && computedRowspan > 1) {
-                style.height = (initialRowHeight || rowHeight) * computedRowspan;
+            else {
+                if (initialRowHeight) {
+                    style.height = initialRowHeight;
+                }
+                if (rowHeight && computedRowspan > 1) {
+                    style.height = (initialRowHeight || rowHeight) * computedRowspan;
+                }
             }
         }
         if (hidden) {
             style.display = 'none';
         }
         if (!headerCell && !computedLocked) {
-            style.position = 'absolute';
+            // style.position = naturalRowHeight ? 'relative' : 'absolute';
+            style.position = naturalRowHeight ? 'relative' : 'absolute';
             style.top = 0;
-            if (rtl) {
-                style.right = computedOffset;
-            }
-            else {
-                style.left = computedOffset;
+            if (!naturalRowHeight) {
+                if (rtl) {
+                    style.right = computedOffset;
+                }
+                else {
+                    style.left = computedOffset;
+                }
             }
         }
         if (this.state && this.state.dragging) {
@@ -634,6 +655,7 @@ export default class InovuaDataGridCell extends React.Component {
         }
     }
     cancelEdit() {
+        this.isCancelled = true;
         this.stopEdit();
         const props = this.getProps();
         if (this.props.onEditCancel) {
@@ -650,7 +672,10 @@ export default class InovuaDataGridCell extends React.Component {
             return;
         }
         this.lastEditCompleteTimestamp = now;
-        this.completeEdit();
+        if (!this.isCancelled) {
+            this.completeEdit();
+        }
+        this.isCancelled = false;
     }
     completeEdit(completeValue = this.getEditCompleteValue()) {
         const props = this.getProps();

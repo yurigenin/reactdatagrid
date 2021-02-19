@@ -106,13 +106,12 @@ export default class InovuaVirtualList extends Component<TypeProps> {
       this.containerNode = domNode;
     };
 
-    let rafId: number | undefined;
-
     this.updateRows = throttle(this.updateRows, 16);
   }
 
   renderScroller = props => {
     let offset = this.getEmptyScrollOffset() || 0;
+
     if (this.props.nativeScroll) {
       offset = 0;
     }
@@ -125,8 +124,9 @@ export default class InovuaVirtualList extends Component<TypeProps> {
       right: -offset,
       bottom: -offset,
     };
+
     props.style = style;
-    style.overflowY = '';
+
     if (
       this.props.showEmptyRows &&
       this.props.count < this.strictVisibleCount
@@ -153,9 +153,11 @@ export default class InovuaVirtualList extends Component<TypeProps> {
 
   renderView = (props: any) => {
     let offset = this.getEmptyScrollOffset() || 0;
+
     if (this.props.nativeScroll) {
       offset = 0;
     }
+
     const minHeight = offset ? `calc(100% - ${offset}px)` : '100%';
     let maxWidth = offset ? `calc(100% - ${offset}px)` : '100%';
 
@@ -174,7 +176,11 @@ export default class InovuaVirtualList extends Component<TypeProps> {
       style.transform = `translateX(${-offset}px)`;
     }
 
-    const viewProps = { ...props, style, 'data-name': 'view' };
+    const viewProps = {
+      ...props,
+      style,
+      'data-name': 'view',
+    };
 
     let result;
     if (this.props.renderView) {
@@ -356,6 +362,7 @@ export default class InovuaVirtualList extends Component<TypeProps> {
     return this.props.stickyRows ? (
       <StickyRowsContainer
         rtl={this.props.rtl}
+        key="stickyrowscontainer"
         stickyOffset={this.props.stickyOffset}
         handle={this.refStickyContainer}
         rowHeightManager={this.props.rowHeightManager}
@@ -597,8 +604,8 @@ export default class InovuaVirtualList extends Component<TypeProps> {
   };
 
   getVisibleCount = (props = this.props) => {
-    const { virtualized, enableRowSpan } = props;
-    const extraRows = enableRowSpan ? 2 : 0;
+    const { virtualized, enableRowSpan, extraRows: extraRowsProps } = props;
+    const extraRows = enableRowSpan ? 2 : extraRowsProps || 0;
 
     if (this.visibleCount === undefined) {
       return 0;
@@ -1869,6 +1876,7 @@ const propTypes = {
   handleRowKeyDown: PropTypes.func,
   rafOnResize: PropTypes.bool,
   checkResizeDelay: PropTypes.number,
+  extraRows: PropTypes.number,
   measureSize: PropTypes.func,
   minRowHeight: PropTypes.number,
   minRowWidth: PropTypes.number,

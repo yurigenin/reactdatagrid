@@ -24,14 +24,17 @@ export default (data, filterValueArray, filterTypes = DEFAULT_FILTER_TYPES, colu
     const filterFn = (item, index, data) => {
         const filterParam = {};
         for (let i = 0, len = filterValueArray.length; i < len; i++) {
-            const { name, getFilterValue, value: filterValue, type, operator, active, fn, } = filterValueArray[i];
+            const fv = filterValueArray[i];
+            const { name, getFilterValue, value: filterValue, type, operator, active, fn, } = fv;
             if (active === false) {
                 continue;
             }
             if (!filterTypes[type]) {
                 continue;
             }
-            filterParam.emptyValue = filterTypes[type].emptyValue;
+            filterParam.emptyValue = fv.hasOwnProperty('emptyValue')
+                ? fv.emptyValue
+                : filterTypes[type].emptyValue;
             filterParam.filterValue = filterValue;
             if (columnsMap) {
                 filterParam.column = columnsMap[name];

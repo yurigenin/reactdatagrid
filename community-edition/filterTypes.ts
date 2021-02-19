@@ -208,12 +208,14 @@ export const selectTypes: TypeFilterType = {
         value,
         filterValue,
         data,
+        emptyValue,
       }: {
         value?: T | null;
         filterValue: T | null;
+        emptyValue: T | null;
         data: any;
       }): boolean => {
-        return filterValue != null ? filterValue === value : true;
+        return filterValue !== emptyValue ? filterValue === value : true;
       },
     },
     {
@@ -221,13 +223,15 @@ export const selectTypes: TypeFilterType = {
       fn: <T>({
         value,
         filterValue,
+        emptyValue,
         data,
       }: {
         value?: T | null;
         filterValue: T | null;
+        emptyValue: T | null;
         data: any;
       }): boolean => {
-        return filterValue != null ? filterValue !== value : true;
+        return filterValue !== emptyValue ? filterValue !== value : true;
       },
     },
   ],

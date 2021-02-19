@@ -36,6 +36,8 @@ const DEFAULT_SCROLL_POS = {
   scrollTop: 0,
 };
 
+const VirtualListClassName = 'InovuaReactDataGrid__virtual-list';
+
 export type TypeScrollPos = { scrollTop: number; scrollLeft: number };
 type ListProps = {
   virtualized: boolean;
@@ -63,6 +65,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     this.state = { columnRenderCount: 0 };
 
     this.rows = [];
+    this.scrollbars = {};
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -284,6 +287,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     return (
       <VirtualList
         rowHeight={null}
+        extraRows={naturalRowHeight ? 1 : 0}
         style={thisProps.style}
         theme={this.props.theme}
         checkResizeDelay={thisProps.checkResizeDelay}
@@ -294,7 +298,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
         stickyRows={thisProps.computedStickyRows}
         enableRowSpan={thisProps.computedEnableRowspan}
         recycleCoveredRows={false}
-        className="InovuaReactDataGrid__virtual-list"
+        className={VirtualListClassName}
         renderRowContainer={this.renderRowContainer}
         {...maybeProps}
         overscrollBehavior="auto"
@@ -356,6 +360,8 @@ export default class InovuaDataGridList extends Component<ListProps> {
   renderView = viewProps => {
     const { data, loading } = this.props;
 
+    const scrollbarOffset = this.getEmptyScrollOffset();
+
     const { length } = data;
 
     if (!length && !loading) {
@@ -365,6 +371,24 @@ export default class InovuaDataGridList extends Component<ListProps> {
       if (IS_EDGE) {
         // avoid unnecessary vertical scrollbar
         viewProps.style.minHeight = '99%';
+      }
+    }
+
+    const hasScrollbars =
+      this.scrollbars && this.scrollbars.vertical && this.scrollbars.horizontal;
+    const hasHorizontalScrollbar =
+      this.scrollbars && this.scrollbars.horizontal;
+
+    if (!!this.props.renderRowDetails || !!this.props.renderDetailsGrid) {
+      if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
+        viewProps.style.transform = `translateX(${-(hasScrollbars ? 2 : 1) *
+          scrollbarOffset}px)`;
+      }
+    } else {
+      if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
+        viewProps.style.transform = `translateX(${-(hasHorizontalScrollbar
+          ? 2
+          : 1) * scrollbarOffset}px)`;
       }
     }
 
@@ -460,6 +484,20 @@ export default class InovuaDataGridList extends Component<ListProps> {
       scrollerProps.style.overflow = 'hidden';
     }
 
+    const hasHorizontalScrollbar =
+      this.scrollbars && this.scrollbars.horizontal;
+
+    if (!this.props.renderRowDetails || !this.props.renderDetailsGrid) {
+      if (
+        !this.props.rtl &&
+        !getScrollbarWidth() &&
+        !nativeScroll &&
+        hasHorizontalScrollbar
+      ) {
+        scrollerProps.style.right = 0;
+      }
+    }
+
     let result;
 
     if (this.props.renderScroller) {
@@ -546,6 +584,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     }
 
     if (this.props.virtualized) {
+      this.getDOMNode()?.classList?.add(`${VirtualListClassName}--scrolling`);
       requestAnimationFrame(() => {
         this.getRows().forEach(r =>
           r ? r.setScrolling(this.scrollingDirection) : null
@@ -557,6 +596,9 @@ export default class InovuaDataGridList extends Component<ListProps> {
   onScrollStop = () => {
     this.scrollingDirection = 'none';
     if (this.props.virtualized) {
+      this.getDOMNode()?.classList?.remove(
+        `${VirtualListClassName}--scrolling`
+      );
       this.getRows().forEach(r => {
         if (!r) {
           return;
@@ -633,6 +675,8 @@ export default class InovuaDataGridList extends Component<ListProps> {
   }
 
   onScrollbarsChange = scrollbars => {
+    this.scrollbars = scrollbars;
+
     if (!scrollbars.horizontal) {
       // we need to do this on raf because of onResize being called lazily
       raf(() => {

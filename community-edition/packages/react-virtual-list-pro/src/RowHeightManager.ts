@@ -54,6 +54,7 @@ type TypeNumberMap = {
 };
 class RowHeightManager extends EventEmitter {
   private rowHeight: number;
+  private rowHeightFn?: (i: number) => number;
   private map: TypeNumberMap;
   private heights!: number[];
   private indexes!: number[];
@@ -65,30 +66,50 @@ class RowHeightManager extends EventEmitter {
   private lazyRowHeightRafId?: number;
   private rowToOffsetCache!: TypeNumberMap;
   private cache?: TypeNumberMap;
+  private __id: string = '';
 
   constructor(
-    rowHeight: number,
+    rowHeight:
+      | number
+      | {
+          rowHeight: number | ((rowIndex: number) => number) | undefined;
+          minRowHeight: number | undefined;
+        },
     rowHeightsMap = {},
     config?: { cache: boolean }
   ) {
     super();
-    this.rowHeight = rowHeight;
+    this.rowHeight =
+      typeof rowHeight === 'object'
+        ? typeof rowHeight.rowHeight === 'number'
+          ? rowHeight.rowHeight
+          : rowHeight.minRowHeight || 40
+        : 40;
     this.map = rowHeightsMap;
+
+    if (
+      typeof rowHeight === 'object' &&
+      typeof rowHeight.rowHeight === 'function'
+    ) {
+      this.rowHeightFn = rowHeight.rowHeight;
+    }
 
     if (!config || config.cache !== false) {
       this.setCache({});
     }
-    this.index(rowHeight, rowHeightsMap);
+    this.index(this.rowHeight, rowHeightsMap);
   }
 
   setRowHeight({
     index,
     height,
     defaultRowHeight,
+    skipIndex,
   }: {
     index: number;
     height: number;
     defaultRowHeight?: number;
+    skipIndex?: boolean;
   }) {
     if (this.map[index] === height && !defaultRowHeight) {
       console.warn('NOOP');
@@ -103,7 +124,21 @@ class RowHeightManager extends EventEmitter {
     if (this.cache) {
       this.setCache({});
     }
-    this.index(this.rowHeight, this.map);
+    if (!skipIndex) {
+      this.index();
+    }
+  }
+
+  indexRaf() {
+    if (this.lazyRowHeightRafId) {
+      cancelAnimationFrame(this.lazyRowHeightRafId);
+      this.lazyRowHeightRafId = 0;
+    }
+
+    this.lazyRowHeightRafId = requestAnimationFrame(() => {
+      this.lazyRowHeightRafId = 0;
+      this.index();
+    });
   }
 
   setRowHeightLazy({
@@ -115,24 +150,13 @@ class RowHeightManager extends EventEmitter {
     height: number;
     defaultRowHeight?: number;
   }) {
-    this.map[index] = height;
-
-    if (defaultRowHeight) {
-      this.rowHeight = defaultRowHeight;
-    }
-
-    if (this.cache) {
-      this.setCache({});
-    }
-
-    if (this.lazyRowHeightRafId) {
-      cancelAnimationFrame(this.lazyRowHeightRafId);
-    }
-
-    this.lazyRowHeightRafId = requestAnimationFrame(() => {
-      delete this.lazyRowHeightRafId;
-      this.index(this.rowHeight, this.map);
+    this.setRowHeight({
+      index,
+      height,
+      defaultRowHeight: defaultRowHeight || this.rowHeight,
+      skipIndex: true,
     });
+    this.indexRaf();
   }
 
   setHeights(map: TypeNumberMap) {
@@ -173,7 +197,10 @@ class RowHeightManager extends EventEmitter {
     this.index(this.rowHeight, this.map);
   }
 
-  index(defaultRowHeight: number, map: TypeNumberMap) {
+  index(
+    defaultRowHeight: number = this.rowHeight,
+    map: TypeNumberMap = this.map
+  ) {
     this.rowToOffsetCache = {};
     const indexes = map
       ? Object.keys(map)
@@ -184,6 +211,7 @@ class RowHeightManager extends EventEmitter {
     this.minHeight = defaultRowHeight;
     this.maxHeight = defaultRowHeight;
 
+    this.__id = JSON.stringify(this.heights);
     this.heights = indexes.map(index => {
       const height = map[index];
       if (height > this.maxHeight) {
@@ -197,6 +225,7 @@ class RowHeightManager extends EventEmitter {
 
     let prev = 0;
     this.indexes = indexes;
+
     this.offsets = indexes.map((index, i) => {
       const prevIndex = i === 0 ? -1 : indexes[i - 1];
       const prevIndexRowHeight = map[prevIndex] || 0;
@@ -208,16 +237,17 @@ class RowHeightManager extends EventEmitter {
     });
 
     this.offsetsToIndexes = {};
-    this.indexesToOffsets = this.offsets.reduce(
-      (acc, offset, i) => {
-        const index = indexes[i];
-        acc[index] = offset;
-        this.offsetsToIndexes[offset] = index;
-        return acc;
-      },
-      {} as TypeNumberMap
-    );
+    this.indexesToOffsets = this.offsets.reduce((acc, offset, i) => {
+      const index = indexes[i];
+      acc[index] = offset;
+      this.offsetsToIndexes[offset] = index;
+      return acc;
+    }, {} as TypeNumberMap);
 
+    const __id = JSON.stringify(this.heights);
+    if (__id === this.__id) {
+      return;
+    }
     this.afterIndex();
   }
 
@@ -291,10 +321,14 @@ class RowHeightManager extends EventEmitter {
     return offset;
   }
 
-  getRowHeight(index: number) {
+  getRowHeight(index: number, fn?: () => number) {
     let value = this.map[index];
     if (value !== undefined) {
       return value;
+    }
+
+    if (fn) {
+      return fn();
     }
 
     return this.rowHeight;

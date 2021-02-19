@@ -53,8 +53,8 @@ class App extends React.Component {
         { name: 'firstName', header: 'First', minWidth: 400, defaultFlex: 2 },
         {
           name: 'createdOn',
-          defaultFlex: 3,
-          minWidth: 400,
+
+          defaultWidth: 100,
           dateFormat: 'MM/DD/YYYY',
           render: ({ value, cellProps: { dateFormat } }) =>
             moment(value).format(dateFormat),
@@ -66,7 +66,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <form
+        onSubmit={() => {
+          console.log('submit');
+        }}
+      >
         <DateInput
           dateFormat="YYYY-MM-DD"
           value={this.state.v}
@@ -87,7 +91,7 @@ class App extends React.Component {
           columns={this.state.columns}
           dataSource={dataSource}
         />
-      </div>
+      </form>
     );
   }
 }

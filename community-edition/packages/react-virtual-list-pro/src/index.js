@@ -55,7 +55,6 @@ export default class InovuaVirtualList extends Component {
                 bottom: -offset,
             };
             props.style = style;
-            style.overflowY = '';
             if (this.props.showEmptyRows &&
                 this.props.count < this.strictVisibleCount) {
                 style.overflowY = 'hidden';
@@ -94,7 +93,11 @@ export default class InovuaVirtualList extends Component {
             if (this.props.rtl && !getScrollbarWidth()) {
                 style.transform = `translateX(${-offset}px)`;
             }
-            const viewProps = { ...props, style, 'data-name': 'view' };
+            const viewProps = {
+                ...props,
+                style,
+                'data-name': 'view',
+            };
             let result;
             if (this.props.renderView) {
                 result = this.props.renderView(viewProps);
@@ -335,8 +338,8 @@ export default class InovuaVirtualList extends Component {
             return row;
         };
         this.getVisibleCount = (props = this.props) => {
-            const { virtualized, enableRowSpan } = props;
-            const extraRows = enableRowSpan ? 2 : 0;
+            const { virtualized, enableRowSpan, extraRows: extraRowsProps } = props;
+            const extraRows = enableRowSpan ? 2 : extraRowsProps || 0;
             if (this.visibleCount === undefined) {
                 return 0;
             }
@@ -995,14 +998,13 @@ export default class InovuaVirtualList extends Component {
         this.refContainerNode = domNode => {
             this.containerNode = domNode;
         };
-        let rafId;
         this.updateRows = throttle(this.updateRows, 16);
     }
     shouldComponentUpdate(nextProps, nextState) {
         return shouldComponentUpdate(this, nextProps, nextState);
     }
     renderStickyRowsContainer() {
-        return this.props.stickyRows ? (React.createElement(StickyRowsContainer, { rtl: this.props.rtl, stickyOffset: this.props.stickyOffset, handle: this.refStickyContainer, rowHeightManager: this.props.rowHeightManager })) : null;
+        return this.props.stickyRows ? (React.createElement(StickyRowsContainer, { rtl: this.props.rtl, key: "stickyrowscontainer", stickyOffset: this.props.stickyOffset, handle: this.refStickyContainer, rowHeightManager: this.props.rowHeightManager })) : null;
     }
     render() {
         const { props } = this;
@@ -1362,6 +1364,7 @@ const propTypes = {
     handleRowKeyDown: PropTypes.func,
     rafOnResize: PropTypes.bool,
     checkResizeDelay: PropTypes.number,
+    extraRows: PropTypes.number,
     measureSize: PropTypes.func,
     minRowHeight: PropTypes.number,
     minRowWidth: PropTypes.number,

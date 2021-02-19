@@ -86,6 +86,7 @@ export default class DateFilter extends Component {
             cancelButton: false,
             overlayProps: {
                 zIndex: null,
+                positions: ['tl-bl', 'bl-tl', 'tr-br', 'br-tr'],
                 target: startTarget,
             },
             style: {
@@ -93,6 +94,7 @@ export default class DateFilter extends Component {
                 ...style,
             },
             theme,
+            rtl,
         };
         if (filterValue) {
             inputProps.value = this.state.value;

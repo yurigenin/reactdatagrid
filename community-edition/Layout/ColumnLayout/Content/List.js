@@ -22,6 +22,7 @@ const DEFAULT_SCROLL_POS = {
     scrollLeft: 0,
     scrollTop: 0,
 };
+const VirtualListClassName = 'InovuaReactDataGrid__virtual-list';
 export default class InovuaDataGridList extends Component {
     constructor(props) {
         super(props);
@@ -148,6 +149,7 @@ export default class InovuaDataGridList extends Component {
         };
         this.renderView = viewProps => {
             const { data, loading } = this.props;
+            const scrollbarOffset = this.getEmptyScrollOffset();
             const { length } = data;
             if (!length && !loading) {
                 viewProps.children = React.Children.toArray(viewProps.children);
@@ -155,6 +157,21 @@ export default class InovuaDataGridList extends Component {
                 if (IS_EDGE) {
                     // avoid unnecessary vertical scrollbar
                     viewProps.style.minHeight = '99%';
+                }
+            }
+            const hasScrollbars = this.scrollbars && this.scrollbars.vertical && this.scrollbars.horizontal;
+            const hasHorizontalScrollbar = this.scrollbars && this.scrollbars.horizontal;
+            if (!!this.props.renderRowDetails || !!this.props.renderDetailsGrid) {
+                if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
+                    viewProps.style.transform = `translateX(${-(hasScrollbars ? 2 : 1) *
+                        scrollbarOffset}px)`;
+                }
+            }
+            else {
+                if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
+                    viewProps.style.transform = `translateX(${-(hasHorizontalScrollbar
+                        ? 2
+                        : 1) * scrollbarOffset}px)`;
                 }
             }
             let result;
@@ -213,6 +230,15 @@ export default class InovuaDataGridList extends Component {
                 scrollerProps.style = scrollerProps.style || {};
                 scrollerProps.style.overflow = 'hidden';
             }
+            const hasHorizontalScrollbar = this.scrollbars && this.scrollbars.horizontal;
+            if (!this.props.renderRowDetails || !this.props.renderDetailsGrid) {
+                if (!this.props.rtl &&
+                    !getScrollbarWidth() &&
+                    !nativeScroll &&
+                    hasHorizontalScrollbar) {
+                    scrollerProps.style.right = 0;
+                }
+            }
             let result;
             if (this.props.renderScroller) {
                 result = this.props.renderScroller(scrollerProps);
@@ -270,6 +296,7 @@ export default class InovuaDataGridList extends Component {
                 return;
             }
             if (this.props.virtualized) {
+                this.getDOMNode()?.classList?.add(`${VirtualListClassName}--scrolling`);
                 requestAnimationFrame(() => {
                     this.getRows().forEach(r => r ? r.setScrolling(this.scrollingDirection) : null);
                 });
@@ -278,6 +305,7 @@ export default class InovuaDataGridList extends Component {
         this.onScrollStop = () => {
             this.scrollingDirection = 'none';
             if (this.props.virtualized) {
+                this.getDOMNode()?.classList?.remove(`${VirtualListClassName}--scrolling`);
                 this.getRows().forEach(r => {
                     if (!r) {
                         return;
@@ -323,6 +351,7 @@ export default class InovuaDataGridList extends Component {
             return this.virtualList.getRows().map(row => row.getInstance());
         };
         this.onScrollbarsChange = scrollbars => {
+            this.scrollbars = scrollbars;
             if (!scrollbars.horizontal) {
                 // we need to do this on raf because of onResize being called lazily
                 raf(() => {
@@ -422,6 +451,7 @@ export default class InovuaDataGridList extends Component {
         this.endIndex = CHUNKS_SIZE;
         this.state = { columnRenderCount: 0 };
         this.rows = [];
+        this.scrollbars = {};
     }
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.shouldComponentUpdate) {
@@ -462,7 +492,7 @@ export default class InovuaDataGridList extends Component {
             this.__minRowWidth = minRowWidth;
             this.__data = thisProps.data;
         }
-        return (React.createElement(VirtualList, Object.assign({ rowHeight: null, style: thisProps.style, theme: this.props.theme, checkResizeDelay: thisProps.checkResizeDelay, rowContain: thisProps.rowContain, contain: thisProps.contain, rtl: thisProps.rtl, stickyOffset: thisProps.rtlOffset, stickyRows: thisProps.computedStickyRows, enableRowSpan: thisProps.computedEnableRowspan, recycleCoveredRows: false, className: "InovuaReactDataGrid__virtual-list", renderRowContainer: this.renderRowContainer }, maybeProps, { overscrollBehavior: "auto", rowHeightManager: thisProps.rowHeightManager, before: thisProps.before, after: thisProps.after, showEmptyRows: thisProps.computedShowEmptyRows, scrollProps: scrollProps, emptyScrollOffset: this.getEmptyScrollOffset(), nativeScroll: thisProps.nativeScroll, onResize: this.onResize, virtualized: thisProps.virtualized, minRowWidth: minRowWidth, naturalRowHeight: naturalRowHeight, renderScroller: this.renderScroller, renderScrollerSpacer: this.renderScrollerSpacer, renderSizer: this.renderSizer, renderView: this.renderView, useTransformRowPosition: this.props.useTransformRowPosition, useTransformPosition: this.props.useTransformPosition, shouldComponentUpdate: shouldUpdate, ref: this.refVirtualList, count: thisProps.data.length || 0, pureRows: pureRows, renderRow: renderRow, onContainerScrollHorizontal: this.onScrollHorizontal, onContainerScroll: this.onContainerScroll, onScrollbarsChange: this.onScrollbarsChange, onContainerScrollVertical: this.props.onContainerScrollVertical, onScrollStop: this.onScrollStop, shouldFocusNextRow: this.shouldFocusNextRow })));
+        return (React.createElement(VirtualList, Object.assign({ rowHeight: null, extraRows: naturalRowHeight ? 1 : 0, style: thisProps.style, theme: this.props.theme, checkResizeDelay: thisProps.checkResizeDelay, rowContain: thisProps.rowContain, contain: thisProps.contain, rtl: thisProps.rtl, stickyOffset: thisProps.rtlOffset, stickyRows: thisProps.computedStickyRows, enableRowSpan: thisProps.computedEnableRowspan, recycleCoveredRows: false, className: VirtualListClassName, renderRowContainer: this.renderRowContainer }, maybeProps, { overscrollBehavior: "auto", rowHeightManager: thisProps.rowHeightManager, before: thisProps.before, after: thisProps.after, showEmptyRows: thisProps.computedShowEmptyRows, scrollProps: scrollProps, emptyScrollOffset: this.getEmptyScrollOffset(), nativeScroll: thisProps.nativeScroll, onResize: this.onResize, virtualized: thisProps.virtualized, minRowWidth: minRowWidth, naturalRowHeight: naturalRowHeight, renderScroller: this.renderScroller, renderScrollerSpacer: this.renderScrollerSpacer, renderSizer: this.renderSizer, renderView: this.renderView, useTransformRowPosition: this.props.useTransformRowPosition, useTransformPosition: this.props.useTransformPosition, shouldComponentUpdate: shouldUpdate, ref: this.refVirtualList, count: thisProps.data.length || 0, pureRows: pureRows, renderRow: renderRow, onContainerScrollHorizontal: this.onScrollHorizontal, onContainerScroll: this.onContainerScroll, onScrollbarsChange: this.onScrollbarsChange, onContainerScrollVertical: this.props.onContainerScrollVertical, onScrollStop: this.onScrollStop, shouldFocusNextRow: this.shouldFocusNextRow })));
     }
     shouldFocusNextRow({ index, nextIndex, dir }) {
         const shouldFocus = !this.isLazyEditing();
