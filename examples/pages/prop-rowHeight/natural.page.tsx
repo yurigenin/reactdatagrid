@@ -78,7 +78,6 @@ class App extends React.Component {
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         minRowHeight={50}
         columnMinWidth={400}
-        virtualizeColumns
         dataSource={this.state.dataSource}
       />
     );

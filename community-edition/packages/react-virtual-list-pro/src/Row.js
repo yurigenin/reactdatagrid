@@ -182,7 +182,7 @@ export default class InovuaVirtualListRow extends React.Component {
         const { naturalRowHeight, rowHeightManager } = this.props;
         if (naturalRowHeight) {
             const index = this.index;
-            const getDOMHeight = () => this.node.scrollHeight || 0;
+            const getDOMHeight = () => this.node?.scrollHeight || 0;
             const rowHeight = rowHeightManager.getRowHeight(index); //, getDOMHeight);
             const offsetHeight = getDOMHeight();
             const height = offsetHeight;

@@ -45,6 +45,7 @@
     "//**** ": "****//",
     "release:patch": "npm run build && npm run patch && npm run registry-publish",
     "release:patch:nobuild": "release patch --debug && npm run registry-publish",
+    "release:canary": "npm run build && npm run nobump:canary",
     "release:patch:canary": "npm run build && npm run patch:canary",
     "release:patch:canary:nobuild": "release patch pre canary && npm run registry-publish:canary",
     "//****  ": "****//",
