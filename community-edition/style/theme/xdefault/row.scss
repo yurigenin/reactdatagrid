@@ -87,9 +87,12 @@
 
   /* ----------  Row  ---------- */
   .InovuaReactDataGrid__row {
+    &--scrolling:not(.InovuaReactDataGrid__row--natural-rowheight) {
+      contain: strict !important;
+    }
+
     &--scrolling {
       pointer-events: none;
-      contain: strict !important;
     }
 
     .InovuaReactDataGrid__row-details {

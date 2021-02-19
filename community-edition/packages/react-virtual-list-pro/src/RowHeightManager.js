@@ -10,14 +10,24 @@ const sortAsc = (a, b) => a - b;
 class RowHeightManager extends EventEmitter {
     constructor(rowHeight, rowHeightsMap = {}, config) {
         super();
-        this.rowHeight = rowHeight;
+        this.__id = '';
+        this.rowHeight =
+            typeof rowHeight === 'object'
+                ? typeof rowHeight.rowHeight === 'number'
+                    ? rowHeight.rowHeight
+                    : rowHeight.minRowHeight || 40
+                : 40;
         this.map = rowHeightsMap;
+        if (typeof rowHeight === 'object' &&
+            typeof rowHeight.rowHeight === 'function') {
+            this.rowHeightFn = rowHeight.rowHeight;
+        }
         if (!config || config.cache !== false) {
             this.setCache({});
         }
-        this.index(rowHeight, rowHeightsMap);
+        this.index(this.rowHeight, rowHeightsMap);
     }
-    setRowHeight({ index, height, defaultRowHeight, }) {
+    setRowHeight({ index, height, defaultRowHeight, skipIndex, }) {
         if (this.map[index] === height && !defaultRowHeight) {
             console.warn('NOOP');
             return;
@@ -29,23 +39,28 @@ class RowHeightManager extends EventEmitter {
         if (this.cache) {
             this.setCache({});
         }
-        this.index(this.rowHeight, this.map);
+        if (!skipIndex) {
+            this.index();
+        }
     }
-    setRowHeightLazy({ index, height, defaultRowHeight, }) {
-        this.map[index] = height;
-        if (defaultRowHeight) {
-            this.rowHeight = defaultRowHeight;
-        }
-        if (this.cache) {
-            this.setCache({});
-        }
+    indexRaf() {
         if (this.lazyRowHeightRafId) {
             cancelAnimationFrame(this.lazyRowHeightRafId);
+            this.lazyRowHeightRafId = 0;
         }
         this.lazyRowHeightRafId = requestAnimationFrame(() => {
-            delete this.lazyRowHeightRafId;
-            this.index(this.rowHeight, this.map);
+            this.lazyRowHeightRafId = 0;
+            this.index();
         });
+    }
+    setRowHeightLazy({ index, height, defaultRowHeight, }) {
+        this.setRowHeight({
+            index,
+            height,
+            defaultRowHeight: defaultRowHeight || this.rowHeight,
+            skipIndex: true,
+        });
+        this.indexRaf();
     }
     setHeights(map) {
         this.map = map;
@@ -73,7 +88,7 @@ class RowHeightManager extends EventEmitter {
         }
         this.index(this.rowHeight, this.map);
     }
-    index(defaultRowHeight, map) {
+    index(defaultRowHeight = this.rowHeight, map = this.map) {
         this.rowToOffsetCache = {};
         const indexes = map
             ? Object.keys(map)
@@ -82,6 +97,7 @@ class RowHeightManager extends EventEmitter {
             : [];
         this.minHeight = defaultRowHeight;
         this.maxHeight = defaultRowHeight;
+        this.__id = JSON.stringify(this.heights);
         this.heights = indexes.map(index => {
             const height = map[index];
             if (height > this.maxHeight) {
@@ -109,6 +125,10 @@ class RowHeightManager extends EventEmitter {
             this.offsetsToIndexes[offset] = index;
             return acc;
         }, {});
+        const __id = JSON.stringify(this.heights);
+        if (__id === this.__id) {
+            return;
+        }
         this.afterIndex();
     }
     afterIndex() {
@@ -167,10 +187,13 @@ class RowHeightManager extends EventEmitter {
         this.rowToOffsetCache[index] = offset;
         return offset;
     }
-    getRowHeight(index) {
+    getRowHeight(index, fn) {
         let value = this.map[index];
         if (value !== undefined) {
             return value;
+        }
+        if (fn) {
+            return fn();
         }
         return this.rowHeight;
     }

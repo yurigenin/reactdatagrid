@@ -27,6 +27,7 @@ import { id as REORDER_COLUMN_ID } from '../../../normalizeColumns/defaultRowReo
 import TextEditor from './editors/Text';
 import Renderable from '../../../types/TypeRenderable';
 import { EnhancedCellProps, CellRenderObject } from './CellProps';
+import { setupResizeObserver } from '../../../utils/setupResizeObserver';
 // import diff from '../../../packages/shallow-changes';
 
 const cellBem = bemFactory('InovuaReactDataGrid__cell');
@@ -128,9 +129,22 @@ export default class InovuaDataGridCell extends React.Component {
     if (this.props.onMount) {
       this.props.onMount(this.props, this);
     }
+
+    if (this.props.naturalRowHeight) {
+      // this.cleanupResizeObserver = setupResizeObserver(this.node, size => {
+      //   this.props.onResize?.({
+      //     cell: this,
+      //     props: this.getProps(),
+      //     size,
+      //   });
+      // });
+    }
   }
 
   componentWillUnmount() {
+    if (this.cleanupResizeObserver) {
+      this.cleanupResizeObserver();
+    }
     if (this.props.onUnmount) {
       this.props.onUnmount(this.props, this);
     }
@@ -223,11 +237,15 @@ export default class InovuaDataGridCell extends React.Component {
         style.height = rowHeight;
       }
 
-      if (initialRowHeight) {
-        style.height = initialRowHeight;
-      }
-      if (rowHeight && computedRowspan > 1) {
-        style.height = (initialRowHeight || rowHeight) * computedRowspan;
+      if (naturalRowHeight) {
+        style.minHeight = minRowHeight;
+      } else {
+        if (initialRowHeight) {
+          style.height = initialRowHeight;
+        }
+        if (rowHeight && computedRowspan > 1) {
+          style.height = (initialRowHeight || rowHeight) * computedRowspan;
+        }
       }
     }
 
@@ -236,12 +254,15 @@ export default class InovuaDataGridCell extends React.Component {
     }
 
     if (!headerCell && !computedLocked) {
-      style.position = 'absolute';
+      // style.position = naturalRowHeight ? 'relative' : 'absolute';
+      style.position = naturalRowHeight ? 'relative' : 'absolute';
       style.top = 0;
-      if (rtl) {
-        style.right = computedOffset;
-      } else {
-        style.left = computedOffset;
+      if (!naturalRowHeight) {
+        if (rtl) {
+          style.right = computedOffset;
+        } else {
+          style.left = computedOffset;
+        }
       }
     }
 

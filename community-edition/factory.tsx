@@ -541,7 +541,10 @@ const GridFactory = (
 
     const rowHeightManager = useMemo(() => {
       return new RowHeightManager(
-        props.rowHeight || props.minRowHeight,
+        {
+          rowHeight: props.rowHeight || props.minRowHeight,
+          minRowHeight: props.minRowHeight,
+        },
         {},
         { cache: !!props.rowHeight }
       );
@@ -1022,7 +1025,7 @@ const GridFactory = (
       getScrollLeft,
       getScrollLeftMax,
       isCellVisible,
-      naturalRowHeight: props.rowHeight == null,
+      naturalRowHeight: typeof props.rowHeight !== 'number',
 
       isRowRendered,
       getRenderRange,
@@ -1338,7 +1341,9 @@ const GridFactory = (
     const activeRowHeight =
       computedProps.computedRowHeights && activeItem
         ? computedProps.computedRowHeights[getItemId(activeItem)]
-        : computedProps.rowHeight;
+        : computedProps.rowHeight == null
+        ? rowHeightManager.getRowHeight(computedProps.computedActiveIndex)
+        : computedPropsRef.rowHeight;
     computedProps.activeRowHeight = activeRowHeight || computedProps.rowHeight;
 
     computedProps.renderActiveRowIndicator = (

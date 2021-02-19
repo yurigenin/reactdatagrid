@@ -481,7 +481,7 @@ type TypeDataGridPropsNoI18n = {
   columnResizeHandleWidth: number;
   rowResizeHandleWidth?: number;
   columnResizeProxyWidth: number;
-  rowHeight: number;
+  rowHeight: number | ((rowIndex: number) => number);
   minRowHeight?: number;
   maxRowHeight?: number;
   checkboxColumn?: IColumn | boolean;

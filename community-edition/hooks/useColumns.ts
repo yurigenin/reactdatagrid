@@ -250,10 +250,14 @@ export default (
     rowReorderColumn: props.rowReorderColumn,
   });
 
-  const virtualizeColumns =
+  let virtualizeColumns =
     props.virtualizeColumns !== undefined
       ? props.virtualizeColumns
       : visibleColumns.length >= props.virtualizeColumnsThreshold;
+
+  if (typeof props.rowHeight !== 'number') {
+    virtualizeColumns = false;
+  }
 
   const columnRenderCount = getColumnRenderCount({
     availableWidth: maxAvailableWidthForColumns,

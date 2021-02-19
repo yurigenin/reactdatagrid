@@ -80,8 +80,9 @@ export default class InovuaVirtualListRow extends React.Component<
   componentDidMount() {
     const { naturalRowHeight } = this.props;
     this.fetchNode();
-    if (naturalRowHeight) {
+    if (naturalRowHeight && this.node) {
       this.node.style.visibility = STR_HIDDEN;
+      return;
     }
     this.updateRowHeight();
     this.updateRowSpan();
@@ -253,16 +254,22 @@ export default class InovuaVirtualListRow extends React.Component<
     });
   }
 
-  updateRowHeight(config?: { useRaf: boolean }) {
+  updateRowHeight(config?: { useRaf?: boolean }) {
     const { naturalRowHeight, rowHeightManager } = this.props;
     if (naturalRowHeight) {
       const index = this.index;
-      const rowHeight = rowHeightManager.getRowHeight(index);
-      const offsetHeight = this.node.offsetHeight;
+
+      const getDOMHeight = () => this.node.scrollHeight || 0;
+
+      const rowHeight = rowHeightManager.getRowHeight(index); //, getDOMHeight);
+      const offsetHeight = getDOMHeight();
+
+      const height = offsetHeight;
+
       if (rowHeight != offsetHeight) {
         const info = {
           index,
-          height: offsetHeight,
+          height,
         };
 
         if (!offsetHeight) {
