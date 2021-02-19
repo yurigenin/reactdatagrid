@@ -16,12 +16,13 @@ const gridStyle = { minHeight: '80vh', margin: 20 };
 const times = (arr, n) => {
   const result = [];
 
+  let id = -1;
   for (var i = 0; i < n; i++) {
     result.push(
       ...arr.map(x => {
         return {
           ...x,
-          id: `${i}-${x.id}`,
+          id: `${++id}`,
         };
       })
     );
@@ -29,9 +30,6 @@ const times = (arr, n) => {
 
   return result;
 };
-const defaultGroupBy = ['country'];
-
-const defaultCellSelection = { '0-4,id': true, '0-4,desc': true };
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -45,12 +43,21 @@ class App extends React.Component {
           id: 'desc',
           header: 'Description',
           defaultFlex: 2,
-          render: ({ data }) =>
-            data.firstName +
-            ', aged: ' +
-            data.age +
-            '. Lives in ' +
-            data.country,
+          render: ({ data, rowIndex }) => {
+            let height = 50;
+            if (rowIndex % 5 === 0) {
+              height = 100;
+            }
+            return (
+              <div style={{ height: height }}>
+                {data.firstName +
+                  ', aged: ' +
+                  data.age +
+                  '. Lives in ' +
+                  data.country}
+              </div>
+            );
+          },
         },
       ],
       dataSource: times(people, 50),
@@ -67,10 +74,11 @@ class App extends React.Component {
         style={gridStyle}
         theme="default-light"
         columns={this.state.columns}
+        rowHeight={null}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
-        groupColumn
-        rtl
-        stickyGroupRows
+        minRowHeight={50}
+        columnMinWidth={400}
+        virtualizeColumns
         dataSource={this.state.dataSource}
       />
     );

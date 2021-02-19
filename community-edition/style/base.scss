@@ -87,10 +87,16 @@
   z-index: 1;
 }
 
-.InovuaReactDataGrid__body--scrolling {
+.InovuaReactDataGrid__virtual-list--scrolling {
   // usefull, when you scroll rows don't trigger onMouseOver
   .InovuaReactDataGrid__row {
     pointer-events: none;
+  }
+  .InovuaReactDataGrid__row {
+    contain: strict;
+  }
+  .InovuaReactDataGrid__row-hover-target {
+    // contain: paint layout;
   }
 }
 
@@ -187,6 +193,7 @@
       display: flex;
       flex-flow: row;
       flex-wrap: nowrap;
+      align-items: stretch;
     }
   }
 

@@ -36,6 +36,8 @@ const DEFAULT_SCROLL_POS = {
   scrollTop: 0,
 };
 
+const VirtualListClassName = 'InovuaReactDataGrid__virtual-list';
+
 export type TypeScrollPos = { scrollTop: number; scrollLeft: number };
 type ListProps = {
   virtualized: boolean;
@@ -285,6 +287,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     return (
       <VirtualList
         rowHeight={null}
+        extraRows={naturalRowHeight ? 1 : 0}
         style={thisProps.style}
         theme={this.props.theme}
         checkResizeDelay={thisProps.checkResizeDelay}
@@ -295,7 +298,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
         stickyRows={thisProps.computedStickyRows}
         enableRowSpan={thisProps.computedEnableRowspan}
         recycleCoveredRows={false}
-        className="InovuaReactDataGrid__virtual-list"
+        className={VirtualListClassName}
         renderRowContainer={this.renderRowContainer}
         {...maybeProps}
         overscrollBehavior="auto"
@@ -581,6 +584,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     }
 
     if (this.props.virtualized) {
+      this.getDOMNode()?.classList?.add(`${VirtualListClassName}--scrolling`);
       requestAnimationFrame(() => {
         this.getRows().forEach(r =>
           r ? r.setScrolling(this.scrollingDirection) : null
@@ -592,6 +596,9 @@ export default class InovuaDataGridList extends Component<ListProps> {
   onScrollStop = () => {
     this.scrollingDirection = 'none';
     if (this.props.virtualized) {
+      this.getDOMNode()?.classList?.remove(
+        `${VirtualListClassName}--scrolling`
+      );
       this.getRows().forEach(r => {
         if (!r) {
           return;

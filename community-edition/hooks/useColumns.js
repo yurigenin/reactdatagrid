@@ -113,9 +113,12 @@ export default (props, { maxAvailableWidthForColumns, lockedColumnsState, comput
         onRowReorder: props.onRowReorder,
         rowReorderColumn: props.rowReorderColumn,
     });
-    const virtualizeColumns = props.virtualizeColumns !== undefined
+    let virtualizeColumns = props.virtualizeColumns !== undefined
         ? props.virtualizeColumns
         : visibleColumns.length >= props.virtualizeColumnsThreshold;
+    if (typeof props.rowHeight !== 'number') {
+        virtualizeColumns = false;
+    }
     const columnRenderCount = getColumnRenderCount({
         availableWidth: maxAvailableWidthForColumns,
         visibleColumns,

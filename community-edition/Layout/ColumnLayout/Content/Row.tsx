@@ -439,6 +439,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       active && `${CLASS_NAME}--active`,
       virtualizeColumns && `${CLASS_NAME}--virtualize-columns`,
       rowHeight && `${CLASS_NAME}--rowheight`,
+      naturalRowHeight && `${CLASS_NAME}--natural-rowheight`,
       realIndex == 0 && `${CLASS_NAME}--first`,
       last && `${CLASS_NAME}--last`,
       indexInGroup == 0 && `${CLASS_NAME}--first-in-group`,

@@ -604,8 +604,8 @@ export default class InovuaVirtualList extends Component<TypeProps> {
   };
 
   getVisibleCount = (props = this.props) => {
-    const { virtualized, enableRowSpan } = props;
-    const extraRows = enableRowSpan ? 2 : 0;
+    const { virtualized, enableRowSpan, extraRows: extraRowsProps } = props;
+    const extraRows = enableRowSpan ? 2 : extraRowsProps || 0;
 
     if (this.visibleCount === undefined) {
       return 0;
@@ -1876,6 +1876,7 @@ const propTypes = {
   handleRowKeyDown: PropTypes.func,
   rafOnResize: PropTypes.bool,
   checkResizeDelay: PropTypes.number,
+  extraRows: PropTypes.number,
   measureSize: PropTypes.func,
   minRowHeight: PropTypes.number,
   minRowWidth: PropTypes.number,
