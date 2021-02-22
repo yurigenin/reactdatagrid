@@ -72,11 +72,18 @@ export default class DateFilter extends Component {
         if (dateFormat === undefined) {
             dateFormat = (filterEditorProps && filterEditorProps.dateFormat) || '';
         }
+        const calendarLabels = {
+            todayButtonText: i18n('todayButtonText'),
+            clearButtonText: i18n('clearButtonText'),
+            okButtonText: i18n('okButtonText'),
+            cancelButtonText: i18n('cancelButtonText'),
+        };
         const startTarget = () => cell
             .getDOMNode()
             .querySelectorAll('.InovuaReactDataGrid__column-header__filter')[0] ||
             cell.getDOMNode();
         const inputProps = {
+            calendarProps: { ...calendarLabels },
             readOnly,
             disabled,
             dateFormat,
