@@ -97,10 +97,10 @@ const columns = [
 
 const App = () => {
   const i18n = Object.assign({}, ReactDataGrid.defaultProps.i18n, {
-    todayButtonText: 'Now',
-    clearButtonText: 'Delete',
-    okButtonText: 'Sure',
-    cancelButtonText: 'Back',
+    'calendar.todayButtonText': 'Now',
+    'calendar.clearButtonText': 'Delete',
+    'calendar.okButtonText': 'Sure',
+    'calendar.cancelButtonText': 'Back',
   });
 
   return (

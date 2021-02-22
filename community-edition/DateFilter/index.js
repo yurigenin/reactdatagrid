@@ -73,10 +73,10 @@ export default class DateFilter extends Component {
             dateFormat = (filterEditorProps && filterEditorProps.dateFormat) || '';
         }
         const calendarLabels = {
-            todayButtonText: i18n('todayButtonText'),
-            clearButtonText: i18n('clearButtonText'),
-            okButtonText: i18n('okButtonText'),
-            cancelButtonText: i18n('cancelButtonText'),
+            todayButtonText: i18n('calendar.todayButtonText'),
+            clearButtonText: i18n('calendar.clearButtonText'),
+            okButtonText: i18n('calendar.okButtonText'),
+            cancelButtonText: i18n('calendar.cancelButtonText'),
         };
         const startTarget = () => cell
             .getDOMNode()
