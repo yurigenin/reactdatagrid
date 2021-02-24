@@ -41,6 +41,7 @@ const CELL_RENDER_OBJECT = sealedObjectFactory({
     isRowExpandable: null,
     toggleRowExpand: null,
     toggleNodeExpand: null,
+    loadNodeAsync: null,
     toggleGroup: null,
     cellProps: null,
     totalDataCount: null,
@@ -353,7 +354,7 @@ export default class InovuaDataGridCell extends React.Component {
     }
     render() {
         const props = this.getProps();
-        const { cellActive, cellSelected, data, empty, groupProps, headerCell, hidden, name, onCellEnter, onRender, treeColumn, groupSpacerColumn, groupColumn, groupColumnVisible, rowIndex, remoteRowIndex, rowSelected, rowExpanded, setRowSelected, setRowExpanded, isRowExpandable, toggleRowExpand, toggleNodeExpand, totalDataCount, computedVisibleIndex, inEdit, } = props;
+        const { cellActive, cellSelected, data, empty, groupProps, headerCell, hidden, name, onCellEnter, onRender, treeColumn, groupSpacerColumn, groupColumn, loadNodeAsync, groupColumnVisible, rowIndex, remoteRowIndex, rowSelected, rowExpanded, setRowSelected, setRowExpanded, isRowExpandable, toggleRowExpand, toggleNodeExpand, totalDataCount, computedVisibleIndex, inEdit, } = props;
         let { value, render: renderCell, renderSummary } = props;
         const className = this.prepareClassName(props);
         const style = this.prepareStyle(props);
@@ -404,6 +405,7 @@ export default class InovuaDataGridCell extends React.Component {
             CELL_RENDER_OBJECT.toggleGroup = this.toggleGroup;
             CELL_RENDER_OBJECT.toggleRowExpand = toggleRowExpand;
             CELL_RENDER_OBJECT.toggleNodeExpand = toggleNodeExpand;
+            CELL_RENDER_OBJECT.loadNodeAsync = loadNodeAsync;
             CELL_RENDER_OBJECT.isRowExpandable = isRowExpandable;
             CELL_RENDER_OBJECT.totalDataCount = totalDataCount;
         }

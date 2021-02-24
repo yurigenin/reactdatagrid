@@ -199,6 +199,7 @@ type TypeDataGridPropsNoI18n = {
   growExpandHeightWithDetails: boolean;
   enableRowExpand?: boolean;
   stickyGroupRows?: boolean;
+  stickyTreeNodes?: boolean;
   licenseKey?: string;
   updateMenuPositionOnScroll?: boolean;
   unexpandableRows?: { [key: string]: boolean };

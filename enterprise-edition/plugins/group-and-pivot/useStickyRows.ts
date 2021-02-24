@@ -20,11 +20,12 @@ const useStickyRows = (
   computedStickyRows?: TypeStickyRows;
   setStickyGroupsIndexes?: (stickyGroupsIndexes: TypeStickyRows) => void;
 } => {
-  const [stickyGroupsIndexes, setStickyGroupsIndexes] = useState<{
+  const [stickyIndexes, setStickyGroupsIndexes] = useState<{
     [key: number]: number;
   } | null>(null);
 
-  let stickyRows = props.stickyGroupRows ? stickyGroupsIndexes : null;
+  let stickyRows =
+    props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
 
   const computedStickyRows = useMemo(() => {
     return stickyRows == null ? stickyRows : { ...stickyRows };

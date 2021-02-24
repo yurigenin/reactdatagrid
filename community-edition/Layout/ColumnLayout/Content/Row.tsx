@@ -818,6 +818,11 @@ export default class DataGridRow extends React.Component<RowProps> {
     this.props.toggleNodeExpand(rowIndex!);
   }
 
+  loadNodeAsync() {
+    const { data } = this.props;
+    this.props.loadNodeAsync?.(data);
+  }
+
   isRowExpandable(rowIndex?: number) {
     if (typeof rowIndex !== 'number') {
       rowIndex = this.props.realIndex;
@@ -1120,6 +1125,7 @@ export default class DataGridRow extends React.Component<RowProps> {
         setRowExpanded: computedRowExpandEnabled ? this.setRowExpanded : null,
         toggleRowExpand: computedRowExpandEnabled ? this.toggleRowExpand : null,
         toggleNodeExpand: computedTreeEnabled ? this.toggleNodeExpand : null,
+        loadNodeAsync: computedTreeEnabled ? this.loadNodeAsync : null,
         rowActive: this.props.active,
         rowSelected: this.props.selected,
         rowExpanded,
@@ -1993,6 +1999,7 @@ DataGridRow.propTypes = {
   setRowExpanded: PropTypes.func,
   toggleRowExpand: PropTypes.func,
   toggleNodeExpand: PropTypes.func,
+  loadNodeAsync: PropTypes.func,
   showAllGroupCells: PropTypes.bool,
   computedShowCellBorders: PropTypes.oneOfType([
     PropTypes.string,

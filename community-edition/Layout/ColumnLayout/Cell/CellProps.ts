@@ -247,6 +247,7 @@ export type CellRenderObject = {
   toggleGroup: (event: any) => void;
   toggleRowExpand: any;
   toggleNodeExpand: any;
+  loadNodeAsync?: () => void;
   isRowExpandable: (rowInfo: {
     id: string | number;
     data: object;

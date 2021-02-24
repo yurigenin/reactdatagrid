@@ -875,14 +875,22 @@ export default (
             shouldIndexData && Array.isArray(data) ? {} : null;
 
           const stickyGroupsIndexes: { [key: number]: number } | null =
-            props.stickyGroupRows === true ? {} : null;
+            props.stickyGroupRows === true || props.stickyTreeNodes === true
+              ? {}
+              : null;
 
           const dataMap =
             shouldIndexData && Array.isArray(data)
               ? data.reduce((acc, item, index: number) => {
                   const id = computedProps.getItemId(item);
-                  if (stickyGroupsIndexes && item.__group) {
-                    stickyGroupsIndexes[index] = item.depth;
+
+                  if (stickyGroupsIndexes) {
+                    if (item.__group) {
+                      stickyGroupsIndexes[index] = item.depth;
+                    }
+                    if (item.__nodeProps && !item.__nodeProps.leafNode) {
+                      stickyGroupsIndexes[index] = item.__nodeProps.depth + 1;
+                    }
                   }
                   acc[id] = item;
                   dataIndexMap![id] = index;

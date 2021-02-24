@@ -121,6 +121,7 @@ export type RowProps = {
   setRowExpanded: (rowIndex: number, expanded: boolean) => void;
   toggleRowExpand: (index: number) => void;
   toggleNodeExpand: (index: number) => void;
+  loadNodeAsync: () => void;
   showAllGroupCells?: boolean;
   computedShowCellBorders?: string | boolean;
   showHorizontalCellBorders?: boolean;

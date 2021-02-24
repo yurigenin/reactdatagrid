@@ -38,11 +38,14 @@ const isNodeExpandableAt_FromProps = (computedPropsRef, rowIndex) => {
     EXPANDABLE_NODE_INFO.nodeProps = data.__nodeProps;
     return initialProps.isNodeExpandable(EXPANDABLE_NODE_INFO);
 };
-const loadNodeAsync_FromProps = (computedPropsRef, data, callback) => {
+const loadNodeAsync_FromProps = (computedPropsRef, dataOrIndex, callback) => {
     const { current: computedProps } = computedPropsRef;
     if (!computedProps) {
         return;
     }
+    const data = typeof dataOrIndex === 'number'
+        ? computedProps.getItemAt(dataOrIndex)
+        : dataOrIndex;
     const nodeId = computedProps.getItemId(data);
     const nodeCache = computedProps.getNodeCache();
     const once = !!computedProps.initialProps.loadNodeOnce;
@@ -408,6 +411,7 @@ const useTreeColumn = (props, computedProps, computedPropsRef) => {
     return {
         clearNodeChildrenCache,
         toggleNodeExpand,
+        loadNodeAsync,
         collapsingNodesRef,
         setLoadingNodes,
         computedTreeEnabled,

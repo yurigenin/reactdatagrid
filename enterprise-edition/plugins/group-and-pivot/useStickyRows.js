@@ -6,8 +6,8 @@
  */
 import { useState, useMemo } from 'react';
 const useStickyRows = (props, computedProps, computedPropsRef) => {
-    const [stickyGroupsIndexes, setStickyGroupsIndexes] = useState(null);
-    let stickyRows = props.stickyGroupRows ? stickyGroupsIndexes : null;
+    const [stickyIndexes, setStickyGroupsIndexes] = useState(null);
+    let stickyRows = props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
     const computedStickyRows = useMemo(() => {
         return stickyRows == null ? stickyRows : { ...stickyRows };
     }, [

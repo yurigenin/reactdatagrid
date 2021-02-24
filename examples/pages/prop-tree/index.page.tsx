@@ -80,6 +80,14 @@ class App extends React.Component {
       columns: [
         { name: 'name', defaultFlex: 1 },
         { name: 'size', defaultWidth: 120 },
+        {
+          id: 'toggle',
+          render: data => {
+            return (
+              <button onClick={() => data.toggleNodeExpand()}>toggle</button>
+            );
+          },
+        },
       ],
       dataSource: treeData,
     };

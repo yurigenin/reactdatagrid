@@ -54,6 +54,7 @@ const CELL_RENDER_OBJECT: CellRenderObject = sealedObjectFactory({
   isRowExpandable: null,
   toggleRowExpand: null,
   toggleNodeExpand: null,
+  loadNodeAsync: null,
   toggleGroup: null,
   cellProps: null,
   totalDataCount: null,
@@ -564,6 +565,7 @@ export default class InovuaDataGridCell extends React.Component {
       treeColumn,
       groupSpacerColumn,
       groupColumn,
+      loadNodeAsync,
       groupColumnVisible,
       rowIndex,
       remoteRowIndex,
@@ -642,6 +644,7 @@ export default class InovuaDataGridCell extends React.Component {
       CELL_RENDER_OBJECT.toggleGroup = this.toggleGroup;
       CELL_RENDER_OBJECT.toggleRowExpand = toggleRowExpand;
       CELL_RENDER_OBJECT.toggleNodeExpand = toggleNodeExpand;
+      CELL_RENDER_OBJECT.loadNodeAsync = loadNodeAsync;
       CELL_RENDER_OBJECT.isRowExpandable = isRowExpandable;
       CELL_RENDER_OBJECT.totalDataCount = totalDataCount;
     }
