@@ -81,6 +81,11 @@ const DEFAULT_I18N = {
     end: 'End',
     dragHeaderToGroup: 'Drag header to group',
     noRecords: 'No records available',
+    // calendar
+    'calendar.todayButtonText': 'Today',
+    'calendar.clearButtonText': 'Clear',
+    'calendar.okButtonText': 'OK',
+    'calendar.cancelButtonText': 'Cancel',
 };
 const renderLoadMask = (props) => {
     const loadMaskProps = {

@@ -247,6 +247,7 @@ class BasicMonthView extends Component {
     delete flexProps.showMonthDecadeViewAnimation;
     delete flexProps.triggerChangeOnTimeChange;
     delete flexProps.cancelButtonText;
+    delete flexProps.clearButtonText;
     delete flexProps.clearButton;
     delete flexProps.innerRef;
 

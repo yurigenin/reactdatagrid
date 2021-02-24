@@ -36,10 +36,11 @@ const defaultOverlayProps = {
 };
 
 const getPicker = props => {
+  const { calendarProps } = props;
   return (
     React.Children.toArray(props.children).filter(
       c => c && c.props && c.props.isDatePicker
-    )[0] || <Calendar />
+    )[0] || <Calendar {...calendarProps} />
   );
 };
 
@@ -123,6 +124,12 @@ export default class DateInput extends Component {
     delete flexProps.defaultDate;
     delete flexProps.weekNumbers;
     delete flexProps.highlightWeekends;
+    delete flexProps.calendarProps;
+    delete flexProps.cancelButtonText;
+    delete flexProps.clearButtonText;
+    delete flexProps.okButtonText;
+    delete flexProps.todayButtonText;
+    delete flexProps.rtl;
 
     if (typeof props.cleanup == 'function') {
       props.cleanup(flexProps);
@@ -354,6 +361,13 @@ export default class DateInput extends Component {
     }
 
     props.className = this.prepareClassName(props);
+
+    if (props.calendarProps) {
+      props.cancelButtonText = props.calendarProps.cancelButtonText;
+      props.clearButtonText = props.calendarProps.clearButtonText;
+      props.okButtonText = props.calendarProps.okButtonText;
+      props.todayButtonText = props.calendarProps.todayButtonText;
+    }
 
     return props;
   }
@@ -1174,4 +1188,9 @@ DateInput.propTypes = {
   position: PropTypes.oneOf(['top', 'bottom']),
   weekNumbers: PropTypes.bool,
   highlightWeekends: PropTypes.bool,
+  calendarProps: PropTypes.object,
+  cancelButtonText: PropTypes.string,
+  clearButtonText: PropTypes.string,
+  okButtonText: PropTypes.string,
+  todayButtonText: PropTypes.string,
 };

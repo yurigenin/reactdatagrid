@@ -114,6 +114,9 @@ export default class NavBar extends Component {
     delete flexProps.showClock;
     delete flexProps.enableMonthDecadeViewAnimation;
     delete flexProps.showMonthDecadeViewAnimation;
+    delete flexProps.cancelButtonText;
+    delete flexProps.clearButtonText;
+    delete flexProps.okButtonText;
 
     if (typeof props.cleanup == 'function') {
       props.cleanup(flexProps);
