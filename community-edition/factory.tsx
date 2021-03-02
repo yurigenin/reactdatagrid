@@ -500,6 +500,8 @@ const GridFactory = (
       return props.i18n[key] || DEFAULT_I18N[key] || defaultLabel;
     };
 
+    Object.assign(cProps, useActiveIndex(props, cProps, computedPropsRef));
+
     Object.assign(
       cProps,
       pluginsMap['sortable-columns'].hook!(
@@ -1100,10 +1102,6 @@ const GridFactory = (
     Object.assign(
       computedProps,
       useSelection(props, computedProps, computedPropsRef)
-    );
-    Object.assign(
-      computedProps,
-      useActiveIndex(props, computedProps, computedPropsRef)
     );
 
     Object.assign(computedProps, useHeader(props, computedProps));

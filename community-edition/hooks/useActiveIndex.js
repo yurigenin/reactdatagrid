@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import useProperty from './useProperty';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import clamp from '../utils/clamp';
 import usePrevious from './usePrevious';
 const useActiveIndex = (props, computedProps, computedPropsRef) => {
@@ -13,7 +13,7 @@ const useActiveIndex = (props, computedProps, computedPropsRef) => {
     if (!props.enableKeyboardNavigation) {
         computedActiveIndex = -1;
     }
-    const setActiveIndex = (activeIndex) => {
+    const setActiveIndex = useCallback((activeIndex) => {
         const computedProps = computedPropsRef.current;
         if (!computedProps ||
             !computedProps.computedHasRowNavigation ||
@@ -22,28 +22,33 @@ const useActiveIndex = (props, computedProps, computedPropsRef) => {
         }
         const { data } = computedProps;
         activeIndex = clamp(activeIndex, 0, data.length - 1);
-        if (activeIndex === computedActiveIndex) {
+        if (activeIndex === computedProps.computedActiveIndex) {
             return;
         }
         doSetActiveIndex(activeIndex);
-    };
-    const incrementActiveIndex = (inc) => {
+    }, []);
+    const incrementActiveIndex = useCallback((inc) => {
+        const computedProps = computedPropsRef.current;
+        if (!computedProps) {
+            return;
+        }
+        const computedActiveIndex = computedProps.computedActiveIndex;
         setActiveIndex(computedActiveIndex + inc);
-    };
-    const getActiveItem = () => {
+    }, []);
+    const getActiveItem = useCallback(() => {
         const computedProps = computedPropsRef.current;
         return computedProps
             ? computedProps.data[computedProps.computedActiveIndex]
             : null;
-    };
-    const getFirstVisibleIndex = () => {
+    }, []);
+    const getFirstVisibleIndex = useCallback(() => {
         const computedProps = computedPropsRef.current;
         if (!computedProps) {
             return -1;
         }
         const scrollTop = computedProps.getScrollTop();
         return Math.ceil(scrollTop / props.rowHeight);
-    };
+    }, [props.rowHeight]);
     const oldActiveIndex = usePrevious(computedActiveIndex, -1);
     useEffect(() => {
         const { current: computedProps } = computedPropsRef;

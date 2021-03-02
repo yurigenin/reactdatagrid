@@ -150,6 +150,11 @@ const nestingSizes = [
 
 const defaultExpandedNodes = { 1: true };
 
+const rowHeights = {
+  1: 100,
+  2: 120,
+  3: 150,
+};
 const App = () => {
   const [treeNestingSize, setTreeNestingSize] = useState(22);
 

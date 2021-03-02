@@ -9,7 +9,8 @@ const useStickyRows = (props, computedProps, computedPropsRef) => {
     const [stickyIndexes, setStickyGroupsIndexes] = useState(null);
     let stickyRows = props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
     const computedStickyRows = useMemo(() => {
-        return stickyRows == null ? stickyRows : { ...stickyRows };
+        const result = stickyRows == null ? stickyRows : { ...stickyRows };
+        return result;
     }, [
         stickyRows,
         // any of the below should determine
@@ -21,6 +22,8 @@ const useStickyRows = (props, computedProps, computedPropsRef) => {
         computedProps.data,
         computedProps.size,
         computedProps.viewportAvailableWidth,
+        computedProps.columnFlexes,
+        computedProps.columnSizes,
         computedProps.visibleColumns,
         computedProps.computedActiveIndex,
     ]);

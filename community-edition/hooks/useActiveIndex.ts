@@ -7,7 +7,7 @@
 
 import useProperty from './useProperty';
 import { TypeDataGridProps, TypeComputedProps } from '../types';
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
 import clamp from '../utils/clamp';
 import usePrevious from './usePrevious';
 
@@ -32,7 +32,7 @@ const useActiveIndex = (
     computedActiveIndex = -1;
   }
 
-  const setActiveIndex = (activeIndex: number): void => {
+  const setActiveIndex = useCallback((activeIndex: number): void => {
     const computedProps = computedPropsRef.current;
     if (
       !computedProps ||
@@ -45,32 +45,37 @@ const useActiveIndex = (
 
     activeIndex = clamp(activeIndex, 0, data.length - 1);
 
-    if (activeIndex === computedActiveIndex) {
+    if (activeIndex === computedProps.computedActiveIndex) {
       return;
     }
     doSetActiveIndex(activeIndex);
-  };
+  }, []);
 
-  const incrementActiveIndex = (inc: number) => {
+  const incrementActiveIndex = useCallback((inc: number) => {
+    const computedProps = computedPropsRef.current;
+    if (!computedProps) {
+      return;
+    }
+    const computedActiveIndex = computedProps.computedActiveIndex;
     setActiveIndex(computedActiveIndex + inc);
-  };
+  }, []);
 
-  const getActiveItem = (): any => {
+  const getActiveItem = useCallback((): any => {
     const computedProps = computedPropsRef.current;
 
     return computedProps
       ? computedProps.data[computedProps.computedActiveIndex]
       : null;
-  };
+  }, []);
 
-  const getFirstVisibleIndex = (): number => {
+  const getFirstVisibleIndex = useCallback((): number => {
     const computedProps = computedPropsRef.current;
     if (!computedProps) {
       return -1;
     }
     const scrollTop = computedProps.getScrollTop();
     return Math.ceil(scrollTop / props.rowHeight);
-  };
+  }, [props.rowHeight]);
 
   const oldActiveIndex = usePrevious<number>(computedActiveIndex, -1);
 

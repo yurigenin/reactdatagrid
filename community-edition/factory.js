@@ -319,6 +319,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         cProps.i18n = (key, defaultLabel) => {
             return props.i18n[key] || DEFAULT_I18N[key] || defaultLabel;
         };
+        Object.assign(cProps, useActiveIndex(props, cProps, computedPropsRef));
         Object.assign(cProps, pluginsMap['sortable-columns'].hook(props, cProps, computedPropsRef));
         if (pluginsMap['group-and-pivot'] && pluginsMap['group-and-pivot'].hook) {
             Object.assign(cProps, pluginsMap['group-and-pivot'].hook(props, cProps, computedPropsRef));
@@ -721,7 +722,6 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         }
         computedProps.useCellSelection = pluginsMap['cell-selection'].hook;
         Object.assign(computedProps, useSelection(props, computedProps, computedPropsRef));
-        Object.assign(computedProps, useActiveIndex(props, computedProps, computedPropsRef));
         Object.assign(computedProps, useHeader(props, computedProps));
         computedProps.scrollProps = useScrollProps(props, computedProps);
         const [maxVisibleRows, setMaxVisibleRows] = useState(0);
