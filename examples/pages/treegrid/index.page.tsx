@@ -4,20 +4,40 @@ import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 
 import ComboBox from '@inovua/reactdatagrid-community/packages/ComboBox';
 
-const gridStyle = { minHeight: 350 };
+const gridStyle = { minHeight: 200 };
 
 const treeData = [
+  {
+    id: 2,
+    name: 'Documents',
+    nodes: [
+      {
+        id: 1111,
+        name: 'Todo.md',
+        size: '2Kb',
+      },
+      {
+        id: 22222,
+        name: 'Calendar.md',
+        size: '15.2Kb',
+      },
+      { id: 3222, name: 'Shopping list.csv', size: '20Kb' },
+      { id: 4, name: 'A Shopping list.csv', size: '20Kb' },
+    ],
+  },
   {
     id: 1,
     name: 'Applications',
     folder: true,
     nodes: [
       {
-        id: 3,
+        id: 3333111,
         name: 'IRecall',
         size: '200Mb',
-        nodes: null,
+        // nodes: null,
       },
+      { id: 15, name: 'B Shopping list.csv', size: '20Kb' },
+      { id: 16, name: 'C Shopping list.csv', size: '20Kb' },
       {
         id: 4,
         name: 'Testing',
@@ -37,50 +57,38 @@ const treeData = [
         id: 1,
         name: 'App store',
         size: '4.5Mb',
-        nodes: null,
+        // nodes: null,
       },
       {
         id: 2,
         name: 'iMovie',
         size: '106Mb',
-        nodes: null,
+        // nodes: null,
       },
     ],
   },
-  {
-    id: 2,
-    name: 'Documents',
-    nodes: [
-      {
-        id: 1,
-        name: 'Todo.md',
-        size: '2Kb',
-      },
-      {
-        id: 2,
-        name: 'Calendar.md',
-        size: '15.2Kb',
-      },
-      { id: 3, name: 'Shopping list.csv', size: '20Kb' },
-    ],
-  },
+
   {
     id: 3,
     name: '3 Downloads',
     nodes: [
       {
-        id: 1,
+        id: 1333311111,
         name: 'Email data',
-        nodes: [
-          {
-            id: 1,
-            name: 'Personal.xls',
-            size: '100Gb',
-          },
-          { id: 2, name: 'Work.xls' },
-        ],
+        // nodes: [
+        //   {
+        //     id: 1,
+        //     name: 'Personal.xls',
+        //     size: '100Gb',
+        //   },
+        //   { id: 2, name: 'Work.xls' },
+        // ],
       },
-      { id: 2, name: 'MacRestore.gzip' },
+      { id: 233333, name: 'MacRestore.gzip' },
+      { id: 1233333, name: '1 MacRestore.gzip' },
+      { id: 11233333, name: '2 MacRestore.gzip' },
+      { id: 113233333, name: '3 MacRestore.gzip' },
+      { id: 1155233333, name: '4 MacRestore.gzip' },
     ],
   },
 ];
@@ -148,13 +156,15 @@ const nestingSizes = [
   { label: '50px', id: 50 },
 ];
 
-const defaultExpandedNodes = { 1: true };
+const defaultExpandedNodes = { 1: true, 2: true };
 
 const rowHeights = {
-  1: 100,
+  1: 120,
   2: 120,
-  3: 150,
+  3: 120,
 };
+
+console.log(process.env.NEXT_PUBLIC_LICENSE_KEY);
 const App = () => {
   const [treeNestingSize, setTreeNestingSize] = useState(22);
 

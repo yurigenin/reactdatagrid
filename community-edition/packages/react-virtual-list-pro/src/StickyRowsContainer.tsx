@@ -11,6 +11,9 @@ import { sticky as stickyString } from '../../../packages/hasSticky';
 import { TypeStickyRowInfo } from './TypeStickyRowInfo';
 import RowHeightManager from './RowHeightManager';
 
+export const StickyRowsContainerClassName =
+  'InovuaReactDataGrid__virtual-list-sticky-rows-container';
+
 type TypeProps = {
   handle: (...args: any[]) => void;
   rowHeightManager: RowHeightManager;
@@ -154,7 +157,7 @@ const StickyRowsContainer = (props: TypeProps) => {
 
   return (
     <div
-      className="InovuaReactDataGrid__virtual-list-sticky-rows-container"
+      className={StickyRowsContainerClassName}
       ref={domNodeRef}
       style={{
         position: stickyString,

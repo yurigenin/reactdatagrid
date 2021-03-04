@@ -6,6 +6,7 @@
  */
 import React, { useRef, useLayoutEffect, useState } from 'react';
 import { sticky as stickyString } from '../../../packages/hasSticky';
+export const StickyRowsContainerClassName = 'InovuaReactDataGrid__virtual-list-sticky-rows-container';
 const StickyRowsContainer = (props) => {
     const latestProps = useRef(props);
     const [content, setContent] = useState(null);
@@ -104,7 +105,7 @@ const StickyRowsContainer = (props) => {
             }
         };
     }, []);
-    return (React.createElement("div", { className: "InovuaReactDataGrid__virtual-list-sticky-rows-container", ref: domNodeRef, style: {
+    return (React.createElement("div", { className: StickyRowsContainerClassName, ref: domNodeRef, style: {
             position: stickyString,
             top: 0,
             left: 0,

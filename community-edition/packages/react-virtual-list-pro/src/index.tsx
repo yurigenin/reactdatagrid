@@ -76,6 +76,7 @@ export default class InovuaVirtualList extends Component<TypeProps> {
   private rows: Row[];
   private rowSpans: { [key: number]: number };
   private rowCoveredBy: { [key: number]: number };
+  private scrollTopPos: number;
 
   constructor(props: TypeProps) {
     super(props);
@@ -715,26 +716,6 @@ export default class InovuaVirtualList extends Component<TypeProps> {
     return getVisibleRange(args);
   };
 
-  getCurrentVisibleRange = () => {
-    const {
-      count,
-      rowHeightManager,
-      rowHeight,
-      naturalRowHeight,
-      showEmptyRows,
-    } = this.props;
-
-    return this.getVisibleRange({
-      scrollTop: this.scrollTopPos,
-      size: this.size,
-      count,
-      naturalRowHeight,
-      rowHeightManager,
-      rowHeight,
-      showEmptyRows,
-    });
-  };
-
   applyScrollStyle = ({ scrollTop, scrollLeft, force, reorder }, domNode) => {
     // protect against safari inertial scrolling overscroll
     // that can give negative scroll positions
@@ -799,7 +780,7 @@ export default class InovuaVirtualList extends Component<TypeProps> {
 
     this.prevStartRowIndex = startRowIndex;
 
-    this.updateStickyRows(scrollTop, range.start, { force: false });
+    this.updateStickyRows(scrollTop, undefined, { force: false });
 
     const updateScroll = (top = scrollTop) => {
       const parentNodeStyle = this.containerNode.parentNode.style;
@@ -1455,7 +1436,7 @@ export default class InovuaVirtualList extends Component<TypeProps> {
     const { rowsPerScales, rows: allRows } = this.getStickyRowsArray();
 
     if (firstVisibleRowIndex === undefined) {
-      firstVisibleRowIndex = this.getCurrentVisibleRange().start;
+      firstVisibleRowIndex = this.getFirstVisibleRowIndexForSticky(scrollTop);
     }
 
     firstVisibleRowIndex = firstVisibleRowIndex || 0;
@@ -1532,6 +1513,23 @@ export default class InovuaVirtualList extends Component<TypeProps> {
 
     this.setStickyRows(currentStickyRows, scrollTop, enteringRow);
   };
+
+  getFirstVisibleRowIndexForSticky(scrollTop: number = this.scrollTopPos) {
+    const { rowHeightManager } = this.props;
+
+    const stickyHeight = this.currentStickyRows
+      ? this.currentStickyRows.reduce((sum, row: TypeStickyRowInfo) => {
+          return sum + rowHeightManager.getRowHeight(row.index);
+        }, 0)
+      : 0;
+
+    const rowIndex = Math.max(
+      0,
+      rowHeightManager.getRowAt(scrollTop + stickyHeight) - 1
+    );
+
+    return rowIndex;
+  }
 
   setStickyRows = (
     currentStickyRows: TypeStickyRowInfo[] = this.currentStickyRows,

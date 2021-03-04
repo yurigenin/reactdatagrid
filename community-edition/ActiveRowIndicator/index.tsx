@@ -79,8 +79,10 @@ const ActiveRowIndicator = (props: TypeActiveRowIndicatorProps) => {
       return;
     }
 
-    const doSetOffset = (left: number | string, top: number | string) =>
-      setOffset(`translate3d(${left || 0}px, ${top}, 0px)`);
+    const doSetOffset = (left: number | string, top: number | string) => {
+      top = parseInt(top as any, 10) || 0;
+      setOffset(`translate3d(${left || 0}px, ${top}px, 0px)`);
+    };
 
     if (config && config.raf === false) {
       doSetOffset(rtl ? -RTL_OFFSET : 0, node.style.top);

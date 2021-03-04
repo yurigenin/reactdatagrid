@@ -440,7 +440,8 @@ export default class DataGridRow extends React.Component {
         if (sticky) {
             if (activeBordersDiv) {
                 rowProps.children.push(React.createElement("div", { key: "active-row-borders", className: `InovuaReactDataGrid__row-active-borders-wrapper`, style: {
-                        height: initialRowHeight,
+                        // height: initialRowHeight,
+                        height: '100%',
                         position: 'absolute',
                         top: 0,
                         [rtl ? 'right' : 'left']: (groupNestingSize || 0) * groupDepth,

@@ -666,7 +666,8 @@ export default class DataGridRow extends React.Component<RowProps> {
             key="active-row-borders"
             className={`InovuaReactDataGrid__row-active-borders-wrapper`}
             style={{
-              height: initialRowHeight,
+              // height: initialRowHeight,
+              height: '100%', //initialRowHeight,
               position: 'absolute',
 
               top: 0,

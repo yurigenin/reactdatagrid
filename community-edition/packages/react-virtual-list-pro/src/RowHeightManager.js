@@ -106,7 +106,7 @@ class RowHeightManager extends EventEmitter {
             if (height < this.minHeight) {
                 this.minHeight = height;
             }
-            return height;
+            return [index, height];
         });
         let prev = 0;
         this.indexes = indexes;

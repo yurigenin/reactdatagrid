@@ -426,18 +426,6 @@ export default class InovuaVirtualList extends Component {
         this.getVisibleRange = args => {
             return getVisibleRange(args);
         };
-        this.getCurrentVisibleRange = () => {
-            const { count, rowHeightManager, rowHeight, naturalRowHeight, showEmptyRows, } = this.props;
-            return this.getVisibleRange({
-                scrollTop: this.scrollTopPos,
-                size: this.size,
-                count,
-                naturalRowHeight,
-                rowHeightManager,
-                rowHeight,
-                showEmptyRows,
-            });
-        };
         this.applyScrollStyle = ({ scrollTop, scrollLeft, force, reorder }, domNode) => {
             // protect against safari inertial scrolling overscroll
             // that can give negative scroll positions
@@ -486,7 +474,7 @@ export default class InovuaVirtualList extends Component {
             this.prevScrollTopPos = scrollTop;
             this.prevScrollLeftPos = scrollLeft;
             this.prevStartRowIndex = startRowIndex;
-            this.updateStickyRows(scrollTop, range.start, { force: false });
+            this.updateStickyRows(scrollTop, undefined, { force: false });
             const updateScroll = (top = scrollTop) => {
                 const parentNodeStyle = this.containerNode.parentNode.style;
                 const scrollLeftTranslateValue = -scrollLeft;
@@ -788,7 +776,7 @@ export default class InovuaVirtualList extends Component {
             }
             const { rowsPerScales, rows: allRows } = this.getStickyRowsArray();
             if (firstVisibleRowIndex === undefined) {
-                firstVisibleRowIndex = this.getCurrentVisibleRange().start;
+                firstVisibleRowIndex = this.getFirstVisibleRowIndexForSticky(scrollTop);
             }
             firstVisibleRowIndex = firstVisibleRowIndex || 0;
             let enteringRows = [];
@@ -1234,6 +1222,16 @@ export default class InovuaVirtualList extends Component {
             showEmptyRows,
             virtualized,
         });
+    }
+    getFirstVisibleRowIndexForSticky(scrollTop = this.scrollTopPos) {
+        const { rowHeightManager } = this.props;
+        const stickyHeight = this.currentStickyRows
+            ? this.currentStickyRows.reduce((sum, row) => {
+                return sum + rowHeightManager.getRowHeight(row.index);
+            }, 0)
+            : 0;
+        const rowIndex = Math.max(0, rowHeightManager.getRowAt(scrollTop + stickyHeight) - 1);
+        return rowIndex;
     }
     scrollToIndex(index, { direction, force, duration = 0, offset = 0 } = emptyObject, callback) {
         if (direction) {

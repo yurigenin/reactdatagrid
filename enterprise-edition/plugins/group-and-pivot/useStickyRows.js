@@ -24,6 +24,8 @@ const useStickyRows = (props, computedProps, computedPropsRef) => {
         computedProps.viewportAvailableWidth,
         computedProps.columnFlexes,
         computedProps.columnSizes,
+        computedProps.lockedEndColumns,
+        computedProps.lockedStartColumns,
         computedProps.visibleColumns,
         computedProps.computedActiveIndex,
     ]);

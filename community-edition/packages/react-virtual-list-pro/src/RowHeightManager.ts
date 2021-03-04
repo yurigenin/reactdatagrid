@@ -56,7 +56,7 @@ class RowHeightManager extends EventEmitter {
   private rowHeight: number;
   private rowHeightFn?: (i: number) => number;
   private map: TypeNumberMap;
-  private heights!: number[];
+  private heights!: [number, number][];
   private indexes!: number[];
   private offsets!: number[];
   private minHeight!: number;
@@ -220,7 +220,7 @@ class RowHeightManager extends EventEmitter {
       if (height < this.minHeight) {
         this.minHeight = height;
       }
-      return height;
+      return [index, height];
     });
 
     let prev = 0;

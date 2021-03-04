@@ -34,6 +34,7 @@ import batchUpdate from './utils/batchUpdate';
 import emptyPlugins from './plugins/empty';
 import ActiveRowIndicator from './ActiveRowIndicator';
 import { communityFeatureWarn } from './warn';
+import { StickyRowsContainerClassName } from './packages/react-virtual-list-pro/src/StickyRowsContainer';
 let GRID_ID = 0;
 const DEFAULT_I18N = {
     // pagination toolbar
@@ -606,8 +607,48 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
             }
             callback();
         }, []);
+        const getStickyContainerHeight = () => {
+            const stickyContainer = getDOMNode()?.querySelector(`.${StickyRowsContainerClassName}`);
+            const stickyContainerHeight = stickyContainer?.scrollHeight ?? 0;
+            return stickyContainerHeight;
+        };
         const scrollToIndexIfNeeded = (index, config, callback) => {
-            const needed = !isRowFullyVisible(index);
+            let needed = !isRowFullyVisible(index);
+            if (!needed) {
+                const { current: computedProps } = computedPropsRef;
+                if (computedProps?.computedStickyRows) {
+                    if (computedProps.computedStickyRows[index]) {
+                        needed = false;
+                    }
+                    else {
+                        const stickyContainerHeight = getStickyContainerHeight();
+                        const scrollTop = getScrollTop();
+                        const relativeScrollTop = scrollTop + stickyContainerHeight;
+                        const rowOffset = computedProps.rowHeightManager.getRowOffset(index);
+                        if (relativeScrollTop > rowOffset) {
+                            needed = true;
+                            config = config || {
+                                direction: 'top',
+                            };
+                            config.offset =
+                                relativeScrollTop -
+                                    rowOffset +
+                                    rowHeightManager.getRowHeight(index);
+                        }
+                    }
+                }
+            }
+            else {
+                if (computedProps?.computedStickyRows) {
+                    config = config || {
+                        direction: 'top',
+                    };
+                    config.offset = config.offset || 0;
+                    if (config.direction === 'top' || config.top) {
+                        config.offset += getStickyContainerHeight();
+                    }
+                }
+            }
             if (needed) {
                 scrollToIndex(index, config, callback);
             }

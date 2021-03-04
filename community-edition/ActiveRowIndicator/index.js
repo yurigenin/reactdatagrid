@@ -43,7 +43,10 @@ const ActiveRowIndicator = (props) => {
             requestAnimationFrame(() => updateLayout({ raf: false }));
             return;
         }
-        const doSetOffset = (left, top) => setOffset(`translate3d(${left || 0}px, ${top}, 0px)`);
+        const doSetOffset = (left, top) => {
+            top = parseInt(top, 10) || 0;
+            setOffset(`translate3d(${left || 0}px, ${top}px, 0px)`);
+        };
         if (config && config.raf === false) {
             doSetOffset(rtl ? -RTL_OFFSET : 0, node.style.top);
         }
