@@ -17,13 +17,10 @@ import {
 } from '../../types';
 
 import filter from '../../filter';
-import groupAndPivot, { flatten } from '../../utils/groupAndPivot';
+
 import paginate from '../../utils/paginate';
 import getFilterValueForColumns from './getFilterValueForColumns';
 import getSortInfoForColumns from './getSortInfoForColumns';
-import { expandByIdsWithInfo } from '../../utils/tree';
-
-const emptyObject = {};
 
 const filterData = (
   data: any[],

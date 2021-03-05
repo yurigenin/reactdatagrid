@@ -988,6 +988,8 @@ export default (
         originalData,
         computedProps.computedGroupBy,
         computedProps.groupColumn,
+        computedProps.renderRowDetails,
+        computedProps.treeColumn,
         computedProps.showGroupSummaryRow,
         !computedRemoteData ? computedSkip : null,
         !computedRemoteData ? computedLimit : null,

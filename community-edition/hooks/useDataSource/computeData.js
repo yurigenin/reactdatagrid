@@ -8,7 +8,6 @@ import filter from '../../filter';
 import paginate from '../../utils/paginate';
 import getFilterValueForColumns from './getFilterValueForColumns';
 import getSortInfoForColumns from './getSortInfoForColumns';
-const emptyObject = {};
 const filterData = (data, { filterValue, remoteFilter, filterTypes, columnsMap, }) => {
     if (!Array.isArray(filterValue) || !filterValue.length) {
         return data;
