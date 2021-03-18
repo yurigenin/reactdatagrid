@@ -9,6 +9,7 @@ import { TypeComputedColumn } from '../../../types/TypeColumn';
 import { CellProps } from '../Cell/CellProps';
 import { CSSProperties } from 'react';
 import Renderable from '../../../types/TypeRenderable';
+import { TypeDataGridProps } from '../../../types/TypeDataGridProps';
 
 type func = (...args: any[]) => any;
 
@@ -43,6 +44,7 @@ export type RowProps = {
   availableWidth: number;
   computedGroupBy?: any[];
   expandGroupTitle?: boolean;
+  expandColumn?: TypeDataGridProps['expandColumn'];
   getCellSelectionKey?: func;
   depth?: number;
 

@@ -377,6 +377,7 @@ type TypeDataGridPropsNoI18n = {
   autoCheckboxColumn: boolean;
   hideGroupByColumns: boolean;
   expandGroupTitle: boolean;
+  expandColumn?: ({ data }: { data: any }) => string | undefined;
   toggleRowSelectOnClick: boolean;
   toggleCellSelectOnClick: boolean;
   focusedClassName?: string;

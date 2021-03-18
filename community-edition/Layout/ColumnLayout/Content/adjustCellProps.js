@@ -23,10 +23,13 @@ export default (cellProps, rowProps) => {
     totalColumnCount,
     firstLockedEndIndex,
     firstUnlockedIndex,
+    expandColumnIndex,
     groupColumn,
     hasLockedEnd,
     hasLockedStart,
   } = rowProps;
+
+  const expandColumn = computedVisibleIndex === expandColumnIndex;
 
   let { expandGroupTitle } = rowProps;
 
@@ -41,7 +44,10 @@ export default (cellProps, rowProps) => {
   const lockedStart = computedLocked === 'start';
   const lockedEnd = computedLocked === 'end';
 
-  if (computedVisibleIndex < groupProps.depth) {
+  if (
+    (groupProps && computedVisibleIndex < groupProps.depth) ||
+    (expandColumnIndex != null && computedVisibleIndex < expandColumnIndex)
+  ) {
     // when we have a group, all cells before the group collapse tool (>)
     // should be empty
     cellProps.value = null;
@@ -50,7 +56,7 @@ export default (cellProps, rowProps) => {
     return cellProps;
   }
 
-  if (computedVisibleIndex === groupProps.depth) {
+  if (computedVisibleIndex === groupProps?.depth) {
     // this is the cell that should contain the collapse tool (>)
     cellProps.value = null;
     cellProps.collapsed = groupProps.collapsed;
@@ -61,13 +67,13 @@ export default (cellProps, rowProps) => {
     return cellProps;
   }
 
-  if (computedVisibleIndex === groupProps.depth + 1) {
+  if (computedVisibleIndex === groupProps?.depth + 1 || expandColumn) {
     // this is the cell with the group title
     let remainingWidth = lockedStart
       ? totalLockedStartWidth
       : totalComputedWidth - totalLockedEndWidth;
 
-    if (expandGroupTitle) {
+    if (expandGroupTitle || expandColumn) {
       remainingWidth = totalComputedWidth;
       cellProps.last = true;
       cellProps.computedColspan = Math.max(
@@ -89,11 +95,17 @@ export default (cellProps, rowProps) => {
     cellProps.lastInSection = true;
     cellProps.noBackground = false;
     cellProps.computedWidth = remainingWidth - cellProps.computedOffset;
-    cellProps.value = renderGroupTitle({ cellProps, rowProps, groupProps });
+    // only override  for groups, not for expandColumn
+    if (!expandColumn) {
+      cellProps.value = renderGroupTitle({ cellProps, rowProps, groupProps });
+    }
     cellProps.zIndex = 1;
     cellProps.textAlign = 'start';
     if (cellProps.render) {
-      cellProps.render = () => cellProps.value;
+      if (!expandColumn) {
+        // only override  for groups, not for expandColumn
+        cellProps.render = () => cellProps.value;
+      }
     }
 
     return cellProps;

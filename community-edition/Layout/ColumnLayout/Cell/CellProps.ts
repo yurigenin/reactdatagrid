@@ -9,6 +9,8 @@ type func = (...args: any[]) => any;
 export type CellProps = {
   computedAbsoluteIndex?: number;
   checkboxTabIndex?: number;
+  expandColumnIndex?: number;
+  expandColumn: boolean;
   cellActive: boolean;
   cellClassName?: string;
   cellDefaultClassName?: string;

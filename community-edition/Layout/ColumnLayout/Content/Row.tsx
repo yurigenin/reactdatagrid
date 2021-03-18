@@ -1001,6 +1001,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       computedTreeEnabled,
       expanded: rowExpanded,
       expandGroupTitle,
+      expandColumn: expandColumnFn,
       onCellSelectionDraggerMouseDown,
       onCellMouseDown,
       onCellEnter,
@@ -1015,9 +1016,17 @@ export default class DataGridRow extends React.Component<RowProps> {
       onContextMenu,
     } = props;
 
+    const expandColumnId: string | undefined = expandColumnFn
+      ? expandColumnFn({ data })
+      : undefined;
+
     const virtualizeColumns = this.getVirtualizeColumns();
 
     const visibleColumnCount = columns.length;
+
+    const expandColumnIndex = expandColumnId
+      ? columns.filter(c => c.id === expandColumnId)[0]?.computedVisibleIndex
+      : undefined;
 
     if (startIndex !== undefined) {
       columns = columns.slice(
@@ -1093,12 +1102,26 @@ export default class DataGridRow extends React.Component<RowProps> {
       const groupExpandCell =
         !groupColumn && groupProps && groupProps.depth == computedVisibleIndex;
 
+      let hidden = groupProps
+        ? expandGroupTitle && !groupColumn
+          ? computedVisibleIndex > groupProps.depth + 1
+          : false
+        : false;
+
+      if (
+        expandColumnIndex != null &&
+        computedVisibleIndex > expandColumnIndex
+      ) {
+        hidden = true;
+      }
       const cellProps: CellProps = {
         ...defaults,
         ...columnProps,
         remoteRowIndex,
         indexInColumns: theColumnIndex,
         depth,
+        expandColumnIndex,
+        expandColumn: expandColumnIndex === computedVisibleIndex,
         editStartEvent,
         onCellClick,
         computedRowspan: computedRowspans ? computedRowspans[column.id] : 1,
@@ -1149,11 +1172,8 @@ export default class DataGridRow extends React.Component<RowProps> {
         hasLockedStart,
         rowIndexInGroup: indexInGroup,
         rowRenderIndex: renderIndex,
-        hidden: groupProps
-          ? expandGroupTitle && !groupColumn
-            ? computedVisibleIndex > groupProps.depth + 1
-            : false
-          : false,
+        hidden,
+
         groupTitleCell,
         groupExpandCell,
         isRowExpandable: computedRowExpandEnabled ? this.isRowExpandable : null,
@@ -1316,7 +1336,7 @@ export default class DataGridRow extends React.Component<RowProps> {
         cellProps.computedColspanToStart = columnsTillColspanStart[column.id];
       }
 
-      if (groupProps && !groupColumn) {
+      if ((groupProps && !groupColumn) || expandColumnIndex != null) {
         adjustCellProps(cellProps, this.props);
       }
 
@@ -1923,6 +1943,7 @@ DataGridRow.propTypes = {
   availableWidth: PropTypes.number,
   computedGroupBy: PropTypes.array,
   expandGroupTitle: PropTypes.bool,
+  expandColumn: PropTypes.any,
   getCellSelectionKey: PropTypes.func,
   depth: PropTypes.number,
   columns: PropTypes.array,

@@ -4,7 +4,7 @@ import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 
 import ComboBox from '@inovua/reactdatagrid-community/packages/ComboBox';
 
-const gridStyle = { minHeight: 200 };
+const gridStyle = { minHeight: 500 };
 
 const treeData = [
   {
@@ -23,6 +23,11 @@ const treeData = [
       },
       { id: 3222, name: 'Shopping list.csv', size: '20Kb' },
       { id: 4, name: 'A Shopping list.csv', size: '20Kb' },
+      {
+        id: 555,
+        footer: true,
+        name: 'footer',
+      },
     ],
   },
   {
@@ -123,7 +128,26 @@ const columns = [
       );
     },
   },
-  { name: 'name', header: 'Name', defaultFlex: 1 },
+  {
+    name: 'name',
+    header: 'Name',
+    defaultFlex: 1,
+    defaultLocked: 'start',
+    render: ({ data, value }) => {
+      if (data.footer) {
+        return (
+          <div>
+            Adipisicing quis fugiat minim est.quis fugiat minim est.quis fugiat
+            minim est.quis fugiat minim est.quis fugiat minim est.quis fugiat
+            minim est.quis fugiat minim est.quis fugiat minim est.load more
+            minim est.quis fugiat minim est.quis fugiat minim est.load more
+            minim est.quis fugiat minim est.quis fugiat minim est.load more
+          </div>
+        );
+      }
+      return value;
+    },
+  },
   { name: 'size', header: 'Size', defaultWidth: 160 },
 ];
 
@@ -192,6 +216,11 @@ const App = () => {
         defaultExpandedNodes={defaultExpandedNodes}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         treeNestingSize={treeNestingSize}
+        expandColumn={({ data }) => {
+          if (data.footer) {
+            return 'name';
+          }
+        }}
         style={gridStyle}
         columns={columns}
         dataSource={treeData}
