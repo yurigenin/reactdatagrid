@@ -684,16 +684,16 @@ const GridFactory = (
       }
     };
     const getScrollTop = (): number => {
-      const virtualList = getVirtualList();
-      if (virtualList) {
-        return virtualList.scrollTop || 0;
+      const body = bodyRef.current;
+      if (body && body.columnLayout) {
+        return body.columnLayout.scrollTop || 0;
       }
       return 0;
     };
     const getScrollLeft = (): number => {
-      const virtualList = getVirtualList();
-      if (virtualList) {
-        return virtualList.scrollLeft || 0;
+      const body = bodyRef.current;
+      if (body && body.columnLayout) {
+        return body.columnLayout.scrollLeft || 0;
       }
       return 0;
     };
