@@ -29,6 +29,7 @@ export default (cellProps, rowProps) => {
     hasLockedStart,
   } = rowProps;
 
+  const { computedVisibleIndex, computedLocked } = cellProps;
   const expandColumn = computedVisibleIndex === expandColumnIndex;
 
   let { expandGroupTitle } = rowProps;
@@ -38,8 +39,6 @@ export default (cellProps, rowProps) => {
   }
 
   const { data } = rowProps;
-
-  const { computedVisibleIndex, computedLocked } = cellProps;
 
   const lockedStart = computedLocked === 'start';
   const lockedEnd = computedLocked === 'end';
