@@ -2,7 +2,7 @@
   "name": "@inovua/reactdatagrid",
   "author": "Inovua Trading S.R.L. <contact@reactdatagrid.io>",
   "homepage": "https://reactdatagrid.io",
-  "version": "4.0.32",
+  "version": "4.0.33",
   "description": "Empower Your Data with the best React Data Grid there is",
   "repository": {
     "type": "git",
@@ -168,8 +168,7 @@
     "object-assign": "^4.1.1",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "resize-observer-polyfill": "^1.5.1",
-    "tslib": "^2.0.0"
+    "resize-observer-polyfill": "^1.5.1"
   },
   "keywords": [
     "react",

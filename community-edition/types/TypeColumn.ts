@@ -51,6 +51,7 @@ export interface IColumn {
   readonly draggable?: boolean;
   readonly lockable?: boolean;
   readonly editable?: boolean;
+  readonly dateFormat?: string;
   readonly hideable?: boolean;
   readonly filterable?: boolean;
   readonly style?: any;
