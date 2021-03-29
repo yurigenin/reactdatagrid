@@ -81,6 +81,7 @@ export default class DataGridRow extends React.Component {
         let areEqual = equalReturnKey(this.props, nextProps, {
             computedActiveCell: 1,
             computedActiveIndex: 1,
+            columnRenderStartIndex: 1,
             activeRowRef: 1,
             active: 1,
             onKeyDown: 1,
@@ -176,6 +177,9 @@ export default class DataGridRow extends React.Component {
                 instance: this,
                 node: this.getDOMNode(),
             };
+        }
+        if (this.props.columnRenderStartIndex) {
+            this.setColumnRenderStartIndex(this.props.columnRenderStartIndex);
         }
     }
     getDOMNode() {

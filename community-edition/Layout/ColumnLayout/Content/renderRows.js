@@ -264,6 +264,7 @@ export default (
       virtualizeColumns,
       firstUnlockedIndex,
       firstLockedStartIndex,
+      columnRenderStartIndex,
       firstLockedEndIndex,
       tryNextRowEdit,
       totalComputedWidth,
