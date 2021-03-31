@@ -40,6 +40,21 @@ const getTopComputedProps = (computedProps) => {
     }
     return computedProps;
 };
+const getAlignTo = (selection, menuTools, index) => {
+    const filteredTools = menuTools.filter((_, i) => i !== Object.keys(selection).length);
+    const length = filteredTools.length;
+    let alignTo;
+    if (index > length) {
+        alignTo = filteredTools[length - 1];
+    }
+    else if (index <= length) {
+        alignTo = filteredTools[index - 1];
+    }
+    if (!alignTo) {
+        alignTo = filteredTools[0];
+    }
+    return alignTo;
+};
 export default (computedProps, computedPropsRef) => {
     const cellProps = computedProps.columnContextMenuProps;
     if (!cellProps) {
@@ -76,6 +91,15 @@ export default (computedProps, computedPropsRef) => {
                 computedProps.setColumnVisible(col, visible);
             }
         });
+        if (computedProps.updateMenuPositionOnColumnsChange) {
+            const menuTools = Array.prototype.slice.call(document.querySelectorAll('.InovuaReactDataGrid__column-header__menu-tool'));
+            const cellInstance = computedProps.columnContextMenuInstanceProps;
+            const columnIndex = cellInstance.props.computedVisibleIndex;
+            const alignTo = getAlignTo(selection, menuTools, columnIndex);
+            if (alignTo) {
+                computedProps.updateMainMenuPosition(alignTo);
+            }
+        }
     };
     const currentColumn = computedProps.getColumnBy(cellProps.id);
     const colSortInfo = currentColumn.computedSortInfo;

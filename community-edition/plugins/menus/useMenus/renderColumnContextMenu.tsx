@@ -58,6 +58,27 @@ const getTopComputedProps = (
   return computedProps;
 };
 
+const getAlignTo = (selection: any, menuTools: any[], index: number) => {
+  const filteredTools = menuTools.filter(
+    (_, i) => i !== Object.keys(selection).length
+  );
+
+  const length = filteredTools.length;
+
+  let alignTo;
+  if (index > length) {
+    alignTo = filteredTools[length - 1];
+  } else if (index <= length) {
+    alignTo = filteredTools[index - 1];
+  }
+
+  if (!alignTo) {
+    alignTo = filteredTools[0];
+  }
+
+  return alignTo;
+};
+
 export default (
   computedProps: TypeComputedProps,
   computedPropsRef: MutableRefObject<TypeComputedProps | null>
@@ -84,6 +105,7 @@ export default (
 
   const onSelectionChange = (selection: any) => {
     const { current: computedProps } = computedPropsRef;
+
     if (!computedProps) {
       return;
     }
@@ -94,14 +116,32 @@ export default (
         computedProps.preventIEMenuCloseRef.current = false;
       }, 100);
     }
+
     computedProps.initialProps.columns.forEach(col => {
       const computedCol = computedProps.getColumnBy(col) as TypeComputedColumn;
 
       if (computedCol) {
         const visible = computedCol.id in selection;
+
         computedProps.setColumnVisible(col, visible);
       }
     });
+
+    if (computedProps.updateMenuPositionOnColumnsChange) {
+      const menuTools = Array.prototype.slice.call(
+        document.querySelectorAll(
+          '.InovuaReactDataGrid__column-header__menu-tool'
+        )
+      );
+
+      const cellInstance = computedProps.columnContextMenuInstanceProps;
+      const columnIndex = cellInstance.props.computedVisibleIndex;
+
+      const alignTo = getAlignTo(selection, menuTools, columnIndex);
+      if (alignTo) {
+        computedProps.updateMainMenuPosition(alignTo);
+      }
+    }
   };
 
   const currentColumn = computedProps.getColumnBy(
@@ -422,5 +462,6 @@ export default (
   if (computedProps.initialProps.renderGridMenu) {
     return computedProps.initialProps.renderGridMenu(result, computedProps);
   }
+
   return renderGridMenu(result, computedProps);
 };

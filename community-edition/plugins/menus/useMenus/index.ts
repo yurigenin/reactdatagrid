@@ -34,6 +34,10 @@ export default (
     null
   );
   const [rowContextMenuProps, setRowContextMenuProps] = useState<any>(null);
+  const [
+    columnContextMenuInstanceProps,
+    setColumnContextMenuInstanceProps,
+  ] = useState<any>(null);
 
   const getConstrainRegion = (computedProps: TypeComputedProps) => {
     if (!computedProps.parentComputedProps) {
@@ -160,6 +164,7 @@ export default (
       }
 
       computedProps.setColumnContextMenuProps(cellProps);
+      computedProps.setColumnContextMenuInstanceProps(cellInstance);
     },
     []
   );
@@ -261,10 +266,12 @@ export default (
     hideColumnContextMenu,
     hideRowContextMenu,
     columnContextMenuProps,
+    columnContextMenuInstanceProps,
     rowContextMenuProps,
     columnContextMenuInfoRef,
     rowContextMenuInfoRef,
     setColumnContextMenuProps,
+    setColumnContextMenuInstanceProps,
     setRowContextMenuProps,
     preventIEMenuCloseRef,
   };

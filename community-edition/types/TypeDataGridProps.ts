@@ -664,6 +664,7 @@ type TypeDataGridPropsNoI18n = {
     dragRowData: any;
     dropRowData: any;
   }) => void;
+  updateMenuPositionOnColumnsChange?: boolean;
 };
 type TypeDataGridComputedClashingProps = {
   i18n?: TypeI18n;
@@ -1276,6 +1277,7 @@ export type TypeComputedProps = TypeDataGridPropsNoI18n & {
   hasNextPage: () => boolean;
   gotoNextPage: () => boolean;
   computedHasColSpan: boolean;
+  updateMainMenuPosition?: (alignTo: any) => void;
 };
 
 export default TypeDataGridProps;

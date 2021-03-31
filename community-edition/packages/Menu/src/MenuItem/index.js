@@ -45,8 +45,6 @@ class MenuItem extends Component {
     );
   }
 
-  UNSAFE_componentWillReceiveProps() {}
-
   componentDidMount() {
     this.componentIsMounted = true;
   }

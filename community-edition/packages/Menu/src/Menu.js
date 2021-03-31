@@ -142,6 +142,20 @@ class InovuaMenu extends Component {
     if (this.props.autoFocus && prevState.hidden && !this.state.hidden) {
       this.focus();
     }
+
+    if (prevProps.visible && !this.props.visible) {
+      this.setState({
+        positionStyle: null,
+      });
+    }
+
+    if (
+      (!prevProps.visible && this.props.visible) ||
+      !shallowequal(prevProps.alignTo, this.props.alignTo) ||
+      this.props.constrainTo != prevProps.constrainTo
+    ) {
+      this.checkAlignment(this.props);
+    }
   }
 
   componentDidMount() {
@@ -173,27 +187,15 @@ class InovuaMenu extends Component {
     this.checkAlignment(undefined, true);
   };
 
+  updateAlignment = alignTo => {
+    this.checkAlignment(undefined, true, alignTo);
+  };
+
   handleDocumentScroll = () => {
     if (this.props.updatePositionOnScroll) {
       this.updatePosition();
     }
   };
-
-  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
-    if (this.props.visible && !nextProps.visible) {
-      this.setState({
-        positionStyle: null,
-      });
-    }
-
-    if (
-      (!this.props.visible && nextProps.visible) ||
-      !shallowequal(this.props.alignTo, nextProps.alignTo) ||
-      nextProps.constrainTo != this.props.constrainTo
-    ) {
-      this.checkAlignment(nextProps);
-    }
-  }
 
   render() {
     const { state, props } = this;
@@ -1297,20 +1299,25 @@ class InovuaMenu extends Component {
    * Checks if it fits inside the constrain
    * passed props can be `nextProps`
    */
-  checkAlignment(props, skipReset) {
+  checkAlignment(props, skipReset, alignTo) {
     props = props || this.props;
+
     if (props.visible === false) {
       return;
     }
+
     if ((props.constrainTo || props.alignTo) && !props.subMenu) {
       const doAlign = () => {
         const props = this.props;
+        alignTo = alignTo || props.alignTo;
+
         const alignPositions = this.getAlignPositions(props);
         const domNode = this.node;
 
         if (!domNode) {
           return;
         }
+
         domNode.style.visibility = '';
         const alignOffset = prepareAlignOffset(props.alignOffset);
         const domRegion = Region.from(domNode);
@@ -1322,8 +1329,8 @@ class InovuaMenu extends Component {
 
         let positionStyle;
 
-        if (props.alignTo) {
-          const alignRegion = getAlignToRegion(props.alignTo, domNode);
+        if (alignTo) {
+          const alignRegion = getAlignToRegion(alignTo, domNode);
 
           actualRegion.alignTo(alignRegion, alignPositions, {
             offset: alignOffset,

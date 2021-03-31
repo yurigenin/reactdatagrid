@@ -217,6 +217,7 @@ export type CellProps = {
   onDragRowMouseDown?: func;
   theme: string;
   onContextMenu?: () => void;
+  showContextMenu?: (menuTool: any, onHide: any) => void;
 };
 
 export type EnhancedCellProps = CellProps & {
