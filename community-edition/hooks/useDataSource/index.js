@@ -542,6 +542,7 @@ export default (props, computedProps, computedPropsRef) => {
                 ? JSON.stringify(computedProps.computedFilterValue)
                 : null,
             JSON.stringify(computedProps.computedCollapsedGroups || ''),
+            JSON.stringify(computedProps.computedExpandedGroups || ''),
             computedProps.computedExpandedNodes
                 ? JSON.stringify(computedProps.computedExpandedNodes)
                 : null,

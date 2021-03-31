@@ -155,6 +155,7 @@ export default (
     treeNestingSize,
     onGroupToggle,
     computedCollapsedGroups,
+    computedExpandedGroups,
     groupPathSeparator,
     renderGroupTitle,
     renderGroupTool,
@@ -184,8 +185,6 @@ export default (
   if (isGrouped) {
     depth = computedGroupBy.length;
   }
-
-  const allCollapsed = computedCollapsedGroups === true;
 
   return dataArray.map((rowData, i) => {
     const index = i + startIndex;
@@ -368,19 +367,28 @@ export default (
 
     if (rowData && rowData.__group) {
       rowProps.indexInGroup = null;
+      const rowGroupKey = `${rowData.keyPath.join(groupPathSeparator)}`;
+      let collapsed;
+      if (computedCollapsedGroups === true) {
+        collapsed = true;
+        if (computedExpandedGroups[rowGroupKey]) {
+          collapsed = false;
+        }
+      } else if (computedExpandedGroups === true) {
+        collapsed = false;
+        if (computedCollapsedGroups[rowGroupKey]) {
+          collapsed = false;
+        }
+      }
+
       rowProps.groupProps = {
         renderGroupTitle,
         renderGroupTool,
         renderLockedEndGroupTitle,
         renderUnlockedGroupTitle,
         onGroupToggle,
-        collapsed:
-          allCollapsed ||
-          (computedCollapsedGroups
-            ? computedCollapsedGroups[
-                `${rowData.keyPath.join(groupPathSeparator)}`
-              ]
-            : false),
+        collapsed,
+
         groupNestingSize,
         depth: rowData.depth - 1,
       };

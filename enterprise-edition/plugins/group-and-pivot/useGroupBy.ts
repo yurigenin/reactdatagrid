@@ -14,8 +14,15 @@ import {
   TypeComputedColumnsMap,
   TypeGetColumnByParam,
   TypeComputedColumn,
+  TypeExpandedGroups,
 } from '../../types';
-import { MutableRefObject, Dispatch, SetStateAction, useState } from 'react';
+import {
+  MutableRefObject,
+  Dispatch,
+  SetStateAction,
+  useState,
+  useCallback,
+} from 'react';
 
 import computeData from '@inovua/reactdatagrid-community/hooks/useDataSource/computeData';
 import batchUpdate from '@inovua/reactdatagrid-community/utils/batchUpdate';
@@ -52,9 +59,10 @@ const useGroupBy = (
   computedGroupBy: TypeGroupBy;
   setGroupBy: (groupBy: TypeGroupBy) => void;
   isGroupCollapsed: (group: any) => boolean;
-  setCollapsedGroups: Dispatch<SetStateAction<TypeCollapsedGroups>>;
+
   setComputedGroupRelatedInfo: Dispatch<SetStateAction<any>>;
   computedCollapsedGroups: TypeCollapsedGroups;
+  computedExpandedGroups: TypeExpandedGroups;
   computedIndexesInGroups: any;
   computedGroupArray: object[];
   onGroupByChange: (groupBy: TypeGroupBy) => void;
@@ -81,16 +89,40 @@ const useGroupBy = (
   const [computedCollapsedGroups, setCollapsedGroups] = useProperty<
     TypeCollapsedGroups
   >(props, 'collapsedGroups', undefined, {
-    onChange: (collapsedGroups, ...args: any[]) => {
+    onChange: () => {},
+  });
+
+  const setCollapsedAndExpanded = useCallback(
+    ({
+      collapsedGroups,
+      expandedGroups,
+    }: {
+      collapsedGroups: TypeCollapsedGroups;
+      expandedGroups: TypeExpandedGroups;
+    }) => {
       const { current: computedProps } = computedPropsRef;
       if (!computedProps) {
         return;
       }
 
+      const queue = batchUpdate();
+
+      queue.commit(() => {
+        setCollapsedGroups(collapsedGroups);
+        setExpandedGroups(expandedGroups);
+      });
+
       if (computedProps.onGroupCollapseChange) {
-        computedProps.onGroupCollapseChange(collapsedGroups, ...args);
+        computedProps.onGroupCollapseChange(collapsedGroups, expandedGroups);
       }
     },
+    []
+  );
+
+  const [computedExpandedGroups, setExpandedGroups] = useProperty<
+    TypeExpandedGroups
+  >(props, 'expandedGroups', undefined, {
+    onChange: () => {},
   });
 
   const setGroupBy = (groupBy: TypeGroupBy) => {
@@ -132,26 +164,42 @@ const useGroupBy = (
       return false;
     }
 
+    const sep = computedProps.groupPathSeparator;
+    const path = `${(group.keyPath || group.valuePath).join(sep)}`;
+
     const collapsedGroups = computedProps.computedCollapsedGroups;
     if (collapsedGroups === true) {
+      if (computedProps.computedExpandedGroups) {
+        return !(computedProps.computedExpandedGroups as any)[path];
+      }
       return true;
     }
 
-    const sep = computedProps.groupPathSeparator;
-
-    return collapsedGroups[`${(group.keyPath || group.valuePath).join(sep)}`];
+    return collapsedGroups[path];
   };
 
-  const expandGroup = (group: { keyPath: string[] } | string[]): void => {
-    const path = typeof group == 'string' ? group : group.keyPath;
+  const expandGroup = (
+    group: { keyPath: string[] } | string[] | string
+  ): void => {
+    const path = Array.isArray(group)
+      ? group
+      : typeof group == 'string'
+      ? [group]
+      : group.keyPath;
 
     if (isGroupCollapsed({ keyPath: path })) {
       onGroupToggle(path);
     }
   };
 
-  const collapseGroup = (group: { keyPath: string[] } | string[]): void => {
-    const path = typeof group == 'string' ? group : group.keyPath;
+  const collapseGroup = (
+    group: { keyPath: string[] } | string[] | string
+  ): void => {
+    const path = Array.isArray(group)
+      ? group
+      : typeof group == 'string'
+      ? [group]
+      : group.keyPath;
 
     if (!isGroupCollapsed({ keyPath: path })) {
       onGroupToggle(path);
@@ -164,41 +212,40 @@ const useGroupBy = (
       return;
     }
 
-    const {
-      groupPathSeparator: sep,
-      computedCollapsedGroups,
-      data,
-    } = computedProps;
-
-    let collapsedGroups;
-
-    if (computedCollapsedGroups === true) {
-      // we have to expand all
-      collapsedGroups = data.reduce((acc, item) => {
-        if (item.__group) {
-          acc[`${item.keyPath.join(sep)}`] = true;
-        }
-        return acc;
-      }, {});
-    } else {
-      collapsedGroups = Object.assign({}, computedCollapsedGroups);
-    }
-
-    let collapsedInfo;
-    let expandedInfo;
+    const { groupPathSeparator: sep, computedCollapsedGroups } = computedProps;
 
     const stringPath = path.join(sep);
-    if (collapsedGroups[stringPath]) {
-      delete collapsedGroups[stringPath];
-      expandedInfo = path;
+
+    let newCollapsedGroups =
+      computedCollapsedGroups === true
+        ? true
+        : Object.assign({}, computedCollapsedGroups);
+    let newExpandedGroups =
+      computedExpandedGroups === true
+        ? true
+        : Object.assign({}, computedExpandedGroups);
+
+    if (newExpandedGroups === true) {
+      if (newCollapsedGroups !== true) {
+        if (newCollapsedGroups[stringPath]) {
+          delete newCollapsedGroups[stringPath];
+        } else {
+          newCollapsedGroups[stringPath] = true;
+        }
+      }
     } else {
-      collapsedInfo = stringPath;
-      collapsedGroups[stringPath] = true;
+      if (newCollapsedGroups === true) {
+        if (newExpandedGroups[stringPath]) {
+          delete newExpandedGroups[stringPath];
+        } else {
+          newExpandedGroups[stringPath] = true;
+        }
+      }
     }
 
-    computedProps.setCollapsedGroups(collapsedGroups, {
-      collapsedGroups: collapsedInfo,
-      expandedGroups: expandedInfo,
+    setCollapsedAndExpanded({
+      collapsedGroups: newCollapsedGroups,
+      expandedGroups: newExpandedGroups,
     });
   };
 
@@ -267,20 +314,11 @@ const useGroupBy = (
   };
 
   const collapseAllGroups = () => {
-    setCollapsedGroups(true, {
-      collapsedGroups: true,
-      collapseAllGroups: true,
-    });
+    setCollapsedAndExpanded({ collapsedGroups: true, expandedGroups: {} });
   };
 
   const expandAllGroups = () => {
-    setCollapsedGroups(
-      {},
-      {
-        collapsedGroups: true,
-        expandAllGroups: true,
-      }
-    );
+    setCollapsedAndExpanded({ expandedGroups: true, collapsedGroups: {} });
   };
 
   return {
@@ -293,8 +331,8 @@ const useGroupBy = (
     isGroupCollapsed,
     expandGroup,
     collapseGroup,
-    setCollapsedGroups,
     computedCollapsedGroups,
+    computedExpandedGroups,
     onGroupByChange: setGroupBy,
     setComputedGroupRelatedInfo,
     collapseAllGroups,

@@ -58,6 +58,7 @@ import {
   TypeFooterRow,
   TypePivotItem,
   TypePivotColumnSummaryReducer,
+  TypeExpandedGroups,
 } from '.';
 import {
   TypeRowSelection,
@@ -477,7 +478,9 @@ type TypeDataGridPropsNoI18n = {
   onBlur?: (event: FocusEvent) => void;
   selected?: TypeRowSelection;
   collapsedGroups?: TypeCollapsedGroups;
+  expandedGroups?: TypeExpandedGroups;
   defaultCollapsedGroups?: TypeCollapsedGroups;
+  defaultExpandedGroups?: TypeExpandedGroups;
   rowProps?: any;
   defaultSelected?: TypeRowSelection;
   unselected?: TypeBoolMap;
@@ -629,7 +632,7 @@ type TypeDataGridPropsNoI18n = {
 
   onGroupCollapseChange?: (
     collapsedGroups: TypeCollapsedGroups,
-    ...args: any[]
+    expandedGroups: TypeExpandedGroups
   ) => void;
 
   onColumnFilterValueChange?: (columnFilterValue: {
@@ -927,13 +930,10 @@ export type TypeComputedProps = TypeDataGridPropsNoI18n & {
   lockedEndColumns: TypeComputedColumn[];
   unlockedColumns: TypeComputedColumn[];
   computedCollapsedGroups: TypeCollapsedGroups;
+  computedExpandedGroups: TypeExpandedGroups;
   isGroupCollapsed?: (group: any) => boolean;
   expandGroup?: (group: { keyPath: string[] } | string[]) => boolean;
   collapseGroup?: (group: { keyPath: string[] } | string[]) => boolean;
-  setCollapsedGroups: (
-    collapsedGroups: TypeCollapsedGroups,
-    ...args: any[]
-  ) => void;
   setComputedGroupRelatedInfo: Dispatch<SetStateAction<any>>;
   computedColumnOrder: string[] | undefined;
   setColumnOrder: Dispatch<SetStateAction<string[] | undefined>>;

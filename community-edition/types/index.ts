@@ -433,6 +433,7 @@ export interface TypeSummaryReducer<T> {
 }
 
 export type TypeCollapsedGroups = true | { [key: string]: boolean };
+export type TypeExpandedGroups = TypeCollapsedGroups;
 
 export type TypeGetColumnByParam =
   | string
