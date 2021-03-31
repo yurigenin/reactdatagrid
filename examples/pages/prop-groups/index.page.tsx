@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import DataGrid from '@inovua/reactdatagrid-enterprise';
+import DataGrid from '@inovua/reactdatagrid-community';
 
 const columns = [
   { name: 'id', type: 'number', defaultWidth: 50 },

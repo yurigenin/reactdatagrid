@@ -10,7 +10,6 @@ import { TypeComputedProps, TypeDataGridProps } from '../../types';
 import { MutableRefObject } from 'react';
 import useStickyRows from './useStickyRows';
 import useGroupBy from './useGroupBy';
-import useGroups from './useGroups';
 
 export default (
   props: TypeDataGridProps,
@@ -26,9 +25,5 @@ export default (
     useGroupBy(props, computedProps, computedPropsRef)
   );
 
-  Object.assign(
-    computedProps,
-    useGroups(props, computedProps, computedPropsRef)
-  );
   return { computeDataStep };
 };

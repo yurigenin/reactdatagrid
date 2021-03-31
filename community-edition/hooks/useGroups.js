@@ -48,7 +48,7 @@ const getPivotGroups = (uniqueValuesRoot, parentGroup, pivotSummaryGroups) => {
     }
     return groups;
 };
-const useGroups = (props, computedProps, computedPropsRef) => {
+const useGroups = (props, computedProps) => {
     const { computedPivotUniqueValuesPerColumn } = computedProps;
     let groups = props.groups;
     if (computedPivotUniqueValuesPerColumn &&

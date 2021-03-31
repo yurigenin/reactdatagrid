@@ -22,6 +22,7 @@ import useHeader from './hooks/useHeader';
 import useEditable from './hooks/useEditable';
 import useDataSource from './hooks/useDataSource';
 import useScrollProps from './hooks/useScrollProps';
+import useGroups from './hooks/useGroups';
 import useSelection from './hooks/useSelection';
 import useRow from './hooks/useRow';
 import RowHeightManager from './packages/react-virtual-list-pro/src/RowHeightManager';
@@ -325,6 +326,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         if (pluginsMap['group-and-pivot'] && pluginsMap['group-and-pivot'].hook) {
             Object.assign(cProps, pluginsMap['group-and-pivot'].hook(props, cProps, computedPropsRef));
         }
+        Object.assign(cProps, useGroups(props, cProps, computedPropsRef));
         if (pluginsMap.tree && pluginsMap.tree.hook) {
             Object.assign(cProps, pluginsMap.tree.hook(props, cProps, computedPropsRef));
         }

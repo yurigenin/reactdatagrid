@@ -7,10 +7,8 @@
 import computeDataStep from './computeDataStep';
 import useStickyRows from './useStickyRows';
 import useGroupBy from './useGroupBy';
-import useGroups from './useGroups';
 export default (props, computedProps, computedPropsRef) => {
     Object.assign(computedProps, useStickyRows(props, computedProps, computedPropsRef));
     Object.assign(computedProps, useGroupBy(props, computedProps, computedPropsRef));
-    Object.assign(computedProps, useGroups(props, computedProps, computedPropsRef));
     return { computeDataStep };
 };

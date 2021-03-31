@@ -1,17 +1,15 @@
 /**
  * Copyright © INOVUA TRADING.
  *
- * This source code is licensed under the Commercial License found in the
+ * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import { MutableRefObject } from 'react';
 
 import {
   TypePivotUniqueValuesDescriptor,
   TypeComputedProps,
   TypeColumnGroup,
-} from '../../types';
+} from '../types';
 
 import mapGroups from './mapGroups';
 
@@ -87,8 +85,7 @@ const useGroups = (
     groups?: TypeColumnGroup[];
     showWarnings: boolean;
   },
-  computedProps: TypeComputedProps,
-  computedPropsRef: MutableRefObject<TypeComputedProps | null>
+  computedProps: TypeComputedProps
 ): {
   computedGroupsMap: { [key: string]: TypeColumnGroup } | null;
   computedGroupsDepth: number;

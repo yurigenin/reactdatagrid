@@ -40,6 +40,7 @@ import useEditable from './hooks/useEditable';
 import useDataSource from './hooks/useDataSource';
 import useScrollProps from './hooks/useScrollProps';
 
+import useGroups from './hooks/useGroups';
 import useSelection from './hooks/useSelection';
 import useRow from './hooks/useRow';
 
@@ -518,6 +519,7 @@ const GridFactory = (
         pluginsMap['group-and-pivot'].hook!(props, cProps, computedPropsRef)
       );
     }
+    Object.assign(cProps, useGroups(props, cProps, computedPropsRef));
     if (pluginsMap.tree && pluginsMap.tree.hook) {
       Object.assign(
         cProps,
