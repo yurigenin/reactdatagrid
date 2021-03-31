@@ -938,7 +938,7 @@ class InovuaComboBox extends Component {
         const item = newValueMap[id];
         acc[id] = {
           ...item,
-          id: this.getIdProperty(item) || item,
+          id: this.getIdProperty(item),
           label: this.getDisplayProperty(item) || item,
         };
 
