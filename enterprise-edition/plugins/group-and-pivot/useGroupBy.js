@@ -50,7 +50,7 @@ const useGroupBy = (props, computedProps, computedPropsRef) => {
             computedProps.onGroupCollapseChange(collapsedGroups, expandedGroups);
         }
     }, []);
-    const [computedExpandedGroups, setExpandedGroups] = useProperty(props, 'expandedGroups', undefined, {
+    const [computedExpandedGroups, setExpandedGroups] = useProperty(props, 'expandedGroups', true, {
         onChange: () => { },
     });
     const setGroupBy = (groupBy) => {
@@ -91,7 +91,7 @@ const useGroupBy = (props, computedProps, computedPropsRef) => {
             }
             return true;
         }
-        return collapsedGroups[path];
+        return !!collapsedGroups[path];
     };
     const expandGroup = (group) => {
         const path = Array.isArray(group)

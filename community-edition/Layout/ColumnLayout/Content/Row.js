@@ -1280,7 +1280,7 @@ export default class DataGridRow extends React.Component {
             }
             else {
                 renderRange = this.getColumnRenderRange();
-                cellProps = this.getPropsForCells(renderRange?.start, (renderRange?.end || 0) + 1);
+                cellProps = this.getPropsForCells(renderRange?.start, renderRange?.end || 0);
                 if (hasLockedStart) {
                     lockedStartCellProps = this.getPropsForCells(0, lockedStartColumns.length - 1);
                 }

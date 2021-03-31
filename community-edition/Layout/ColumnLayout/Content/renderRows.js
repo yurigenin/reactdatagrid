@@ -377,8 +377,10 @@ export default (
       } else if (computedExpandedGroups === true) {
         collapsed = false;
         if (computedCollapsedGroups[rowGroupKey]) {
-          collapsed = false;
+          collapsed = true;
         }
+      } else {
+        collapsed = computedCollapsedGroups[rowGroupKey];
       }
 
       rowProps.groupProps = {

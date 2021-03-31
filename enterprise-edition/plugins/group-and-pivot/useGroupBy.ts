@@ -121,7 +121,7 @@ const useGroupBy = (
 
   const [computedExpandedGroups, setExpandedGroups] = useProperty<
     TypeExpandedGroups
-  >(props, 'expandedGroups', undefined, {
+  >(props, 'expandedGroups', true, {
     onChange: () => {},
   });
 
@@ -175,7 +175,7 @@ const useGroupBy = (
       return true;
     }
 
-    return collapsedGroups[path];
+    return !!collapsedGroups[path];
   };
 
   const expandGroup = (

@@ -1854,7 +1854,7 @@ export default class DataGridRow extends React.Component<RowProps> {
 
         cellProps = this.getPropsForCells(
           renderRange?.start,
-          (renderRange?.end || 0) + 1
+          renderRange?.end || 0
         );
         if (hasLockedStart) {
           lockedStartCellProps = this.getPropsForCells(
