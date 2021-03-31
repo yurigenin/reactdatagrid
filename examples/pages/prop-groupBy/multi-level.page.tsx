@@ -47,11 +47,7 @@ const App = () => {
       <DataGrid
         idProperty="id"
         defaultGroupBy={['country', 'age']}
-        defaultCollapsedGroups={true}
-        expandedGroups={expandedGroups}
-        onGroupCollapseChange={(collapsedGroups, expandedGroups) => {
-          setExpandedGroups(expandedGroups);
-        }}
+        defaultCollapsedGroups={{ usa: true }}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         columns={columns}
         dataSource={people}
