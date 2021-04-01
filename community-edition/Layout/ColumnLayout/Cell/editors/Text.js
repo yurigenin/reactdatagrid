@@ -60,7 +60,7 @@ class InovuaTextEditor extends React.Component {
   onKeyDown(e) {
     if (e.key === 'Enter') {
       if (this.props.onComplete) {
-        this.props.onComplete(e);
+        this.props.onEnterNavigation(true, e.shiftKey ? -1 : 1, e);
       }
     }
 

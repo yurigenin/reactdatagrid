@@ -42,6 +42,7 @@ const App = () => {
       <h3>Grid with inline edit</h3>
       <ReactDataGrid
         idProperty="id"
+        theme="default-dark"
         style={gridStyle}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         onEditComplete={onEditComplete}
