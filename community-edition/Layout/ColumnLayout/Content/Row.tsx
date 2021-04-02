@@ -1435,7 +1435,8 @@ export default class DataGridRow extends React.Component<RowProps> {
         if (
           cellProps.groupProps &&
           computedVisibleIndex >= cellProps.groupProps.depth + 1 &&
-          !groupColumn
+          !groupColumn &&
+          props.expandGroupTitle
         ) {
           cellProps.showBorderLeft = false;
         }
