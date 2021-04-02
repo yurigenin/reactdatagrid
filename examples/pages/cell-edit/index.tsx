@@ -22,6 +22,13 @@ const columns = [
   },
   { name: 'city', header: 'City', defaultFlex: 1, minWidth: 300 },
   { name: 'age', header: 'Age', minWidth: 150, type: 'number' },
+  { name: 'email', header: 'Email', defaultFlex: 1, minWidth: 150 },
+  {
+    name: 'student',
+    header: 'Student',
+    defaultFlex: 1,
+    render: ({ value }) => (value === true ? 'Yes' : 'No'),
+  },
 ];
 
 const App = () => {
@@ -43,6 +50,7 @@ const App = () => {
       <ReactDataGrid
         idProperty="id"
         theme="default-dark"
+        defaultGroupBy={['city']}
         style={gridStyle}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         onEditComplete={onEditComplete}

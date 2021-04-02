@@ -53,13 +53,13 @@ export default class InovuaDataGridList extends Component {
                 editColumnId: this.editColumnId,
             }, props);
         };
-        this.tryRowEdit = (nextEditRowIndex, dir, columnIndex) => {
+        this.tryRowEdit = (nextEditRowIndex, dir, columnIndex, isEnterNavigation) => {
             const columnEditIndex = columnIndex;
             const row = this.getRowAt(nextEditRowIndex);
             if (!row) {
                 return;
             }
-            row.tryRowCellEdit(columnEditIndex, dir);
+            row.tryRowCellEdit(columnEditIndex, dir, isEnterNavigation);
         };
         this.isEditing = () => {
             return !!this.editColumnId;

@@ -128,7 +128,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
     );
   };
 
-  tryRowEdit = (nextEditRowIndex, dir, columnIndex) => {
+  tryRowEdit = (nextEditRowIndex, dir, columnIndex, isEnterNavigation) => {
     const columnEditIndex = columnIndex;
 
     const row = this.getRowAt(nextEditRowIndex);
@@ -136,7 +136,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
       return;
     }
 
-    row.tryRowCellEdit(columnEditIndex, dir);
+    row.tryRowCellEdit(columnEditIndex, dir, isEnterNavigation);
   };
 
   isEditing = () => {

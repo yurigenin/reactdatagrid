@@ -1604,7 +1604,7 @@ export default class DataGridRow extends React.Component<RowProps> {
     }
   }
 
-  tryRowCellEdit(editIndex: number, dir = 0) {
+  tryRowCellEdit(editIndex: number, dir = 0, isEnterNavigation) {
     const cols = this.props.columns;
     let col;
     let colIndex;
@@ -1640,7 +1640,14 @@ export default class DataGridRow extends React.Component<RowProps> {
     }
 
     if (!foundCols.length) {
-      this.tryNextRowEdit(dir, dir > 0 ? 0 : this.props.columns.length - 1);
+      this.tryNextRowEdit(
+        dir,
+        isEnterNavigation
+          ? editIndex
+          : dir > 0
+          ? 0
+          : this.props.columns.length - 1
+      );
       return Promise.reject(null);
     }
 
@@ -1657,7 +1664,14 @@ export default class DataGridRow extends React.Component<RowProps> {
         };
         const col = cols[index];
         if (!col) {
-          this.tryNextRowEdit(dir, dir > 0 ? 0 : this.props.columns.length - 1);
+          this.tryNextRowEdit(
+            dir,
+            isEnterNavigation
+              ? editIndex
+              : dir > 0
+              ? 0
+              : this.props.columns.length - 1
+          );
           return reject('column not found');
         }
         const cell = this.getCellById(col.id);
@@ -1685,9 +1699,14 @@ export default class DataGridRow extends React.Component<RowProps> {
     });
   }
 
-  tryNextRowEdit(dir: 1 | -1, columnIndex) {
+  tryNextRowEdit(dir: 1 | -1, columnIndex, isEnterNavigation?: boolean) {
     if (this.props.tryNextRowEdit) {
-      this.props.tryNextRowEdit(this.props.rowIndex + dir, dir, columnIndex);
+      this.props.tryNextRowEdit(
+        this.props.rowIndex + dir,
+        dir,
+        columnIndex,
+        isEnterNavigation
+      );
     }
   }
 

@@ -917,12 +917,12 @@ export default class InovuaDataGridCell extends React.Component {
     if (!complete) {
       this.stopEdit();
       if (newIndex != props.rowIndex) {
-        this.props.tryNextRowEdit(dir, props.columnIndex);
+        this.props.tryNextRowEdit(dir, props.columnIndex, true);
       }
     } else {
       this.onEditorComplete();
       if (newIndex != props.rowIndex) {
-        this.props.tryNextRowEdit(dir, props.columnIndex);
+        this.props.tryNextRowEdit(dir, props.columnIndex, true);
       }
     }
   }
