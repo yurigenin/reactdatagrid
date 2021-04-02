@@ -769,6 +769,7 @@ export default class DataGridRow extends React.Component {
                 groupExpandCell,
                 isRowExpandable: computedRowExpandEnabled ? this.isRowExpandable : null,
                 tryRowCellEdit: this.tryRowCellEdit,
+                tryNextRowEdit: this.tryNextRowEdit,
                 onGroupToggle,
                 initialRowHeight: rowExpanded ? initialRowHeight : rowHeight,
                 theme,
@@ -1133,7 +1134,7 @@ export default class DataGridRow extends React.Component {
             currentIndex += dir;
         }
         if (!foundCols.length) {
-            this.tryNextRowEdit(dir);
+            this.tryNextRowEdit(dir, dir > 0 ? 0 : this.props.columns.length - 1);
             return Promise.reject(null);
         }
         foundCols.sort((a, b) => {
@@ -1148,7 +1149,7 @@ export default class DataGridRow extends React.Component {
                 };
                 const col = cols[index];
                 if (!col) {
-                    this.tryNextRowEdit(dir);
+                    this.tryNextRowEdit(dir, dir > 0 ? 0 : this.props.columns.length - 1);
                     return reject('column not found');
                 }
                 const cell = this.getCellById(col.id);
@@ -1172,9 +1173,9 @@ export default class DataGridRow extends React.Component {
             startEdit(foundCols, 0);
         });
     }
-    tryNextRowEdit(dir) {
+    tryNextRowEdit(dir, columnIndex) {
         if (this.props.tryNextRowEdit) {
-            this.props.tryNextRowEdit(this.props.rowIndex + dir, dir);
+            this.props.tryNextRowEdit(this.props.rowIndex + dir, dir, columnIndex);
         }
     }
     onTransitionEnd(cellProps, columnProps, e) {

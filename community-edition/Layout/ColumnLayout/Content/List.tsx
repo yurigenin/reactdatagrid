@@ -127,8 +127,9 @@ export default class InovuaDataGridList extends Component<ListProps> {
       props
     );
   };
-  tryRowEdit = (nextEditRowIndex, dir) => {
-    const columnEditIndex = dir > 0 ? 0 : this.props.columns.length - 1;
+
+  tryRowEdit = (nextEditRowIndex, dir, columnIndex) => {
+    const columnEditIndex = columnIndex;
 
     const row = this.getRowAt(nextEditRowIndex);
     if (!row) {
@@ -137,6 +138,7 @@ export default class InovuaDataGridList extends Component<ListProps> {
 
     row.tryRowCellEdit(columnEditIndex, dir);
   };
+
   isEditing = () => {
     return !!this.editColumnId;
   };

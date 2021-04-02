@@ -434,6 +434,7 @@ export default class InovuaDataGridCell extends React.Component {
                 onChange: this.onEditValueChange,
                 onComplete: this.onEditorComplete,
                 onCancel: this.onEditorCancel,
+                onEnterNavigation: this.onEditorEnterNavigation,
                 onTabNavigation: this.onEditorTabNavigation,
                 gotoNext: this.gotoNextEditor,
                 gotoPrev: this.gotoPrevEditor,
@@ -564,6 +565,7 @@ export default class InovuaDataGridCell extends React.Component {
             onChange: this.onEditValueChange,
             onComplete: this.onEditorComplete,
             onCancel: this.onEditorCancel,
+            onEnterNavigation: this.onEditorEnterNavigation,
             onTabNavigation: this.onEditorTabNavigation,
             gotoNext: this.gotoNextEditor,
             gotoPrev: this.gotoPrevEditor,
@@ -598,6 +600,25 @@ export default class InovuaDataGridCell extends React.Component {
     }
     gotoPrevEditor() {
         this.props.tryRowCellEdit(this.getProps().computedVisibleIndex - 1, -1);
+    }
+    onEditorEnterNavigation(complete, dir) {
+        const props = this.getProps();
+        if (typeof dir !== 'number') {
+            dir = 0;
+        }
+        const newIndex = props.rowIndex + dir;
+        if (!complete) {
+            this.stopEdit();
+            if (newIndex != props.rowIndex) {
+                this.props.tryNextRowEdit(dir, props.columnIndex);
+            }
+        }
+        else {
+            this.onEditorComplete();
+            if (newIndex != props.rowIndex) {
+                this.props.tryNextRowEdit(dir, props.columnIndex);
+            }
+        }
     }
     onEditorTabNavigation(complete, dir) {
         const props = this.getProps();
