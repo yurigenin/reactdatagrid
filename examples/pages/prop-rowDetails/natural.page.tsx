@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 
-import RadioButtonGroup from '@inovua/reactdatagrid-community/packages/RadioButtonGroup';
+import Button from '@inovua/reactdatagrid-community/packages/Button';
 
 import people from '../people';
 
@@ -45,12 +45,6 @@ const renderRowDetails = ({ data }) => {
   );
 };
 
-const rowExpandHeights = [
-  { label: 'small', value: 250 },
-  { label: 'normal', value: 350 },
-  { label: 'large', value: 450 },
-];
-
 const defaultExpandedRows = { 1: true, 3: true };
 
 const columns = [
@@ -62,7 +56,16 @@ const columns = [
 ];
 
 const App = () => {
-  const [rowExpandHeight, setRowExpandHeight] = useState(350);
+  const [expandedRows, setExpandedRows] = useState({ 1: true, 2: true });
+  const [collapsedRows, setCollapsedRows] = useState(null);
+
+  const onExpandedRowsChange = useCallback(
+    ({ expandedRows, collapsedRows }) => {
+      setExpandedRows(expandedRows);
+      setCollapsedRows(collapsedRows);
+    },
+    []
+  );
 
   const rowExpandHeightFn = () => {
     let height = 200;
@@ -77,17 +80,18 @@ const App = () => {
 
   return (
     <div>
-      <p>Select row expand height</p>
-      <RadioButtonGroup
-        theme="default-dark"
-        radioOptions={rowExpandHeights}
-        radioValue={rowExpandHeight}
-        onChange={({ checkedItemValue }) =>
-          setRowExpandHeight(checkedItemValue)
-        }
-        orientation="horizontal"
-        style={{ marginBottom: 20 }}
-      />
+      <div style={{ margin: '20px 0' }}>
+        <Button
+          theme="default-dark"
+          onClick={() => setExpandedRows(true)}
+          style={{ marginRight: 10 }}
+        >
+          Expand all
+        </Button>
+        <Button theme="default-dark" onClick={() => setExpandedRows({})}>
+          Collapse all
+        </Button>
+      </div>
 
       <ReactDataGrid
         idProperty="id"
@@ -106,6 +110,9 @@ const App = () => {
           }
           return 200;
         }}
+        expandedRows={expandedRows}
+        collapsedRows={collapsedRows}
+        onExpandedRowsChange={onExpandedRowsChange}
       />
     </div>
   );
