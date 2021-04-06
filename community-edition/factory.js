@@ -752,6 +752,13 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
                 }
             });
         };
+        computedProps.updateMainMenuPosition = (alignTo) => {
+            menusRef.current.forEach(menu => {
+                if (menu && menu.updatePosition && !menu.props.subMenu) {
+                    menu.updateAlignment(alignTo);
+                }
+            });
+        };
         computedProps.onScroll = () => {
             if (computedProps.initialProps.onScroll) {
                 computedProps.initialProps.onScroll();
@@ -1084,6 +1091,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         useNativeFlex: false,
         disableGroupByToolbar: false,
         updateMenuPositionOnScroll: true,
+        updateMenuPositionOnColumnsChange: true,
         useRowHeightForLockedRows: true,
         nodesProperty: 'nodes',
         rowDetailsWidth: 'max-viewport-width',

@@ -12,6 +12,7 @@ export { default as renderRowContextMenu } from './renderRowContextMenu';
 export default (props, computedProps, computedPropsRef) => {
     const [columnContextMenuProps, setColumnContextMenuProps] = useState(null);
     const [rowContextMenuProps, setRowContextMenuProps] = useState(null);
+    const [columnContextMenuInstanceProps, setColumnContextMenuInstanceProps,] = useState(null);
     const getConstrainRegion = (computedProps) => {
         if (!computedProps.parentComputedProps) {
             return document.documentElement;
@@ -99,6 +100,7 @@ export default (props, computedProps, computedPropsRef) => {
             computedProps.hideColumnFilterContextMenu();
         }
         computedProps.setColumnContextMenuProps(cellProps);
+        computedProps.setColumnContextMenuInstanceProps(cellInstance);
     }, []);
     const getMenuAvailableHeight = useCallback(() => {
         const { current: computedProps } = computedPropsRef;
@@ -171,10 +173,12 @@ export default (props, computedProps, computedPropsRef) => {
         hideColumnContextMenu,
         hideRowContextMenu,
         columnContextMenuProps,
+        columnContextMenuInstanceProps,
         rowContextMenuProps,
         columnContextMenuInfoRef,
         rowContextMenuInfoRef,
         setColumnContextMenuProps,
+        setColumnContextMenuInstanceProps,
         setRowContextMenuProps,
         preventIEMenuCloseRef,
     };

@@ -1132,6 +1132,14 @@ const GridFactory = (
       });
     };
 
+    computedProps.updateMainMenuPosition = (alignTo: any) => {
+      menusRef.current.forEach(menu => {
+        if (menu && menu.updatePosition && !menu.props.subMenu) {
+          menu.updateAlignment(alignTo);
+        }
+      });
+    };
+
     computedProps.onScroll = () => {
       if (computedProps.initialProps.onScroll) {
         computedProps.initialProps.onScroll();
@@ -1637,6 +1645,7 @@ const GridFactory = (
 
     disableGroupByToolbar: false,
     updateMenuPositionOnScroll: true,
+    updateMenuPositionOnColumnsChange: true,
     useRowHeightForLockedRows: true,
     nodesProperty: 'nodes',
     rowDetailsWidth: 'max-viewport-width',
