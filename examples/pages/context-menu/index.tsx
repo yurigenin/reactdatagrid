@@ -9,11 +9,6 @@ import flags from '../flags';
 
 const gridStyle = { minHeight: 550 };
 
-const defaultFilterValue = [
-  { name: 'name', operator: 'startsWith', type: 'string', value: '' },
-  { name: 'age', operator: 'gte', type: 'number', value: '' },
-];
-
 const columns = [
   {
     name: 'id',
@@ -34,19 +29,33 @@ const columns = [
 ];
 
 const App = () => {
+  const [
+    updateMenuPositionOnColumnsChange,
+    setUpdateMenuPositionOnColumnsChange,
+  ] = useState(true);
+
   return (
     <div>
       <h3>Grid with toggle for showColumnMenuTool</h3>
+
+      <div style={{ marginBottom: 20 }}>
+        <CheckBox
+          theme="default-dark"
+          checked={updateMenuPositionOnColumnsChange}
+          onChange={setUpdateMenuPositionOnColumnsChange}
+        >
+          updateMenuPositionOnColumnsChange
+        </CheckBox>
+      </div>
 
       <ReactDataGrid
         idProperty="id"
         theme="default-dark"
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         style={gridStyle}
-        defaultFilterValue={defaultFilterValue}
         columns={columns}
         dataSource={people}
-        updateMenuPositionOnColumnsChange
+        updateMenuPositionOnColumnsChange={updateMenuPositionOnColumnsChange}
       />
     </div>
   );
