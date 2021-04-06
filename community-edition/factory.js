@@ -1091,7 +1091,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         useNativeFlex: false,
         disableGroupByToolbar: false,
         updateMenuPositionOnScroll: true,
-        updateMenuPositionOnColumnsChange: false,
+        updateMenuPositionOnColumnsChange: true,
         useRowHeightForLockedRows: true,
         nodesProperty: 'nodes',
         rowDetailsWidth: 'max-viewport-width',

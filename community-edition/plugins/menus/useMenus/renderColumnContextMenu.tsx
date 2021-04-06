@@ -134,12 +134,23 @@ export default (
         )
       );
 
+      const mainMenu = document.querySelector(
+        '.InovuaReactDataGrid > .inovua-react-toolkit-menu'
+      );
+
       const cellInstance = computedProps.columnContextMenuInstanceProps;
       const columnIndex = cellInstance.props.computedVisibleIndex;
 
       const alignTo = getAlignTo(selection, menuTools, columnIndex);
       if (alignTo) {
         computedProps.updateMainMenuPosition(alignTo);
+
+        if (mainMenu) {
+          (mainMenu as any).style.transition = 'transform 200ms';
+          setTimeout(() => {
+            (mainMenu as any).style.transition = '';
+          }, 200);
+        }
       }
     }
   };
