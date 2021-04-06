@@ -41,7 +41,7 @@ const setRowHeightById_FromProps = (rowHeight, id, computedProps) => {
     }
 };
 const updateExpandedHeights_FromProps = (computedProps, rowHeights) => {
-    const { rowExpandHeight } = computedProps;
+    const { rowExpandHeight, dataMap } = computedProps;
     const expandedRows = getExpandedMap_FromProps(computedProps);
     const defaultRowHeight = computedProps.rowHeight;
     const heights = {};
@@ -50,7 +50,15 @@ const updateExpandedHeights_FromProps = (computedProps, rowHeights) => {
         for (let itemId in expandedRows) {
             const index = dataIndexMap[itemId];
             if (index !== undefined) {
-                heights[index] = rowExpandHeight;
+                if (typeof rowExpandHeight === 'number') {
+                    heights[index] = rowExpandHeight;
+                }
+                else if (typeof rowExpandHeight === 'function') {
+                    const currentRowHeight = rowExpandHeight({
+                        data: dataMap && dataMap[itemId],
+                    });
+                    heights[index] = currentRowHeight;
+                }
             }
         }
     }

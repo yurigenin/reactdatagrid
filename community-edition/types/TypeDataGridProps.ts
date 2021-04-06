@@ -140,6 +140,7 @@ export type TypeRowReorderFn = ({
 }: TypeRowReorderParam) => void;
 
 export type TypeRowReorder = TypeRowReorderFn | boolean;
+export type TypeRowExpandHeightFunction = ({ data }: { data: any }) => number;
 
 export type EnumRowDetailsWidth =
   | 'max-viewport-width'
@@ -193,7 +194,7 @@ type TypeDataGridPropsNoI18n = {
   isStartEditKeyPressed: ({ event }: { event: any }) => boolean;
   columnContextMenuPosition?: string;
   columnContextMenuAlignPositions?: string[];
-  rowExpandHeight: number;
+  rowExpandHeight: number | TypeRowExpandHeightFunction;
   columnUserSelect: true | false | 'text' | 'none';
   columnHeaderUserSelect: true | false | 'text' | 'none';
   multiRowExpand: boolean;
