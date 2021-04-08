@@ -82,12 +82,12 @@ export default (props, computedProps, computedPropsRef) => {
             computedProps.setRowContextMenuProps(null);
         }
     }, []);
-    const showColumnContextMenu = useCallback((alignTo, cellProps, cellInstance, onHide) => {
+    const showColumnContextMenu = useCallback((alignTo, cellProps, cellInstance, onHide, isSelection) => {
         const { current: computedProps } = computedPropsRef;
         if (!computedProps) {
             return;
         }
-        if (computedProps.columnContextMenuProps) {
+        if (computedProps.columnContextMenuProps && !isSelection) {
             computedProps.hideColumnContextMenu();
             return;
         }

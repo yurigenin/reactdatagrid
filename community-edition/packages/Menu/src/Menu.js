@@ -1301,15 +1301,15 @@ class InovuaMenu extends Component {
    */
   checkAlignment(props, skipReset, alignTo) {
     props = props || this.props;
+    alignTo = alignTo || props.alignTo;
 
     if (props.visible === false) {
       return;
     }
 
-    if ((props.constrainTo || props.alignTo) && !props.subMenu) {
+    if ((props.constrainTo || alignTo) && !props.subMenu) {
       const doAlign = () => {
         const props = this.props;
-        alignTo = alignTo || props.alignTo;
 
         const alignPositions = this.getAlignPositions(props);
         const domNode = this.node;

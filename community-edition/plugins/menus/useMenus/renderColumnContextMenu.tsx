@@ -420,10 +420,15 @@ export default (
 
   let constrainToComputedProps = getTopComputedProps(computedProps);
 
+  // const constrainTo = constrainToComputedProps.columnContextMenuInfoRef.current.getMenuConstrainTo();
+  const constrainTo = true;
+
   const menuProps = {
     updatePositionOnScroll: computedProps.updateMenuPositionOnScroll,
     maxHeight: constrainToComputedProps.initialProps
       .columnContextMenuConstrainTo
+      ? null
+      : constrainTo === true
       ? null
       : computedProps.getMenuAvailableHeight(),
 
@@ -446,7 +451,7 @@ export default (
     },
     items,
     theme: computedProps.theme,
-    constrainTo: constrainToComputedProps.columnContextMenuInfoRef.current.getMenuConstrainTo(),
+    constrainTo,
     alignPositions:
       computedProps.initialProps.columnContextMenuAlignPositions ||
       computedProps.rtl
