@@ -142,14 +142,13 @@ export default (
       alignTo: any,
       cellProps: TypeCellProps,
       cellInstance: any,
-      onHide: (...args: any[]) => void,
-      isSelection: boolean
+      onHide: (...args: any[]) => void
     ) => {
       const { current: computedProps } = computedPropsRef;
       if (!computedProps) {
         return;
       }
-      if (computedProps.columnContextMenuProps && !isSelection) {
+      if (computedProps.columnContextMenuProps) {
         computedProps.hideColumnContextMenu();
         return;
       }
