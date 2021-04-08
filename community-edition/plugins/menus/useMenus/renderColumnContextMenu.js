@@ -341,12 +341,16 @@ export default (computedProps, computedPropsRef) => {
         }
     });
     let constrainToComputedProps = getTopComputedProps(computedProps);
+    // const constrainTo = constrainToComputedProps.columnContextMenuInfoRef.current.getMenuConstrainTo();
+    const constrainTo = true;
     const menuProps = {
         updatePositionOnScroll: computedProps.updateMenuPositionOnScroll,
         maxHeight: constrainToComputedProps.initialProps
             .columnContextMenuConstrainTo
             ? null
-            : computedProps.getMenuAvailableHeight(),
+            : constrainTo === true
+                ? null
+                : computedProps.getMenuAvailableHeight(),
         nativeScroll: !IS_MS_BROWSER,
         autoFocus: true,
         enableSelection: true,
@@ -365,7 +369,7 @@ export default (computedProps, computedPropsRef) => {
         },
         items,
         theme: computedProps.theme,
-        constrainTo: constrainToComputedProps.columnContextMenuInfoRef.current.getMenuConstrainTo(),
+        constrainTo,
         alignPositions: computedProps.initialProps.columnContextMenuAlignPositions ||
             computedProps.rtl
             ? COLUMN_MENU_ALIGN_POSITIONS_RTL

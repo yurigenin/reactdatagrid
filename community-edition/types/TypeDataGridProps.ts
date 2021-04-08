@@ -682,6 +682,7 @@ export type TypePivotUniqueValuesDescriptor = {
   values: { [key: string]: TypePivotUniqueValuesDescriptor } | null;
 };
 export type TypeComputedProps = TypeDataGridPropsNoI18n & {
+  columnContextMenuInstanceProps?: any;
   computedPivotUniqueValuesPerColumn: TypePivotUniqueValuesDescriptor;
   computedLicenseValid?: boolean;
   initialProps: TypeDataGridProps;
