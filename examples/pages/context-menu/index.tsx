@@ -53,13 +53,13 @@ const App = () => {
       <div
         style={{
           position: 'fixed',
-          top: 0,
+          top: 500,
           left: 0,
           right: 0,
           bottom: 0,
           width: '100%',
-          height: '100%',
-          padding: '100px 20px',
+          height: 600,
+          padding: '20px',
         }}
       >
         <ReactDataGrid
