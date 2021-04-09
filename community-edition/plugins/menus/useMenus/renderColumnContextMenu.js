@@ -92,8 +92,8 @@ export default (computedProps, computedPropsRef) => {
             }
         });
         if (computedProps.updateMenuPositionOnColumnsChange) {
-            const menuTools = Array.prototype.slice.call(document.querySelectorAll('.InovuaReactDataGrid__column-header__menu-tool'));
-            const mainMenu = document.querySelector('.InovuaReactDataGrid > .inovua-react-toolkit-menu');
+            const menuTools = Array.prototype.slice.call(computedProps.domRef.current.querySelectorAll('.InovuaReactDataGrid__column-header__menu-tool'));
+            const mainMenu = computedProps.domRef.current.querySelector('.InovuaReactDataGrid > .inovua-react-toolkit-menu');
             const cellInstance = computedProps.columnContextMenuInstanceProps;
             const columnIndex = cellInstance.props.computedVisibleIndex;
             const alignTo = getAlignTo(selection, menuTools, columnIndex);

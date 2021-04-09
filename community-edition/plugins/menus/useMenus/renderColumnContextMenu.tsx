@@ -129,12 +129,12 @@ export default (
 
     if (computedProps.updateMenuPositionOnColumnsChange) {
       const menuTools = Array.prototype.slice.call(
-        document.querySelectorAll(
+        computedProps.domRef.current.querySelectorAll(
           '.InovuaReactDataGrid__column-header__menu-tool'
         )
       );
 
-      const mainMenu = document.querySelector(
+      const mainMenu = computedProps.domRef.current.querySelector(
         '.InovuaReactDataGrid > .inovua-react-toolkit-menu'
       );
 
