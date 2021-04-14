@@ -1,41 +1,59 @@
 import React, { useState } from 'react';
-
 import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 
-const dataSource = Array.from(Array(100).keys()).map(i => ({
-  id: i,
-  group: i % 10,
-  name: `Name ${i}`,
-  description: `Description ${i}`,
-}));
+import CheckBox from '@inovua/reactdatagrid-community/packages/CheckBox';
+
+import people from '../people';
+import flags from '../flags';
+
+const gridStyle = { minHeight: 400 };
 
 const columns = [
   {
-    name: 'group',
-    locked: 'start',
-    header: 'Group',
-    renderGroupTitle: value => `Group ${value}`,
+    name: 'id',
+    type: 'number',
+    defaultWidth: 80,
+    groupBy: false,
+    header: 'Id',
+    defaultVisible: false,
   },
-  { name: 'name', header: 'Name', locked: 'start', defaultWidth: 200 },
-  { name: 'description', header: 'Description', defaultWidth: 1000 },
+  { name: 'name', defaultFlex: 1, header: 'Name' },
+  {
+    name: 'country',
+    defaultWidth: 150,
+    header: 'Country',
+    render: ({ value }) => (flags[value] ? flags[value] : value),
+  },
+  { name: 'city', defaultWidth: 150, header: 'City' },
+  { name: 'age', defaultWidth: 100, type: 'number', header: 'Age' },
+  { name: 'email', defaultWidth: 150, defaultFlex: 1, header: 'Email' },
 ];
 
-const gridStyle = {
-  minHeight: 300,
-  width: 700,
-};
 const App = () => {
+  const [defaultGroupBy, setDefaultGroupBy] = useState(['country', 'city']);
+  const [stickyGroupRows, setStickyGroupRows] = useState(false);
+
   return (
     <div>
-      <h3>Grouped grid with expandGroupTitle and stickyGroupRows</h3>
-      <div>To see the issue, scroll the grid horizontally</div>
+      <div style={{ marginBottom: 20 }}>
+        <CheckBox
+          theme="default-dark"
+          checked={stickyGroupRows}
+          onChange={setStickyGroupRows}
+        >
+          Use sticky group rows
+        </CheckBox>
+      </div>
       <ReactDataGrid
-        columns={columns}
-        style={gridStyle}
-        defaultGroupBy={['group']}
-        expandGroupTitle={true}
+        idProperty="id"
+        theme="default-dark"
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
-        dataSource={dataSource}
+        style={gridStyle}
+        stickyGroupRows={stickyGroupRows}
+        stickyTreeNodes
+        defaultGroupBy={defaultGroupBy}
+        columns={columns}
+        dataSource={people}
       />
     </div>
   );
