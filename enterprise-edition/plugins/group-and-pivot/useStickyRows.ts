@@ -32,8 +32,6 @@ const useStickyRows = (
     stickyRows = props.stickyGroupRows ? stickyIndexes : null;
   }
 
-  props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
-
   const computedStickyRows = useMemo(() => {
     const result = stickyRows == null ? stickyRows : { ...stickyRows };
 

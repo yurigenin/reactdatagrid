@@ -14,7 +14,6 @@ const useStickyRows = (props, computedProps, computedPropsRef) => {
     else {
         stickyRows = props.stickyGroupRows ? stickyIndexes : null;
     }
-    props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
     const computedStickyRows = useMemo(() => {
         const result = stickyRows == null ? stickyRows : { ...stickyRows };
         return result;
