@@ -7,7 +7,14 @@
 import { useState, useMemo } from 'react';
 const useStickyRows = (props, computedProps, computedPropsRef) => {
     const [stickyIndexes, setStickyGroupsIndexes] = useState(null);
-    let stickyRows = props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
+    let stickyRows;
+    if (computedProps.treeColumn) {
+        stickyRows = props.stickyTreeNodes ? stickyIndexes : null;
+    }
+    else {
+        stickyRows = props.stickyGroupRows ? stickyIndexes : null;
+    }
+    props.stickyGroupRows || props.stickyTreeNodes ? stickyIndexes : null;
     const computedStickyRows = useMemo(() => {
         const result = stickyRows == null ? stickyRows : { ...stickyRows };
         return result;
