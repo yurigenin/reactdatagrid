@@ -90,6 +90,7 @@ InovuaTextEditor.propTypes = {
   cellProps: PropTypes.any,
   nativeScroll: PropTypes.any,
   editorProps: PropTypes.any,
+  onEnterNavigation: PropTypes.func,
 };
 
 export default InovuaTextEditor;
