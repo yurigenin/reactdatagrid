@@ -8,7 +8,7 @@ import { useState, useMemo } from 'react';
 const useStickyRows = (props, computedProps, computedPropsRef) => {
     const [stickyIndexes, setStickyGroupsIndexes] = useState(null);
     let stickyRows;
-    if (computedProps.treeColumn) {
+    if (computedProps.computedTreeEnabled) {
         stickyRows = props.stickyTreeNodes ? stickyIndexes : null;
     }
     else {

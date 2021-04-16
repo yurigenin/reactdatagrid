@@ -231,6 +231,10 @@ export default (props, computedProps, computedPropsRef) => {
                 }
             });
         }
+        if (computedProps.computedTreeEnabled && computedProps.stickyTreeNodes) {
+            const vl = computedProps.getVirtualList();
+            vl.updateStickyRows(undefined, undefined, { force: true });
+        }
         notifySelection(computedProps, computedProps.computedRemoteData || computedProps.computedPagination
             ? true
             : dataMap, data, null);
@@ -239,6 +243,10 @@ export default (props, computedProps, computedPropsRef) => {
         const { current: computedProps } = computedPropsRef;
         if (!computedProps) {
             return;
+        }
+        if (computedProps.computedTreeEnabled && computedProps.stickyTreeNodes) {
+            const vl = computedProps.getVirtualList();
+            vl.updateStickyRows(undefined, undefined, { force: true });
         }
         notifySelection(computedProps, {}, [], null);
     }, []);

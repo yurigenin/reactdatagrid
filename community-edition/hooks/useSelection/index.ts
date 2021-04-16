@@ -503,6 +503,12 @@ export default (
       });
     }
 
+    if (computedProps.computedTreeEnabled && computedProps.stickyTreeNodes) {
+      const vl = computedProps.getVirtualList();
+
+      vl.updateStickyRows(undefined, undefined, { force: true });
+    }
+
     notifySelection(
       computedProps,
       computedProps.computedRemoteData || computedProps.computedPagination
@@ -518,6 +524,12 @@ export default (
 
     if (!computedProps) {
       return;
+    }
+
+    if (computedProps.computedTreeEnabled && computedProps.stickyTreeNodes) {
+      const vl = computedProps.getVirtualList();
+
+      vl.updateStickyRows(undefined, undefined, { force: true });
     }
 
     notifySelection(computedProps, {}, [], null);

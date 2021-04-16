@@ -30,7 +30,7 @@ const columns = [
 ];
 
 const App = () => {
-  const [defaultGroupBy, setDefaultGroupBy] = useState(['country', 'city']);
+  const [defaultGroupBy, setDefaultGroupBy] = useState(['country']);
   const [stickyGroupRows, setStickyGroupRows] = useState(false);
 
   return (
@@ -54,6 +54,7 @@ const App = () => {
         defaultGroupBy={defaultGroupBy}
         columns={columns}
         dataSource={people}
+        checkboxColumn
       />
     </div>
   );
