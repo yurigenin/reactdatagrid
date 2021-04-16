@@ -1160,7 +1160,10 @@ class InovuaComboBox extends Component {
         return (
           valueMap[id] || {
             id: typeof id === 'object' ? this.getIdProperty(id) : id,
-            label: typeof id === 'object' ? this.getDisplayProperty(id) : id,
+            label:
+              typeof id === 'object'
+                ? this.getDisplayProperty(id)
+                : this.getItemLabel(id),
           }
         );
       });
@@ -1170,9 +1173,6 @@ class InovuaComboBox extends Component {
   }
 
   getItemLabel(id) {
-    if (this.props.multiple) {
-      return null;
-    }
     id = id === undefined ? this.getValue() : id;
 
     const valueMap = this.getValueMap();
