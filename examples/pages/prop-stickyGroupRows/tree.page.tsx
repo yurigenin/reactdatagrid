@@ -4,7 +4,7 @@ import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 
 import CheckBox from '@inovua/reactdatagrid-community/packages/CheckBox';
 
-const gridStyle = { minHeight: 250 };
+const gridStyle = { minHeight: 350 };
 
 const treeData = [
   {
@@ -70,8 +70,8 @@ const treeData = [
 ];
 
 const columns = [
-  { name: 'name', header: 'Name', defaultFlex: 1 },
-  { name: 'size', header: 'Size', defaultWidth: 160 },
+  { name: 'name', header: 'Name', width: 800 },
+  { name: 'size', header: 'Size', width: 800 },
 ];
 
 const loadNode = ({ node, nodeProps }) => {
@@ -87,22 +87,14 @@ const loadNode = ({ node, nodeProps }) => {
         { id: 1, name: 'First child of ' + node.name, nodes: null },
         { id: 2, name: 'Second child of ' + node.name, nodes: null },
       ]);
-    }, 200);
+    }, 0);
   });
 };
 
-const nestingSizes = [
-  { label: '10px', id: 10 },
-  { label: '15px', id: 15 },
-  { label: '22px', id: 22 },
-  { label: '25px', id: 25 },
-  { label: '50px', id: 50 },
-];
-
-const defaultExpandedNodes = { 1: true };
+const defaultExpandedNodes = { 1: true, 2: true, 3: true, '3/1': true };
 
 const App = () => {
-  const [stickyTreeNodes, setStickyTreeNodes] = useState(false);
+  const [stickyTreeNodes, setStickyTreeNodes] = useState(true);
 
   return (
     <div>
@@ -128,6 +120,7 @@ const App = () => {
         style={gridStyle}
         columns={columns}
         dataSource={treeData}
+        checkboxColumn
       />
     </div>
   );
