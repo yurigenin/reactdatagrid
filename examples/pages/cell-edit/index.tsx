@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
+import ReactDataGrid from '../../../community-edition';
 import people from '../people';
 
 const gridStyle = { minHeight: 550 };
@@ -13,7 +13,12 @@ const columns = [
     minWidth: 300,
     type: 'number',
   },
-  { name: 'name', header: 'Name', defaultFlex: 1, minWidth: 250 },
+  {
+    name: 'name',
+    header: 'Name',
+    defaultFlex: 1,
+    minWidth: 250,
+  },
   {
     name: 'country',
     header: 'Country',
@@ -50,7 +55,7 @@ const App = () => {
       <ReactDataGrid
         idProperty="id"
         theme="default-dark"
-        defaultGroupBy={['city']}
+        defaultGroupBy={[]}
         style={gridStyle}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         onEditComplete={onEditComplete}

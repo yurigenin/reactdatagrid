@@ -8,6 +8,7 @@
 import { TypeSortInfo } from './TypeSortInfo';
 import { TypeLockedRow, TypeComputedProps, TypeFooterRow } from '.';
 import { FC, Component, ReactNode } from 'react';
+import { CellProps } from '../Layout/ColumnLayout/Cell/CellProps';
 
 export type TypeSummaryReducer = {
   initialValue: any;
@@ -136,7 +137,9 @@ export type TypeComputedColumn = TypeColumn &
     computedSortInfo?: TypeSortInfo;
     computedOffset: number;
     computedSortable?: boolean;
-    computedEditable?: boolean;
+    computedEditable?:
+      | boolean
+      | ((editValue?: string, cellProps?: CellProps) => void);
     computedFilterable?: boolean;
     computedVisibleIndex: number;
     computedVisibleCount?: number;

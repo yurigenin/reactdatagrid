@@ -205,7 +205,9 @@ export type CellProps = {
 
   rtl?: boolean;
   computedFilterable?: boolean;
-  computedEditable?: boolean;
+  computedEditable?:
+    | boolean
+    | ((editValue?: string, cellProps?: CellProps) => void);
   groupColumnVisible?: boolean;
   filterTypes?: any;
   filterDelay?: boolean | number;

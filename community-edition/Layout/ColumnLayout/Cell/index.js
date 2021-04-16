@@ -1215,7 +1215,7 @@ InovuaDataGridCell.propTypes = {
     naturalRowHeight: PropTypes.bool,
     rtl: PropTypes.bool,
     computedFilterable: PropTypes.bool,
-    computedEditable: PropTypes.bool,
+    computedEditable: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
     groupColumnVisible: PropTypes.bool,
     filterTypes: PropTypes.any,
     filterDelay: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
