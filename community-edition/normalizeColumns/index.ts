@@ -79,6 +79,7 @@ export type TypeParam = {
   filterValue?: TypeFilterValue;
   showPivotSummaryColumns?: boolean;
   onRowReorder?: TypeRowReorderFn | boolean;
+  rowReorderColumn?: IColumn;
 };
 
 type TypeFilterValue = {
@@ -117,6 +118,7 @@ export default ({
   showPivotSummaryColumns,
   availableWidth = 0,
   onRowReorder,
+  rowReorderColumn,
 }: TypeParam) => {
   if (columnVisibilityMap) {
     columnVisibilityMap = { ...columnVisibilityMap };
@@ -284,8 +286,10 @@ export default ({
     }
 
     if (
-      onRowReorder &&
-      (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean')
+      rowReorderColumn ||
+      (onRowReorder &&
+        (typeof onRowReorder === 'function' ||
+          typeof onRowReorder === 'boolean'))
     ) {
       const normalizedRowReorderColumn = normalizedColumns.filter(
         c => c.id === reorderColumnId
@@ -350,8 +354,9 @@ export default ({
 
   // enforce draggable column to be first
   if (
-    onRowReorder &&
-    (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean')
+    rowReorderColumn ||
+    (onRowReorder &&
+      (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean'))
   ) {
     if (!columnOrder) {
       columnOrder = visibleColumns.map(c => c.id);

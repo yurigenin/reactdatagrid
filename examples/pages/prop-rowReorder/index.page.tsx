@@ -277,10 +277,9 @@ class App extends React.Component<{}, State> {
           style={{
             padding: 20,
             height: 'calc(100vh - 40px)',
-            background: '#fff',
           }}
         >
-          <h2 style={{ color: '#525252' }}>DataGrid --- Row reorder example</h2>
+          <h2 style={{ color: '#fafafa' }}>DataGrid --- Row reorder example</h2>
 
           <div
             style={{
@@ -292,7 +291,8 @@ class App extends React.Component<{}, State> {
             <DataGrid
               key={`${this.state.rowHeight}-${this.state.defaultColumnWidth}`}
               idProperty="id"
-              theme="default-light"
+              theme="default-dark"
+              licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
               checkboxColumn
               onRowReorder
               showZebraRows={false}
