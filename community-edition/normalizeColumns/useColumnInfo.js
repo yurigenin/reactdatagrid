@@ -127,6 +127,8 @@ const useColumnInfo = (params) => {
             sortInfo,
             editable,
             availableWidth,
+            onRowReorder,
+            rowReorderColumn,
         });
     }, params, (a, b) => {
         const { result, key } = equalReturnKey(a, b);

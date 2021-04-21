@@ -59,6 +59,7 @@ const App = () => {
           borderRadius: 1,
         }}
         rowReorderAutoScrollSpeed={10}
+        defaultColumnOrder={['id', 'name', 'country', 'age']}
       />
     </div>
   );

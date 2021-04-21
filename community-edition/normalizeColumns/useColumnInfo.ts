@@ -260,6 +260,8 @@ const useColumnInfo = (params: TypeParamObject) => {
         sortInfo,
         editable,
         availableWidth,
+        onRowReorder,
+        rowReorderColumn,
       });
     },
     params,

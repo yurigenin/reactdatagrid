@@ -28,10 +28,10 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
         this.dragBoxInitialHeight = 0;
         this.dropRowHeight = 0;
         this.validDropPositions = [];
-        this.renderLockedEndRows = computedProps => {
+        this.renderLockedEndRows = (computedProps) => {
             return this.renderLockedRows(computedProps.computedLockedEndRows, 'end', computedProps);
         };
-        this.renderLockedStartRows = computedProps => {
+        this.renderLockedStartRows = (computedProps) => {
             return this.renderLockedRows(computedProps.computedLockedStartRows, 'start', computedProps);
         };
         this.renderLockedRows = (rows, position, computedProps) => {
@@ -46,7 +46,7 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             return (React.createElement(DragRowArrow, { ref: this.refDragRowArrow, rowHeight: this.dropRowHeight, rowReorderArrowStyle: rowReorderArrowStyle }));
         };
         this.renderReorderRowProxy = (props) => {
-            return (React.createElement(DragRow, { ref: this.refDragRow, renderRowReorderProxy: props.renderRowReorderProxy }));
+            return (React.createElement(DragRow, { ref: this.refDragRow, renderRowReorderProxy: props && props.renderRowReorderProxy }));
         };
         this.renderScrollingTopRegion = () => {
             return (React.createElement(ScrollingRegion, { ref: this.scrollTopRegionRef, dir: -1, onMouseEnter: (event) => this.onScrollingRegionMouseEnter(event, -1), onMouseLeave: this.onScrollingRegionMouseLeave }));
@@ -144,7 +144,7 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             this.setupDrag(ev, { dragIndex, contentRegion, headerHeight, cellRegion }, props);
         };
         this.setupDrag = (event, { dragIndex, contentRegion, headerHeight, cellRegion, }, props) => {
-            const { count, columnsMap, rowHeightManager } = props;
+            const { count, rowHeightManager } = props;
             const initialScrollTop = this.getScrollTop();
             const rowRanges = getRangesForRows({
                 count,
@@ -310,7 +310,9 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             this.dropIndex = dropIndex;
             const rowHeight = rowHeightManager.getRowHeight(this.dropIndex);
             this.dragRowArrow.setHeight(rowHeight);
-            this.setReorderArrowAt(dropIndex, compareRanges);
+            if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
+                this.setReorderArrowAt(dropIndex, compareRanges);
+            }
         };
         this.onRowDrop = (event, config, props) => {
             const { dropIndex } = this;
@@ -336,7 +338,7 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             if (this.scrollBottomRegionRef.current) {
                 this.scrollBottomRegionRef.current.setVisible(false);
             }
-            if (dropIndex === dragIndex) {
+            if (dropIndex === dragIndex || dropIndex === dragIndex + 1) {
                 return;
             }
             if (!this.validDropPositions[dropIndex]) {
@@ -376,14 +378,11 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
         this.setReorderArrowVisible = (visible) => {
             this.dragRowArrow.setVisible(visible);
         };
-        this.refDragRow = row => {
+        this.refDragRow = (row) => {
             this.dragRow = row;
         };
-        this.refDragRowArrow = dragRow => {
+        this.refDragRowArrow = (dragRow) => {
             this.dragRowArrow = dragRow;
-        };
-        this.refResizeOverlay = r => {
-            this.resizeOverlay = r;
         };
         this.scrollTopRegionRef = createRef();
         this.scrollBottomRegionRef = createRef();
