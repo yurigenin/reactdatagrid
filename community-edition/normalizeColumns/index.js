@@ -25,7 +25,7 @@ const defaultPivotGrandSummaryColumn = {
 const defaultPivotSummaryColumn = defaultPivotGrandSummaryColumn;
 const emptyArray = [];
 const emptyObject = Object.freeze ? Object.freeze({}) : {};
-export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMaxWidth, columnDefaultWidth, columnWidth, columnSizes = emptyObject, columnVisibilityMap = emptyObject, columnFlexes = emptyObject, lockedColumnsState = emptyObject, columnOrder, computedPivotUniqueValuesPerColumn, editable, pivot, sortable, filterable, resizable, pivotGrandSummaryColumn, lockable, checkboxColumn, rowIndexColumn, filter, rtl, filterValueMap, sortInfo, showPivotSummaryColumns, availableWidth = 0, onRowReorder, }) => {
+export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMaxWidth, columnDefaultWidth, columnWidth, columnSizes = emptyObject, columnVisibilityMap = emptyObject, columnFlexes = emptyObject, lockedColumnsState = emptyObject, columnOrder, computedPivotUniqueValuesPerColumn, editable, pivot, sortable, filterable, resizable, pivotGrandSummaryColumn, lockable, checkboxColumn, rowIndexColumn, filter, rtl, filterValueMap, sortInfo, showPivotSummaryColumns, availableWidth = 0, onRowReorder, rowReorderColumn, }) => {
     if (columnVisibilityMap) {
         columnVisibilityMap = { ...columnVisibilityMap };
     }
@@ -152,8 +152,10 @@ export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMax
                 c.computedLocked = 'start';
             });
         }
-        if (onRowReorder &&
-            (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean')) {
+        if (rowReorderColumn ||
+            (onRowReorder &&
+                (typeof onRowReorder === 'function' ||
+                    typeof onRowReorder === 'boolean'))) {
             const normalizedRowReorderColumn = normalizedColumns.filter(c => c.id === reorderColumnId)[0];
             if (normalizedRowReorderColumn) {
                 normalizedRowReorderColumn.computedLocked = 'start';
@@ -202,8 +204,9 @@ export default ({ generatedColumnsLength = 0, columns, columnMinWidth, columnMax
         }
     }
     // enforce draggable column to be first
-    if (onRowReorder &&
-        (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean')) {
+    if (rowReorderColumn ||
+        (onRowReorder &&
+            (typeof onRowReorder === 'function' || typeof onRowReorder === 'boolean'))) {
         if (!columnOrder) {
             columnOrder = visibleColumns.map(c => c.id);
         }
