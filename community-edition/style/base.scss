@@ -850,6 +850,7 @@
   border-radius: 2px;
   opacity: 0.85;
   display: inline-flex;
+  pointer-events: none;
 }
 
 .InovuaReactDataGrid__row-drag-proxy--visible {

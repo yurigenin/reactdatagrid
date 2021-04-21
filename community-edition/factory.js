@@ -1045,6 +1045,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         columnMinWidth: 40,
         columnReorderScrollByAmount: 20,
         rowReorderScrollByAmount: 20,
+        rowReorderAutoScroll: false,
         reorderProxySize: 3,
         columnMaxWidth: null,
         editStartEvent: 'dblclick',

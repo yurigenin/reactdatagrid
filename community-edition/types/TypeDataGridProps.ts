@@ -683,6 +683,9 @@ export type TypePivotUniqueValuesDescriptor = {
 };
 export type TypeComputedProps = TypeDataGridPropsNoI18n & {
   columnContextMenuInstanceProps?: any;
+  rowReorderAutoScroll?: boolean;
+  rowReorderArrowStyle?: CSSProperties;
+  rowReorderAutoScrollSpeed?: number;
   computedPivotUniqueValuesPerColumn: TypePivotUniqueValuesDescriptor;
   computedLicenseValid?: boolean;
   initialProps: TypeDataGridProps;

@@ -77,12 +77,29 @@
     border: 1px solid $INOVUA_DATAGRID_HEADER_BORDER_COLOR;
   }
 
+  .InovuaReactDataGrid__row-reorder-arrow {
+    pointer-events: none;
+    position: absolute;
+    height: 3px;
+    width: 40px;
+    z-index: 99;
+  }
+
   .InovuaReactDataGrid__row-reorder-arrow--valid {
     background: $INOVUA_DATAGRID_ROW_REORDER_VALID_ARROW_BG;
   }
 
   .InovuaReactDataGrid__row-reorder-arrow--invalid {
     background: $INOVUA_DATAGRID_ROW_REORDER_INVALID_ARROW_BG;
+  }
+
+  .InovuaReactDataGrid__row-drag-scrolling-region {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    height: 40px;
+    z-index: 100;
+    display: none;
   }
 
   /* ----------  Row  ---------- */
@@ -297,9 +314,8 @@
         }
       }
 
-      &
-        > .InovuaReactDataGrid__row-active-borders-wrapper { 
-          z-index: 11000;
+      & > .InovuaReactDataGrid__row-active-borders-wrapper {
+        z-index: 11000;
       }
 
       &.InovuaReactDataGrid__row--no-locked-start:before {
