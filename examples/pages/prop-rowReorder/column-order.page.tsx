@@ -51,14 +51,14 @@ const App = () => {
         rowReorderColumn
         columns={columns}
         dataSource={[].concat(dataSource)}
-        rowReorderScrollByAmount={15}
+        // rowReorderScrollByAmount={15}
         rowReorderAutoScroll={true}
         rowReorderArrowStyle={{
           background: 'green',
           height: 8,
           borderRadius: 1,
         }}
-        rowReorderAutoScrollSpeed={10}
+        // rowReorderAutoScrollSpeed={10}
         defaultColumnOrder={['id', 'name', 'country', 'age']}
       />
     </div>

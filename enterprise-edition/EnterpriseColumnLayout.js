@@ -20,7 +20,6 @@ let DRAG_INFO = null;
 let scrolling = false;
 const SCROLL_MARGIN = 40;
 const DRAG_ROW_MAX_HEIGHT = 100;
-const SCROLL_SPEED = 60;
 const raf = global.requestAnimationFrame;
 export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGridColumnLayout {
     constructor(props) {
@@ -62,7 +61,7 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
                 const { rowReorderScrollByAmount, rowReorderAutoScrollSpeed } = props;
                 if (scrolling && dir) {
                     global.clearInterval(this.gridScrollInterval);
-                    this.gridScrollInterval = global.setInterval(() => this.startScrolling(rowReorderScrollByAmount, dir), rowReorderAutoScrollSpeed || SCROLL_SPEED);
+                    this.gridScrollInterval = global.setInterval(() => this.startScrolling(rowReorderScrollByAmount, dir), rowReorderAutoScrollSpeed);
                 }
             }
         };
