@@ -41,15 +41,11 @@ class DragRowArrow extends Component {
             const className = join('InovuaReactDataGrid__row-reorder-arrow', this.state.isValid
                 ? 'InovuaReactDataGrid__row-reorder-arrow--valid'
                 : 'InovuaReactDataGrid__row-reorder-arrow--invalid');
-            return (React.createElement("div", { ref: this.dragRowArrowRef, className: className, style: {
-                    pointerEvents: 'none',
-                    position: 'absolute',
-                    height: 3,
-                    width: 40,
-                    left: this.state.left,
-                    opacity: this.state.visible ? 1 : 0,
-                    zIndex: 99,
-                } }));
+            const style = Object.assign({
+                left: this.state.left,
+                opacity: this.state.visible ? 1 : 0,
+            }, this.props.rowReorderArrowStyle);
+            return (React.createElement("div", { ref: this.dragRowArrowRef, className: className, style: style }));
         };
         this.state = {
             visible: false,

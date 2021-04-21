@@ -5,12 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { Component, createRef, RefObject } from 'react';
+import React, { Component, createRef, CSSProperties, RefObject } from 'react';
 
 import join from '@inovua/reactdatagrid-community/packages/join';
 
 type Props = {
   rowHeight: number;
+  rowReorderArrowStyle?: CSSProperties;
 };
 
 type State = {
@@ -82,20 +83,16 @@ class DragRowArrow extends Component<Props, State> {
         : 'InovuaReactDataGrid__row-reorder-arrow--invalid'
     );
 
+    const style = Object.assign(
+      {
+        left: this.state.left,
+        opacity: this.state.visible ? 1 : 0,
+      },
+      this.props.rowReorderArrowStyle
+    );
+
     return (
-      <div
-        ref={this.dragRowArrowRef}
-        className={className}
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          height: 3,
-          width: 40,
-          left: this.state.left,
-          opacity: this.state.visible ? 1 : 0,
-          zIndex: 99,
-        }}
-      ></div>
+      <div ref={this.dragRowArrowRef} className={className} style={style}></div>
     );
   };
 }

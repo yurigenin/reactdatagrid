@@ -295,11 +295,12 @@ export default ({
   style,
   children,
 }: {
-  style: any;
-  children: JSX.Element;
+  style?: any;
+  children?: JSX.Element;
   rows: TypeLockedRow[];
   position: 'start' | 'end';
-}): ReactNode => {
+  computedProps: TypeComputedProps;
+}): ReactNode | any => {
   const computedProps: TypeComputedProps = useContext<TypeComputedProps>(
     GridContext
   );

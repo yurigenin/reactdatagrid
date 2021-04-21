@@ -77,9 +77,15 @@ export default class InovuaDataGridColumnLayout extends React.Component {
                 {this.renderHeaderLayout(computedProps)}
                 {this.renderContent(computedProps)}
               </FakeFlex>
+              {computedProps &&
+                computedProps.rowReorderAutoScroll &&
+                this.renderScrollingTopRegion()}
               {this.renderReorderRowProxy(computedProps)}
               {this.renderResizeOverlay(computedProps)}
               {this.renderDragRowArrow(computedProps)}
+              {computedProps &&
+                computedProps.rowReorderAutoScroll &&
+                this.renderScrollingBottomRegion()}
             </div>
           );
         }}
@@ -89,6 +95,14 @@ export default class InovuaDataGridColumnLayout extends React.Component {
 
   getDOMNode = () => {
     return this.columnLayoutRef.current;
+  };
+
+  renderScrollingTopRegion = (): ReactNode => {
+    return null; // implemented in enterprise
+  };
+
+  renderScrollingBottomRegion = (): ReactNode => {
+    return null; // implemented in enterprise
   };
 
   renderReorderRowProxy(): ReactNode {
