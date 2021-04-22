@@ -1605,7 +1605,7 @@ export default class DataGridRow extends React.Component<RowProps> {
     }
   }
 
-  tryRowCellEdit(editIndex: number, dir = 0, isEnterNavigation) {
+  tryRowCellEdit(editIndex: number, dir = 0, isEnterNavigation: boolean) {
     const cols = this.props.columns;
     let col;
     let colIndex;
@@ -1661,7 +1661,9 @@ export default class DataGridRow extends React.Component<RowProps> {
     return new Promise((resolve, reject) => {
       const startEdit = (cols, index = 0) => {
         const errBack = () => {
-          startEdit(cols, index + 1);
+          isEnterNavigation
+            ? this.tryNextRowEdit(dir, editIndex, true)
+            : startEdit(cols, index + 1);
         };
         const col = cols[index];
         if (!col) {
