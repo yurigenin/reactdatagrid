@@ -220,6 +220,7 @@ export type CellProps = {
   theme: string;
   onContextMenu?: () => void;
   showContextMenu?: (menuTool: any, onHide: any) => void;
+  setActiveIndex?: func;
 };
 
 export type EnhancedCellProps = CellProps & {
