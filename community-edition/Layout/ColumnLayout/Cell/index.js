@@ -647,6 +647,7 @@ export default class InovuaDataGridCell extends React.Component {
     }
     startEdit(editValue, errBack) {
         const props = this.getProps();
+        this.isCancelled = false;
         const editValuePromise = editValue === undefined
             ? this.getEditStartValue(props)
             : Promise.resolve(editValue);
