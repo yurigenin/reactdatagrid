@@ -1245,7 +1245,7 @@ export default class DataGridRow extends React.Component<RowProps> {
         this.props.editable ||
         cellProps.computedEditable
       ) {
-        cellProps.ref = this.cellRef;
+        cellProps.cellRef = this.cellRef;
         cellProps.onUnmount = this.onCellUnmount;
       }
 
@@ -1916,7 +1916,13 @@ export default class DataGridRow extends React.Component<RowProps> {
       }
 
       if (cell === undefined) {
-        cell = <Cell {...cProps} key={key} />;
+        cell = (
+          <Cell
+            {...cProps}
+            ref={cProps.cellRef ? cProps.cellRef : null}
+            key={key}
+          />
+        );
       }
 
       return cell;

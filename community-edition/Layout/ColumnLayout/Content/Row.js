@@ -813,7 +813,7 @@ export default class DataGridRow extends React.Component {
             if ((virtualizeColumns && !cellProps.computedLocked) ||
                 this.props.editable ||
                 cellProps.computedEditable) {
-                cellProps.ref = this.cellRef;
+                cellProps.cellRef = this.cellRef;
                 cellProps.onUnmount = this.onCellUnmount;
             }
             const { computedLocked, colspan, rowspan } = cellProps;
@@ -1321,7 +1321,7 @@ export default class DataGridRow extends React.Component {
                 cell = this.props.cellFactory(cProps);
             }
             if (cell === undefined) {
-                cell = React.createElement(Cell, Object.assign({}, cProps, { key: key }));
+                cell = (React.createElement(Cell, Object.assign({}, cProps, { ref: cProps.cellRef ? cProps.cellRef : null, key: key })));
             }
             return cell;
         });
