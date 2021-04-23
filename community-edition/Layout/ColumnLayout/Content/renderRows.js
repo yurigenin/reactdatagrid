@@ -167,6 +167,7 @@ export default (
     onDragRowMouseDown,
     theme,
     onContextMenu,
+    setActiveIndex,
   }
 ) => {
   const remoteOffset = computedLivePagination ? 0 : computedSkip || 0;
@@ -356,6 +357,7 @@ export default (
       onDragRowMouseDown,
       theme,
       onContextMenu,
+      setActiveIndex,
     };
 
     if (rowProps.rowIndex === editRowIndex) {

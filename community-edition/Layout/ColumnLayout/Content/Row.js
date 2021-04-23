@@ -636,7 +636,7 @@ export default class DataGridRow extends React.Component {
         const initialColumns = this.props.columns;
         let columns = initialColumns;
         const { props } = this;
-        const { hasLockedStart, data, onGroupToggle, computedPivot, rowHeight, remoteRowIndex, defaultRowHeight, initialRowHeight, lastLockedStartIndex, lastLockedEndIndex, lastUnlockedIndex, minRowHeight, realIndex, showHorizontalCellBorders, showVerticalCellBorders, empty, treeColumn, groupColumn, totalDataCount, depth, dataSourceArray, computedGroupBy, groupProps, summaryProps, indexInGroup, firstUnlockedIndex, firstLockedEndIndex, selectAll, deselectAll, columnUserSelect, multiSelect, selection, setRowSelected, computedRowExpandEnabled, rtl, last: lastRow, computedCellSelection, lastNonEmpty, maxVisibleRows, onCellClick, editStartEvent, naturalRowHeight, renderNodeTool, computedTreeEnabled, expanded: rowExpanded, expandGroupTitle, expandColumn: expandColumnFn, onCellSelectionDraggerMouseDown, onCellMouseDown, onCellEnter, computedCellMultiSelectionEnabled, getCellSelectionKey, lastCellInRange, computedRowspans, renderIndex, nativeScroll, onDragRowMouseDown, theme, onContextMenu, } = props;
+        const { hasLockedStart, data, onGroupToggle, computedPivot, rowHeight, remoteRowIndex, defaultRowHeight, initialRowHeight, lastLockedStartIndex, lastLockedEndIndex, lastUnlockedIndex, minRowHeight, realIndex, showHorizontalCellBorders, showVerticalCellBorders, empty, treeColumn, groupColumn, totalDataCount, depth, dataSourceArray, computedGroupBy, groupProps, summaryProps, indexInGroup, firstUnlockedIndex, firstLockedEndIndex, selectAll, deselectAll, columnUserSelect, multiSelect, selection, setRowSelected, computedRowExpandEnabled, rtl, last: lastRow, computedCellSelection, lastNonEmpty, maxVisibleRows, onCellClick, editStartEvent, naturalRowHeight, renderNodeTool, computedTreeEnabled, expanded: rowExpanded, expandGroupTitle, expandColumn: expandColumnFn, onCellSelectionDraggerMouseDown, onCellMouseDown, onCellEnter, computedCellMultiSelectionEnabled, getCellSelectionKey, lastCellInRange, computedRowspans, renderIndex, nativeScroll, onDragRowMouseDown, theme, onContextMenu, setActiveIndex, } = props;
         const expandColumnId = expandColumnFn
             ? expandColumnFn({ data })
             : undefined;
@@ -774,6 +774,7 @@ export default class DataGridRow extends React.Component {
                 initialRowHeight: rowExpanded ? initialRowHeight : rowHeight,
                 theme,
                 onContextMenu,
+                setActiveIndex,
             };
             if (computedCellSelection) {
                 cellProps.cellSelected =
@@ -813,7 +814,7 @@ export default class DataGridRow extends React.Component {
             if ((virtualizeColumns && !cellProps.computedLocked) ||
                 this.props.editable ||
                 cellProps.computedEditable) {
-                cellProps.ref = this.cellRef;
+                cellProps.cellRef = this.cellRef;
                 cellProps.onUnmount = this.onCellUnmount;
             }
             const { computedLocked, colspan, rowspan } = cellProps;
@@ -1150,7 +1151,9 @@ export default class DataGridRow extends React.Component {
         return new Promise((resolve, reject) => {
             const startEdit = (cols, index = 0) => {
                 const errBack = () => {
-                    startEdit(cols, index + 1);
+                    isEnterNavigation
+                        ? this.tryNextRowEdit(dir, editIndex, true)
+                        : startEdit(cols, index + 1);
                 };
                 const col = cols[index];
                 if (!col) {
@@ -1321,7 +1324,7 @@ export default class DataGridRow extends React.Component {
                 cell = this.props.cellFactory(cProps);
             }
             if (cell === undefined) {
-                cell = React.createElement(Cell, Object.assign({}, cProps, { key: key }));
+                cell = (React.createElement(Cell, Object.assign({}, cProps, { ref: cProps.cellRef ? cProps.cellRef : null, key: key })));
             }
             return cell;
         });
@@ -1504,4 +1507,5 @@ DataGridRow.propTypes = {
     onDragRowMouseDown: PropTypes.func,
     renderLockedStartCells: PropTypes.func,
     renderLockedEndCells: PropTypes.func,
+    setActiveIndex: PropTypes.func,
 };

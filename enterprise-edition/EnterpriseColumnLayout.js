@@ -20,7 +20,6 @@ let DRAG_INFO = null;
 let scrolling = false;
 const SCROLL_MARGIN = 40;
 const DRAG_ROW_MAX_HEIGHT = 100;
-const SCROLL_SPEED = 60;
 const raf = global.requestAnimationFrame;
 export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGridColumnLayout {
     constructor(props) {
@@ -62,7 +61,7 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
                 const { rowReorderScrollByAmount, rowReorderAutoScrollSpeed } = props;
                 if (scrolling && dir) {
                     global.clearInterval(this.gridScrollInterval);
-                    this.gridScrollInterval = global.setInterval(() => this.startScrolling(rowReorderScrollByAmount, dir), rowReorderAutoScrollSpeed || SCROLL_SPEED);
+                    this.gridScrollInterval = global.setInterval(() => this.startScrolling(rowReorderScrollByAmount, dir), rowReorderAutoScrollSpeed);
                 }
             }
         };
@@ -313,6 +312,9 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
                 this.setReorderArrowAt(dropIndex, compareRanges);
             }
+            else {
+                this.setReorderArrowVisible(false);
+            }
         };
         this.onRowDrop = (event, config, props) => {
             const { dropIndex } = this;
@@ -365,10 +367,19 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             }
             let box = ranges[index];
             const { contentRegion } = DRAG_INFO;
-            // if there is no box, probably it's trying to position it after the last row
-            let boxPos = !box
-                ? ranges[ranges.length - 1].bottom - 4 /*todo remove magic constant */
-                : box.top;
+            let boxPos;
+            let arrowHeight = this.dragRowArrow.props.rowReorderArrowStyle
+                ? Number.parseFloat(this.dragRowArrow.props.rowReorderArrowStyle)
+                : 3;
+            if (index === 0) {
+                boxPos = box.top;
+            }
+            else if (index === ranges.length) {
+                boxPos = ranges[ranges.length - 1].bottom - arrowHeight;
+            }
+            else {
+                boxPos = box.top - Math.floor(arrowHeight / 2);
+            }
             const arrowPosition = boxPos - contentRegion.top;
             return this.setReorderArrowPosition(arrowPosition);
         };

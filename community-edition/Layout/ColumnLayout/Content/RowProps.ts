@@ -198,6 +198,7 @@ export type RowProps = {
   onDragRowMouseDown: func;
   theme: string;
   onContextMenu?: () => void;
+  setActiveIndex?: func;
 };
 
 export type EnhancedRowProps = RowProps & {
