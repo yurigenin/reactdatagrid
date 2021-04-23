@@ -1617,7 +1617,7 @@ const GridFactory = (
     showColumnMenuFilterOptions: true,
     showColumnMenuGroupOptions: true,
     autoFocusOnEditComplete: true,
-
+    autoFocusOnEditEscape: true,
     showPivotSummaryColumns: true,
     showColumnMenuToolOnHover: !isMobile,
     columnFilterContextMenuConstrainTo: true,

@@ -1067,6 +1067,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         showColumnMenuFilterOptions: true,
         showColumnMenuGroupOptions: true,
         autoFocusOnEditComplete: true,
+        autoFocusOnEditEscape: true,
         showPivotSummaryColumns: true,
         showColumnMenuToolOnHover: !isMobile,
         columnFilterContextMenuConstrainTo: true,
