@@ -1012,6 +1012,7 @@ export default class DataGridRow extends React.Component<RowProps> {
       onDragRowMouseDown,
       theme,
       onContextMenu,
+      setActiveIndex,
     } = props;
 
     const expandColumnId: string | undefined = expandColumnFn
@@ -1181,6 +1182,7 @@ export default class DataGridRow extends React.Component<RowProps> {
         initialRowHeight: rowExpanded ? initialRowHeight : rowHeight,
         theme,
         onContextMenu,
+        setActiveIndex,
       };
 
       if (computedCellSelection) {
@@ -2125,4 +2127,5 @@ DataGridRow.propTypes = {
   onDragRowMouseDown: PropTypes.func,
   renderLockedStartCells: PropTypes.func,
   renderLockedEndCells: PropTypes.func,
+  setActiveIndex: PropTypes.func,
 };

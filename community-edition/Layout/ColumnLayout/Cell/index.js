@@ -611,12 +611,14 @@ export default class InovuaDataGridCell extends React.Component {
             this.stopEdit();
             if (newIndex != props.rowIndex) {
                 this.props.tryNextRowEdit(dir, props.columnIndex, true);
+                props.setActiveIndex(newIndex);
             }
         }
         else {
             this.onEditorComplete();
             if (newIndex != props.rowIndex) {
                 this.props.tryNextRowEdit(dir, props.columnIndex, true);
+                props.setActiveIndex(newIndex);
             }
         }
     }
@@ -1225,4 +1227,5 @@ InovuaDataGridCell.propTypes = {
     getEditStartValue: PropTypes.func,
     getEditCompleteValue: PropTypes.func,
     editStartEvent: PropTypes.string,
+    setActiveIndex: PropTypes.func,
 };
