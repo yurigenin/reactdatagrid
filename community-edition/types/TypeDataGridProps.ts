@@ -374,6 +374,7 @@ type TypeDataGridPropsNoI18n = {
   preventDefaultTextSelectionOnShiftMouseDown: boolean;
   preventRowSelectionOnClickWithMouseMove: boolean;
   autoFocusOnEditComplete: boolean;
+  autoFocusOnEditEscape?: boolean;
   groups?: TypeColumnGroup[];
   activateRowOnFocus: boolean;
   autoCheckboxColumn: boolean;

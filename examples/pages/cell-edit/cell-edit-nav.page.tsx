@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
-import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
+import ReactDataGrid from '../../../enterprise-edition';
+import Button from '../../../community-edition/packages/Button';
 
 import people from '../people';
 import flags from '../flags';
@@ -9,7 +10,7 @@ const gridStyle = { minHeight: 550 };
 
 const isStartEditKeyPressed = ({ event }) => event.key === 'k' && event.ctrlKey;
 
-const columns = [
+const columns: any = [
   {
     name: 'id',
     header: 'Id',
@@ -46,6 +47,7 @@ const columns = [
 
 const App = () => {
   const [dataSource, setDataSource] = useState(people);
+  const [gridRef, setGridRef] = useState(null);
 
   const onEditComplete = useCallback(
     ({ value, columnId, rowIndex }) => {
@@ -64,9 +66,18 @@ const App = () => {
         AGE columns is not editable. Use TAB/SHIFT+TAB while editing to navigate
         to next/prev editable cell.
       </h4>
+      <div style={{ marginBottom: 20 }}>
+        <Button
+          theme="default-dark"
+          onClick={() => gridRef.current.cancelEdit()}
+        >
+          cancelEdit
+        </Button>
+      </div>
       <ReactDataGrid
         idProperty="id"
         theme="default-dark"
+        onReady={setGridRef}
         licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         style={gridStyle}
         onEditComplete={onEditComplete}

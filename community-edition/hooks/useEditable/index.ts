@@ -29,7 +29,10 @@ const useEditable = (
     if (computedProps.initialProps.onEditStop) {
       computedProps.initialProps.onEditStop(editProps);
     }
-    editInfoRef.current = null;
+    setTimeout(() => {
+      // needed for cancelEdit method
+      editInfoRef.current = null;
+    }, 0);
   }, []);
 
   const onEditCancel = useCallback((editProps: TypeEditInfo) => {
@@ -265,6 +268,41 @@ const useEditable = (
     []
   );
 
+  const cancelEdit = useCallback(
+    (
+      { rowIndex, columnId }: { rowIndex?: number; columnId?: string } = {
+        rowIndex: undefined,
+        columnId: undefined,
+      }
+    ) => {
+      const editInfo: TypeEditInfo | null = editInfoRef.current;
+
+      if (!editInfo) {
+        return;
+      }
+
+      let col = columnId
+        ? (computedProps.getColumnBy(columnId) as TypeComputedColumn)
+        : null;
+
+      if (!col && editInfo) {
+        col = computedProps.getColumnBy(
+          editInfo.columnId
+        ) as TypeComputedColumn;
+        rowIndex = editInfo.rowIndex;
+      }
+
+      if (!col) {
+        return;
+      }
+
+      computedProps
+        .getColumnLayout()
+        .cancelEdit({ rowIndex, columnIndex: col.computedVisibleIndex });
+    },
+    []
+  );
+
   const getCurrentEditInfo = useCallback((): TypeEditInfo | null => {
     return editInfoRef.current;
   }, []);
@@ -278,6 +316,7 @@ const useEditable = (
     onEditComplete,
     onEditValueChange,
     completeEdit,
+    cancelEdit,
     tryStartEdit,
   };
 };
