@@ -62,7 +62,11 @@ export default (
     const sameElement = event.target === computedProps.getScrollingElement();
 
     let handled: boolean = false;
-    if (event.key === 'Escape' && !sameElement) {
+    if (
+      event.key === 'Escape' &&
+      !sameElement &&
+      computedProps.autoFocusOnEditEscape
+    ) {
       handled = true;
       computedProps.focus();
     }
