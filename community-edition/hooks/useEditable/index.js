@@ -15,7 +15,10 @@ const useEditable = (props, computedProps, computedPropsRef) => {
         if (computedProps.initialProps.onEditStop) {
             computedProps.initialProps.onEditStop(editProps);
         }
-        editInfoRef.current = null;
+        setTimeout(() => {
+            // needed for cancelEdit method
+            editInfoRef.current = null;
+        }, 0);
     }, []);
     const onEditCancel = useCallback((editProps) => {
         const { current: computedProps } = computedPropsRef;
@@ -174,6 +177,28 @@ const useEditable = (props, computedProps, computedPropsRef) => {
             }, 50);
         });
     }, []);
+    const cancelEdit = useCallback(({ rowIndex, columnId } = {
+        rowIndex: undefined,
+        columnId: undefined,
+    }) => {
+        const editInfo = editInfoRef.current;
+        if (!editInfo) {
+            return;
+        }
+        let col = columnId
+            ? computedProps.getColumnBy(columnId)
+            : null;
+        if (!col && editInfo) {
+            col = computedProps.getColumnBy(editInfo.columnId);
+            rowIndex = editInfo.rowIndex;
+        }
+        if (!col) {
+            return;
+        }
+        computedProps
+            .getColumnLayout()
+            .cancelEdit({ rowIndex, columnIndex: col.computedVisibleIndex });
+    }, []);
     const getCurrentEditInfo = useCallback(() => {
         return editInfoRef.current;
     }, []);
@@ -186,6 +211,7 @@ const useEditable = (props, computedProps, computedPropsRef) => {
         onEditComplete,
         onEditValueChange,
         completeEdit,
+        cancelEdit,
         tryStartEdit,
     };
 };
