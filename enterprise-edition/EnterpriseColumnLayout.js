@@ -368,17 +368,21 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             let box = ranges[index];
             const { contentRegion } = DRAG_INFO;
             let boxPos;
-            let arrowHeight = this.dragRowArrow.props.rowReorderArrowStyle
-                ? Number.parseFloat(this.dragRowArrow.props.rowReorderArrowStyle)
+            let dragRowArrowHeight = this.dragRowArrow.props
+                .rowReorderArrowStyle
+                ? this.dragRowArrow.props.rowReorderArrowStyle.height
                 : 3;
+            if (!Number.isInteger(dragRowArrowHeight)) {
+                dragRowArrowHeight = 3;
+            }
             if (index === 0) {
                 boxPos = box.top;
             }
             else if (index === ranges.length) {
-                boxPos = ranges[ranges.length - 1].bottom - arrowHeight;
+                boxPos = ranges[ranges.length - 1].bottom - dragRowArrowHeight;
             }
             else {
-                boxPos = box.top - Math.floor(arrowHeight / 2);
+                boxPos = box.top - Math.floor(dragRowArrowHeight / 2);
             }
             const arrowPosition = boxPos - contentRegion.top;
             return this.setReorderArrowPosition(arrowPosition);
