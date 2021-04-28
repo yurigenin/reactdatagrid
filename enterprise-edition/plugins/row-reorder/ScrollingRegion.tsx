@@ -20,8 +20,15 @@ const ScrollingRegion = forwardRef((props: TypeScrollRegionProps, ref: any) => {
     }
   };
 
+  const setHeight = (height: number) => {
+    if (scrollRegionRef.current) {
+      scrollRegionRef.current.style.height = `${height}px`;
+    }
+  };
+
   useImperativeHandle(ref, () => ({
     setVisible: setVisible,
+    setHeight: setHeight,
   }));
 
   const className = props.DEFAULT_CLASS_NAME;
