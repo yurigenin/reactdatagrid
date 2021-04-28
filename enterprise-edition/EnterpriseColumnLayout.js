@@ -183,6 +183,8 @@ export default class InovuaDataGridEnterpriseColumnLayout extends InovuaDataGrid
             };
             if (this.scrollTopRegionRef.current) {
                 this.scrollTopRegionRef.current.setVisible(true);
+                const height = this.headerLayout && this.headerLayout.headerNode.offsetHeight;
+                this.scrollTopRegionRef.current.setHeight(height);
             }
             if (this.scrollBottomRegionRef.current) {
                 this.scrollBottomRegionRef.current.setVisible(true);

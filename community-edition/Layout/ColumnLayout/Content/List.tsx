@@ -232,9 +232,10 @@ export default class InovuaDataGridList extends Component<ListProps> {
     return (
       <div {...props}>
         {props.children}
-        {this.props.renderActiveRowIndicator(
-          this.setupActiveRowIndicatorHandle
-        )}
+        {this.props.renderActiveRowIndicator &&
+          this.props.renderActiveRowIndicator(
+            this.setupActiveRowIndicatorHandle
+          )}
       </div>
     );
   };

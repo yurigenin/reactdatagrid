@@ -11,8 +11,14 @@ const ScrollingRegion = forwardRef((props, ref) => {
             }
         }
     };
+    const setHeight = (height) => {
+        if (scrollRegionRef.current) {
+            scrollRegionRef.current.style.height = `${height}px`;
+        }
+    };
     useImperativeHandle(ref, () => ({
         setVisible: setVisible,
+        setHeight: setHeight,
     }));
     const className = props.DEFAULT_CLASS_NAME;
     return (React.createElement("div", { ref: scrollRegionRef, style: {
