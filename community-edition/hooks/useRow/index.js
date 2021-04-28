@@ -176,6 +176,22 @@ export default (props, computedProps, computedPropsRef) => {
             computedProps.computedSetFocused(true);
         }
     }, []);
+    const computedOnBlur = useCallback((event) => {
+        const { current: computedProps } = computedPropsRef;
+        if (!computedProps) {
+            return;
+        }
+        event.preventDefault();
+        if (props.onBlur) {
+            props.onBlur(event);
+        }
+        const { computedActiveIndex } = computedProps;
+        if (computedActiveIndex >= 0) {
+            computedProps.doSetLastActiveIndex(computedActiveIndex);
+        }
+        computedProps.setActiveIndex(-1);
+        computedProps.computedSetFocused(false);
+    }, []);
     const onGroupRowClick = useCallback((rowProps, { enableKeyboardNavigation, setActiveIndex, }, queue) => {
         if (rowProps.groupProps || (rowProps.data && rowProps.data.__group)) {
             // it's a group row, so stop doing anything else and only update
@@ -389,6 +405,7 @@ export default (props, computedProps, computedPropsRef) => {
         onCellClickAction,
         computedOnKeyDown,
         computedOnFocus,
+        computedOnBlur,
         computedOnRowClick,
         computedOnCellMouseDown,
         isGroup,

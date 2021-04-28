@@ -10,6 +10,7 @@ import clamp from '../utils/clamp';
 import usePrevious from './usePrevious';
 const useActiveIndex = (props, computedProps, computedPropsRef) => {
     let [computedActiveIndex, doSetActiveIndex] = useProperty(props, 'activeIndex', -1);
+    const [computedLastActiveIndex, doSetLastActiveIndex] = useProperty(props, 'lastActiveIndex', null);
     if (!props.enableKeyboardNavigation) {
         computedActiveIndex = -1;
     }
@@ -21,7 +22,12 @@ const useActiveIndex = (props, computedProps, computedPropsRef) => {
             return;
         }
         const { data } = computedProps;
-        activeIndex = clamp(activeIndex, 0, data.length - 1);
+        if (activeIndex >= 0) {
+            activeIndex = clamp(activeIndex, 0, data.length - 1);
+        }
+        else {
+            activeIndex = -1;
+        }
         if (activeIndex === computedProps.computedActiveIndex) {
             return;
         }
@@ -67,6 +73,8 @@ const useActiveIndex = (props, computedProps, computedPropsRef) => {
         incrementActiveIndex,
         getActiveItem,
         getFirstVisibleIndex,
+        computedLastActiveIndex,
+        doSetLastActiveIndex,
     };
 };
 export default useActiveIndex;

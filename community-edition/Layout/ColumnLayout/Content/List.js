@@ -129,7 +129,8 @@ export default class InovuaDataGridList extends Component {
         this.renderRowContainer = props => {
             return (React.createElement("div", Object.assign({}, props),
                 props.children,
-                this.props.renderActiveRowIndicator(this.setupActiveRowIndicatorHandle)));
+                this.props.renderActiveRowIndicator &&
+                    this.props.renderActiveRowIndicator(this.setupActiveRowIndicatorHandle)));
         };
         this.setupActiveRowIndicatorHandle = (activeRowHandle) => {
             this.activeRowIndicatorHandle = activeRowHandle;
