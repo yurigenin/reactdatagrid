@@ -164,7 +164,6 @@ export default class InovuaDataGridList extends Component {
                 }
             }
             const hasScrollbars = this.scrollbars && this.scrollbars.vertical && this.scrollbars.horizontal;
-            const hasHorizontalScrollbar = this.scrollbars && this.scrollbars.horizontal;
             if (!!this.props.renderRowDetails || !!this.props.renderDetailsGrid) {
                 if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
                     viewProps.style.transform = `translateX(${-(hasScrollbars ? 2 : 1) *
@@ -173,9 +172,7 @@ export default class InovuaDataGridList extends Component {
             }
             else {
                 if (this.props.rtl && !getScrollbarWidth() && !this.props.nativeScroll) {
-                    viewProps.style.transform = `translateX(${-(hasHorizontalScrollbar
-                        ? 2
-                        : 1) * scrollbarOffset}px)`;
+                    viewProps.style.transform = `translateX(${-scrollbarOffset}px)`;
                 }
             }
             let result;
@@ -236,10 +233,7 @@ export default class InovuaDataGridList extends Component {
             }
             const hasHorizontalScrollbar = this.scrollbars && this.scrollbars.horizontal;
             if (!this.props.renderRowDetails || !this.props.renderDetailsGrid) {
-                if (!this.props.rtl &&
-                    !getScrollbarWidth() &&
-                    !nativeScroll &&
-                    hasHorizontalScrollbar) {
+                if (!getScrollbarWidth() && !nativeScroll && hasHorizontalScrollbar) {
                     scrollerProps.style.right = 0;
                 }
             }
