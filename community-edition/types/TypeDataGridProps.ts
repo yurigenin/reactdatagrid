@@ -374,6 +374,7 @@ type TypeDataGridPropsNoI18n = {
   preventDefaultTextSelectionOnShiftMouseDown: boolean;
   preventRowSelectionOnClickWithMouseMove: boolean;
   autoFocusOnEditComplete: boolean;
+  autoFocusOnEditEscape?: boolean;
   groups?: TypeColumnGroup[];
   activateRowOnFocus: boolean;
   autoCheckboxColumn: boolean;
@@ -682,6 +683,8 @@ export type TypePivotUniqueValuesDescriptor = {
   values: { [key: string]: TypePivotUniqueValuesDescriptor } | null;
 };
 export type TypeComputedProps = TypeDataGridPropsNoI18n & {
+  computedLastActiveIndex: number | null;
+  doSetLastActiveIndex: (lastActiveIndex: number | null) => void;
   columnContextMenuInstanceProps?: any;
   rowReorderAutoScroll?: boolean;
   rowReorderArrowStyle?: CSSProperties;

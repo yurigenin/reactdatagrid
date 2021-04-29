@@ -28,6 +28,7 @@ export default (
   toggleActiveRowSelection: (event: KeyboardEvent) => void;
   computedOnKeyDown: (event: KeyboardEvent) => void;
   computedOnFocus: (event: FocusEvent) => void;
+  computedOnBlur: (event: FocusEvent) => void;
   computedOnRowClick: (event: MouseEvent, rowProps: TypeRowProps) => void;
   computedOnCellMouseDown: (
     event: MouseEvent,
@@ -62,7 +63,11 @@ export default (
     const sameElement = event.target === computedProps.getScrollingElement();
 
     let handled: boolean = false;
-    if (event.key === 'Escape' && !sameElement) {
+    if (
+      event.key === 'Escape' &&
+      !sameElement &&
+      computedProps.autoFocusOnEditEscape
+    ) {
       handled = true;
       computedProps.focus();
     }
@@ -236,6 +241,27 @@ export default (
     if (!computedProps.computedFocused) {
       computedProps.computedSetFocused(true);
     }
+  }, []);
+
+  const computedOnBlur = useCallback((event: FocusEvent) => {
+    const { current: computedProps } = computedPropsRef;
+
+    if (!computedProps) {
+      return;
+    }
+    event.preventDefault();
+
+    if (props.onBlur) {
+      props.onBlur(event);
+    }
+
+    const { computedActiveIndex } = computedProps;
+    if (computedActiveIndex >= 0) {
+      computedProps.doSetLastActiveIndex(computedActiveIndex);
+    }
+
+    computedProps.setActiveIndex(-1);
+    computedProps.computedSetFocused(false);
   }, []);
 
   const onGroupRowClick = useCallback(
@@ -560,6 +586,7 @@ export default (
     onCellClickAction,
     computedOnKeyDown,
     computedOnFocus,
+    computedOnBlur,
     computedOnRowClick,
     computedOnCellMouseDown,
     isGroup,

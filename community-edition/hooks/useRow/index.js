@@ -23,7 +23,9 @@ export default (props, computedProps, computedPropsRef) => {
         }
         const sameElement = event.target === computedProps.getScrollingElement();
         let handled = false;
-        if (event.key === 'Escape' && !sameElement) {
+        if (event.key === 'Escape' &&
+            !sameElement &&
+            computedProps.autoFocusOnEditEscape) {
             handled = true;
             computedProps.focus();
         }
@@ -173,6 +175,22 @@ export default (props, computedProps, computedPropsRef) => {
         if (!computedProps.computedFocused) {
             computedProps.computedSetFocused(true);
         }
+    }, []);
+    const computedOnBlur = useCallback((event) => {
+        const { current: computedProps } = computedPropsRef;
+        if (!computedProps) {
+            return;
+        }
+        event.preventDefault();
+        if (props.onBlur) {
+            props.onBlur(event);
+        }
+        const { computedActiveIndex } = computedProps;
+        if (computedActiveIndex >= 0) {
+            computedProps.doSetLastActiveIndex(computedActiveIndex);
+        }
+        computedProps.setActiveIndex(-1);
+        computedProps.computedSetFocused(false);
     }, []);
     const onGroupRowClick = useCallback((rowProps, { enableKeyboardNavigation, setActiveIndex, }, queue) => {
         if (rowProps.groupProps || (rowProps.data && rowProps.data.__group)) {
@@ -387,6 +405,7 @@ export default (props, computedProps, computedPropsRef) => {
         onCellClickAction,
         computedOnKeyDown,
         computedOnFocus,
+        computedOnBlur,
         computedOnRowClick,
         computedOnCellMouseDown,
         isGroup,

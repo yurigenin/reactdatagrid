@@ -227,11 +227,14 @@ const GridFactory = (
         const activeItem = computedProps.getActiveItem();
 
         if (!activeItem) {
-          const index = computedProps.getFirstVisibleIndex();
+          const index =
+            computedProps.computedLastActiveIndex ||
+            computedProps.getFirstVisibleIndex();
           computedProps.setActiveIndex(index);
         }
       }
     }, [computedFocused]);
+
     const bodyRef = useRef<InovuaDataGridLayout>(null);
     const domRef = useRef<HTMLDivElement>(null);
     const portalRef = useRef<HTMLDivElement>(null);
@@ -1193,6 +1196,7 @@ const GridFactory = (
     const {
       computedOnKeyDown: onKeyDown,
       computedOnFocus: onFocus,
+      computedOnBlur: onBlur,
       ...useRowProps
     } = useRow(props, computedProps, computedPropsRef);
 
@@ -1408,30 +1412,32 @@ const GridFactory = (
         : computedPropsRef.rowHeight;
     computedProps.activeRowHeight = activeRowHeight || computedProps.rowHeight;
 
-    computedProps.renderActiveRowIndicator = (
-      handle: (
-        handleProps: {
-          setScrollLeft: (scrollLeft: number) => void;
-        } | null
-      ) => void
-    ) => {
-      return (
-        <ActiveRowIndicator
-          handle={handle}
-          rtl={computedProps.rtl}
-          rtlOffset={computedProps.rtlOffset}
-          getDOMNode={computedProps.getDOMNode}
-          dataSourceCount={computedProps.data.length}
-          width={computedProps.minRowWidth || 0}
-          computedRowHeights={computedProps.computedRowHeights}
-          computedExpandedRows={computedProps.computedExpandedRows}
-          computedExpandedNodes={computedProps.computedExpandedNodes}
-          activeRowHeight={computedProps.activeRowHeight}
-          activeIndex={computedProps.computedActiveIndex}
-          activeRowRef={computedProps.activeRowRef}
-        />
-      );
-    };
+    if (computedFocused) {
+      computedProps.renderActiveRowIndicator = (
+        handle: (
+          handleProps: {
+            setScrollLeft: (scrollLeft: number) => void;
+          } | null
+        ) => void
+      ) => {
+        return (
+          <ActiveRowIndicator
+            handle={handle}
+            rtl={computedProps.rtl}
+            rtlOffset={computedProps.rtlOffset}
+            getDOMNode={computedProps.getDOMNode}
+            dataSourceCount={computedProps.data.length}
+            width={computedProps.minRowWidth || 0}
+            computedRowHeights={computedProps.computedRowHeights}
+            computedExpandedRows={computedProps.computedExpandedRows}
+            computedExpandedNodes={computedProps.computedExpandedNodes}
+            activeRowHeight={computedProps.activeRowHeight}
+            activeIndex={computedProps.computedActiveIndex}
+            activeRowRef={computedProps.activeRowRef}
+          />
+        );
+      };
+    }
 
     computedProps.computedLicenseValid = false;
 
@@ -1494,7 +1500,7 @@ const GridFactory = (
         className={className}
         onKeyDown={onKeyDown}
         onFocus={onFocus}
-        onBlur={props.onBlur}
+        onBlur={onBlur}
         ref={domRef}
       >
         <Provider value={computedProps}>
@@ -1617,6 +1623,7 @@ const GridFactory = (
     showColumnMenuFilterOptions: true,
     showColumnMenuGroupOptions: true,
     autoFocusOnEditComplete: true,
+    autoFocusOnEditEscape: true,
 
     showPivotSummaryColumns: true,
     showColumnMenuToolOnHover: !isMobile,

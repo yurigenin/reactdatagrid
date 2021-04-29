@@ -143,7 +143,8 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
                 }
                 const activeItem = computedProps.getActiveItem();
                 if (!activeItem) {
-                    const index = computedProps.getFirstVisibleIndex();
+                    const index = computedProps.computedLastActiveIndex ||
+                        computedProps.getFirstVisibleIndex();
                     computedProps.setActiveIndex(index);
                 }
             }
@@ -787,7 +788,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         computedProps.setShowEmptyRows = setShowEmptyRows;
         computedProps.maxVisibleRows = maxVisibleRows;
         const className = prepareClassName(computedProps);
-        const { computedOnKeyDown: onKeyDown, computedOnFocus: onFocus, ...useRowProps } = useRow(props, computedProps, computedPropsRef);
+        const { computedOnKeyDown: onKeyDown, computedOnFocus: onFocus, computedOnBlur: onBlur, ...useRowProps } = useRow(props, computedProps, computedPropsRef);
         if (pluginsMap['locked-rows'] && pluginsMap['locked-rows'].hook) {
             Object.assign(computedProps, pluginsMap['locked-rows'].hook(props, computedProps, computedPropsRef));
         }
@@ -928,9 +929,11 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
                 ? rowHeightManager.getRowHeight(computedProps.computedActiveIndex)
                 : computedPropsRef.rowHeight;
         computedProps.activeRowHeight = activeRowHeight || computedProps.rowHeight;
-        computedProps.renderActiveRowIndicator = (handle) => {
-            return (React.createElement(ActiveRowIndicator, { handle: handle, rtl: computedProps.rtl, rtlOffset: computedProps.rtlOffset, getDOMNode: computedProps.getDOMNode, dataSourceCount: computedProps.data.length, width: computedProps.minRowWidth || 0, computedRowHeights: computedProps.computedRowHeights, computedExpandedRows: computedProps.computedExpandedRows, computedExpandedNodes: computedProps.computedExpandedNodes, activeRowHeight: computedProps.activeRowHeight, activeIndex: computedProps.computedActiveIndex, activeRowRef: computedProps.activeRowRef }));
-        };
+        if (computedFocused) {
+            computedProps.renderActiveRowIndicator = (handle) => {
+                return (React.createElement(ActiveRowIndicator, { handle: handle, rtl: computedProps.rtl, rtlOffset: computedProps.rtlOffset, getDOMNode: computedProps.getDOMNode, dataSourceCount: computedProps.data.length, width: computedProps.minRowWidth || 0, computedRowHeights: computedProps.computedRowHeights, computedExpandedRows: computedProps.computedExpandedRows, computedExpandedNodes: computedProps.computedExpandedNodes, activeRowHeight: computedProps.activeRowHeight, activeIndex: computedProps.computedActiveIndex, activeRowRef: computedProps.activeRowRef }));
+            };
+        }
         computedProps.computedLicenseValid = false;
         if (pluginsMap.license && pluginsMap.license.hook) {
             Object.assign(computedProps, pluginsMap.license.hook(props, computedProps, computedPropsRef));
@@ -977,7 +980,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         computedProps.edition = edition;
         // globalThis.computedProps = computedProps;
         // globalThis.bodyRef = bodyRef;
-        return (React.createElement("div", { style: props.style, className: className, onKeyDown: onKeyDown, onFocus: onFocus, onBlur: props.onBlur, ref: domRef },
+        return (React.createElement("div", { style: props.style, className: className, onKeyDown: onKeyDown, onFocus: onFocus, onBlur: onBlur, ref: domRef },
             React.createElement(Provider, { value: computedProps },
                 pluginsMap['row-index-column'].renderRowResizeIndicator(computedProps, computedPropsRef),
                 React.createElement(Layout, { Footer: pluginsMap['footer-rows']
@@ -1067,6 +1070,7 @@ const GridFactory = ({ plugins } = {}, edition = 'community') => {
         showColumnMenuFilterOptions: true,
         showColumnMenuGroupOptions: true,
         autoFocusOnEditComplete: true,
+        autoFocusOnEditEscape: true,
         showPivotSummaryColumns: true,
         showColumnMenuToolOnHover: !isMobile,
         columnFilterContextMenuConstrainTo: true,
