@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDataGrid from '@inovua/reactdatagrid-community';
+import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 import CheckBox from '@inovua/reactdatagrid-community/packages/CheckBox';
 
 const rows = [
@@ -251,6 +251,7 @@ export default function App() {
         key={`${showEmptyRows}-${short}-${nativeScroll}-${rtl}-${grouping}`}
         rowHeight={50}
         theme="default-dark"
+        licenseKey={process.env.NEXT_PUBLIC_LICENSE_KEY}
         idProperty="uniqueId"
         dataSource={rows}
         columns={columns}
@@ -264,6 +265,7 @@ export default function App() {
         nativeScroll={nativeScroll}
         rtl={rtl}
         groups={grouping ? groups : undefined}
+        groupBy={['materialName']}
       />
     </div>
   );
