@@ -56,7 +56,9 @@ export default class InovuaVirtualList extends Component {
             };
             props.style = style;
             if (this.props.showEmptyRows &&
-                this.props.count < this.strictVisibleCount) {
+                this.props.count < this.strictVisibleCount &&
+                getScrollbarWidth() &&
+                this.props.nativeScroll) {
                 style.overflowY = 'hidden';
             }
             let result;
