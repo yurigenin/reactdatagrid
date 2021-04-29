@@ -111,12 +111,14 @@ const columns = [
     header: 'MATERIAL NO.',
     defaultWidth: 160,
     editable: false,
+    group: 'materials',
   },
   {
     name: 'materialName',
     header: 'MATERIAL NAME',
     defaultWidth: 200,
     editable: false,
+    group: 'materials',
   },
   { name: 'level', header: 'LEVEL', defaultWidth: 140, type: 'number' },
   { name: 'temp', header: 'TEMP.', defaultWidth: 140, type: 'number' },
@@ -129,12 +131,19 @@ const columns = [
   { name: 'mt', header: 'MT.', defaultWidth: 140, type: 'number' },
   { name: 'lob', header: 'LOB.', defaultWidth: 140, type: 'number' },
   { name: 'kg', header: 'KG.', defaultWidth: 140, editable: false },
-  { name: 'updateBy', header: 'UPDATE BY', defaultWidth: 160, editable: false },
+  {
+    name: 'updateBy',
+    header: 'UPDATE BY',
+    defaultWidth: 160,
+    editable: false,
+    group: 'updates',
+  },
   {
     name: 'updateDate',
     header: 'UPDATE DATE',
     defaultWidth: 160,
     editable: false,
+    group: 'updates',
   },
 ];
 
@@ -145,6 +154,12 @@ const defaultFilterValue = [
   { name: 'materialName', type: 'string', value: '', operator: 'contains' },
   { name: 'updateBy', type: 'string', value: '', operator: 'contains' },
   { name: 'updateDate', type: 'string', value: '', operator: 'contains' },
+];
+
+const groups = [
+  { name: 'materials', header: 'Materials' },
+  { name: 'updates', header: 'Updates', group: 'stuff' },
+  { name: 'stuff', header: 'Stuff' },
 ];
 
 const headerProps = {
@@ -164,9 +179,12 @@ const scrollProps = {
 };
 
 export default function App() {
-  const [showEmptyRows, setShowEmptyRows] = useState(true);
+  const [showEmptyRows, setShowEmptyRows] = useState(false);
   const [short, setShort] = useState(false);
   const [nativeScroll, setNativeScroll] = useState(false);
+  const [rtl, setRtl] = useState(false);
+  const [grouping, setGrouping] = useState(false);
+  const [large, setLarge] = useState(false);
 
   return (
     <div className="App">
@@ -182,9 +200,23 @@ export default function App() {
           theme="default-dark"
           style={{ marginLeft: 10 }}
           checked={short}
-          onChange={setShort}
+          onChange={() => {
+            setLarge(false);
+            setShort(!short);
+          }}
         >
           short
+        </CheckBox>
+        <CheckBox
+          theme="default-dark"
+          style={{ marginLeft: 10 }}
+          checked={large}
+          onChange={() => {
+            setShort(false);
+            setLarge(!large);
+          }}
+        >
+          large grid
         </CheckBox>
         <CheckBox
           theme="default-dark"
@@ -194,13 +226,29 @@ export default function App() {
         >
           nativeScroll
         </CheckBox>
+        <CheckBox
+          theme="default-dark"
+          style={{ marginLeft: 10 }}
+          checked={rtl}
+          onChange={setRtl}
+        >
+          RTl
+        </CheckBox>
+        <CheckBox
+          theme="default-dark"
+          style={{ marginLeft: 10 }}
+          checked={grouping}
+          onChange={setGrouping}
+        >
+          Grouping
+        </CheckBox>
       </div>
       <ReactDataGrid
         style={{
-          minHeight: short ? 300 : 500,
+          minHeight: short ? 300 : large ? 800 : 500,
           marginTop: 16,
         }}
-        key={`${showEmptyRows}-${short}-${nativeScroll}`}
+        key={`${showEmptyRows}-${short}-${nativeScroll}-${rtl}-${grouping}`}
         rowHeight={50}
         theme="default-dark"
         idProperty="uniqueId"
@@ -214,6 +262,8 @@ export default function App() {
         scrollProps={scrollProps}
         defaultShowEmptyRows={showEmptyRows}
         nativeScroll={nativeScroll}
+        rtl={rtl}
+        groups={grouping ? groups : undefined}
       />
     </div>
   );
